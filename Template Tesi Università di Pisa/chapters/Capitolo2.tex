@@ -39,23 +39,59 @@ Lo standard specifica diversi tipi di richieste che possono essere effettuate ai
 \begin{itemize}
       \item \textit{GetCapabilities}: Questa richiesta restituisce un documento XML che rappresenta le informazioni sul servizio WMS stesso, come il formato delle immagini delle mappe supportate, la compatibilità della versione
             del WMS e i layer disponibili, inclusi i dettagli come l'estensione geografica dei layer (bounding box), i sistemi di riferimento delle coordinate e l'opacità del layer.
-      \item \textit{GetMap}: Uitilizzata per ottenere un'immagine di mappa dal servizio. I parametri inclusi nella richiesta comprendono l'estensione geografica della mappa, il sistema di coordinate, lo stile di rendering e il formato dell'immagine desiderato. La risposta alla richiesta è un'immagine rasterizzata della mappa richiesta, pronta per essere visualizzata su un browser web o in un'applicazione client.
-      \item \textit{GetFeatureInfo}: Questa richiesta è opzionale e consente di ottenere informazioni dettagliate su specifiche caratteristiche presenti sulla mappa. Di solito, viene eseguita cliccando su un punto dell'immagine
-            e restituisce informazioni associate a quella posizione, come punti di interesse o dati geografici particolari. Se un layer è contrassegnato come "queryable", è possibile richiedere dati su una determinata coordinata dell'immagine di mappa.
-            % \item GetFeatureInfo: Questa richiesta è opzionale e consente di ottenere informazioni dettagliate sulle feature presenti in una posizione specifica dell'immagine di mappa. Di solito, viene eseguita cliccando su un punto dell'immagine di mappa e restituisce informazioni associate a quella posizione, come i valori dei dati o i metadati delle feature.
-            % \item \textit{DescribeLayer}: Restituisce i tipi di feature del layer specificato, fornendo informazioni dettagliate sulle proprietà dei layer disponibili. Questa richiesta è utile per comprendere meglio la struttura e le caratteristiche dei dati geospaziali presenti nel servizio WMS.
-            % \item \textit{GetLegendGraphic}: Utilizzata per ottenere un'immagine della legenda della mappa, questa richiesta fornisce una guida visiva agli elementi presenti sulla mappa, come i simboli e le etichette dei layer.
-
+      \item \textit{GetMap}: Uitilizzata per ottenere un'immagine di mappa dal servizio. I parametri inclusi nella richiesta comprendono l'estensione geografica della mappa, il sistema di coordinate, lo stile di rendering e il formato dell'immagine
+            desiderato. La risposta alla richiesta è un'immagine rasterizzata della mappa richiesta, pronta per essere visualizzata su un browser web o in un'applicazione client.
 \end{itemize}
-Di seguito è riportato uno snippet che contiene alcune possibili richieste WMS, eseguite utilizzando il comando CURL per simulare il comportamento di una richiesta HTTP.
+I tipi di richiesta che i fornitori di WMS possono opzionalmente supportare includono:
+\begin{itemize}
+      \item \textit{GetFeatureInfo}: Consente di ottenere informazioni dettagliate su specifiche caratteristiche presenti sulla mappa. Di solito, viene eseguita cliccando su un punto dell'immagine
+            e restituisce informazioni associate a quella posizione, come punti di interesse o dati geografici particolari. Se un layer è contrassegnato come ``queryable'', è possibile richiedere dati su una determinata coordinata dell'immagine di mappa.
+      \item  \textit{DescribeLayer}:: Restituisce i tipi di feature disponibili per i layer specificati, che possono essere ulteriormente descritti utilizzando richieste Web Feature Service (WFS) o Web Coverage Service (WCS).
+            Questa richiesta è utile per comprendere meglio la struttura e le caratteristiche dei dati geospaziali presenti nel servizio WMS.
+      \item \textit{GetLegendGraphic}: Utilizzata per ottenere un'immagine della legenda della mappa, questa richiesta fornisce una guida visiva agli elementi presenti sulla mappa, come i simboli e le etichette dei layer.
+\end{itemize}
+Qui sotto è riportato uno \textit{snippet} che contiene alcuni esempi possibili di richieste WMS, eseguite utilizzando il comando CURL per simulare il comportamento di una richiesta HTTP.
 
+\lstinputlisting[language=bash]{listings/Capitolo1/wms-requests-example.sh}
+Qui di seguito invece viene mostrato al lettore un esempio di richiesta funzionante, fatta durante il mio percorso di tirocinio, ai server WMS del Geoportale Nazionale, gestito dal Ministero dell'Ambiente e della Sicurezza Energetica.
+Ciò serve per ottenere dati geospaziali relativi alla mappa che illustra l'area allagabile conforme al Piano di Gestione del Rischio di Alluvioni (PGRA) del 2021.
 \lstinputlisting[language=bash]{listings/Capitolo1/wms-requests.sh}
-Per ulteriori informazioni dettagliate sullo standard WMS, è possibile fare riferimento alla documentazione ufficiale disponibile sul sito web di Open Geospatial
-al seguente \href{https://www.ogc.org/standard/wms/}{indirizzo}.
+Come si può vedere dal \href{http://wms.pcn.minambiente.it/ogc?map=/ms_ogc/WMS_v1.3/Vettoriali/Alluvioni_Estensione.map&service=wms&request=getCapabilities}{messaggio di risposta} in formato XML inviato dai loro Server,
+Il servizio offre funzionalità standard come la richiesta di mappe (GetMap) e informazioni (GetFeatureInfo), oltre a supportare la descrizione dei layer (DescribeLayer) e la visualizzazione della legenda (GetLegendGraphic).
+Fornisce anche metadati conformi agli standard europei INSPIRE, una direttiva dell'Unione Europea volta a creare un'infrastruttura per la condivisione e l'accesso a informazioni geospaziali.
+%Questo servizio è gestito dal Ministero dell'Ambiente e della Sicurezza Energetica  italiano attraverso il Geoportale Nazionale
+\\Per ulteriori informazioni dettagliate sullo standard WMS, è possibile fare riferimento alla documentazione ufficiale disponibile sul sito web di Open Geospatial Consortium \cite{DocumentazioneWMS}
+
+% \href{https://www.ogc.org/standard/wms/}{indirizzo}.
+\subsection{Protocollo WFS}
+
+
+Il Web Feature Service (WFS) è uno standard che fornisce un'interfaccia HTTP per richiedere direttamente oggetti geografici, come punti, linee e poligoni, da server distribuiti su Internet. A differenza del Web Map Service (WMS), che restituisce immagini di mappe, il WFS trasmette descrizioni dettagliate dei singoli oggetti spaziali contenuti nell'area di interesse, comprese le coordinate spaziali e gli attributi alfanumerici.
+\\Il servizio WFS consente ai client di interrogare, aggiornare, creare o eliminare feature. Una feature rappresenta un singolo oggetto geografico, come ad esempio un edificio, una strada o un corso d'acqua, e può essere caratterizzata da una serie di attributi, come nome, altezza, larghezza, popolazione, etc.
+
+
+% Queste informazioni vengono trasmesse attraverso il WFS utilizzando il formato GML (Geography Markup Language), che consente di descrivere in modo dettagliato la geometria e le proprietà di ciascuna feature.
+
+% Una feature, nel contesto del WFS, rappresenta un singolo oggetto geografico, come ad esempio un edificio, una strada o un corso d'acqua. Ogni feature può essere caratterizzata da una serie di attributi, come nome, altezza, larghezza, popolazione, e così via. Queste informazioni vengono trasmesse attraverso il WFS utilizzando il formato GML (Geography Markup Language), che consente di descrivere in modo dettagliato la geometria e le proprietà di ciascuna feature.
+
+% Ad esempio, un'applicazione GIS potrebbe utilizzare il WFS per richiedere informazioni su tutti gli edifici di una determinata area e visualizzarli sulla mappa. Inoltre, i client possono eseguire operazioni di analisi spaziale, come il calcolo dell'area di un poligono o la ricerca delle feature più vicine a una determinata posizione.
+
+% In sintesi, il Web Feature Service (WFS) è un protocollo standard per servire dati geospaziali come feature vettoriali su Internet, consentendo ai client di richiedere dati specifici delle feature da un server e di eseguire operazioni su di essi, come interrogare, inserire, aggiornare ed eliminare feature.
 
 
 
-% \subsection{Protocollo WFS}
+
+
+% In contrast to the images served by WMS, WFS communicates geographic feature information. The client may choose to render these features itself, but the real power comes from being able to manipulate the features in a true GIS fashion. For example, the client could perform geographic calculations or act as a feature editor.
+
+% The WFS web service allows features to be queried, updated, created, or deleted by the client. Feature data is typically passed using the XML-based GML format using SOAP. Data can also be transferred as Keyword-value pairs using RPC. WFS is classed as a non-RESTful RPC type web service.
+
+% WFS (Web Feature Service) is a standard protocol for serving geospatial data as vector features (e.g., points, lines, polygons) over the web. It allows clients to request specific feature data from a server and perform operations on the data, such as querying, inserting, updating, and deleting features.
+
+% \subsubsection{Formato della richiesta}
+% I tipi di richiesta che i servizi WFS possono supportare sono:
+
+
 % \subsection{Protocollo WCS}
 % \section{GIS}
 

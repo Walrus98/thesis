@@ -1,3 +1,8 @@
-\begin{thebibliography}{}
+\begin{thebibliography}{1}
+
+\bibitem{DocumentazioneWMS}
+Jeff de~la Beaujardiere.
+\newblock {OpenGIS Web Map Service (WMS) Implementation Specification}.
+\newblock \url{https://portal.ogc.org/files/?artifact_id=14416}, 2006-03-15.
 
 \end{thebibliography}
