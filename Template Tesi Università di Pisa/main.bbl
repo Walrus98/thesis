@@ -5,10 +5,9 @@ Jeff de~la Beaujardiere.
 \newblock {OpenGIS Web Map Service (WMS) Implementation Specification}.
 \newblock \url{https://portal.ogc.org/files/?artifact_id=14416}, 2006-03-15.
 
-\bibitem{DocumentazioneWFS}
-Panagiotis (Peter)~A. Vretanos.
-\newblock {OpenGIS Web Feature Service 2.0 Interface Standard (also ISO
-  19142)}.
-\newblock \url{https://portal.ogc.org/files/?artifact_id=39967}, 2010-11-02.
+\bibitem{DocumentazioneWMTS}
+Keith~Pomakis Joan~Masó and Núria Julià.
+\newblock {OpenGIS Web Map Tile Service Implementation Standard}.
+\newblock \url{https://portal.ogc.org/files/?artifact_id=35326}, 2010-04-06.
 
 \end{thebibliography}
