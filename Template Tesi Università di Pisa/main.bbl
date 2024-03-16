@@ -10,4 +10,10 @@ Keith~Pomakis Joan~Masó and Núria Julià.
 \newblock {OpenGIS Web Map Tile Service Implementation Standard}.
 \newblock \url{https://portal.ogc.org/files/?artifact_id=35326}, 2010-04-06.
 
+\bibitem{DocumentazioneOGC}
+Wikipedia.
+\newblock {Open Geospatial Consortium}.
+\newblock \url{https://en.wikipedia.org/wiki/Open_Geospatial_Consortium},
+  2023-17-12.
+
 \end{thebibliography}

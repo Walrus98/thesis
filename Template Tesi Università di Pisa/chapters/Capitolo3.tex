@@ -1,23 +1,21 @@
 \chapter{Tecnologie di interesse}
 \label{cap:chapter3}
 
-Il seguente capitolo si propone di fornire una panoramica dettagliata delle tecnologie impiegate nel contesto dello sviluppo del progetto,
-mediante un'analisi dettagliata di quest'ultime durante il processo di progettazione e implementazione del sistema.
-L'obiettivo principale è quello di fornire al lettore una comprensione completa delle tecnologie utilizzate, evidenziandone le caratteristiche principali le funzionalità.
-\\Particolare attenzione sarà dedicata agli standard definiti dall'Open Geospatial Consortium (OGC), tra cui Web Map Service (WMS), il Web Map Tiles Service (WMTS), Web Feature Service (WFS) e Web Coverage Service (WCS), che costituiscono protocolli universalmente riconosciuti per la distribuzione e l'accesso ai dati geospaziali tramite Internet.
-Saranno inoltre analizzate altre tecnologie rilevanti per la gestione e la visualizzazione di dati geospaziali (come GeoJSON e ShapeFile), che rappresentano formati comuni per lo scambio di dati geografici.
-\\Infine, si approfondirà il ruolo fondamentale del Geographic Information System (GIS) all'interno del contesto del progetto. Il GIS rappresenta un sistema informativo geografico di fondamentale importanza, che consente di acquisire, gestire, analizzare e visualizzare dati geografici in modo efficace, svolgendo un ruolo centrale nella manipolazione e nell'utilizzo dei dati geospaziali.
+Questo capitolo si occupa di spiegare le tecnologie che sono state impiegate durante il tirocinio, al fine di comprendere successivamente le scelte progettuali intraprese durante lo sviluppo.
+\\Particolare attenzione sarà dedicata agli standard definiti dall'Open Geospatial Consortium (OGC), tra cui Web Map Service (WMS), il Web Map Tiles Service (WMTS), Web Feature Service (WFS) e Web Coverage Service (WCS). Si tratta di protocolli universalmente riconosciuti per la distribuzione e l'accesso ai dati geospaziali tramite Internet.
+Saranno inoltre analizzate altre tecnologie rilevanti per la gestione e la visualizzazione di dati geospaziali (come GeoJSON e ShapeFile), formati comuni per lo scambio di dati geografici.
+% \\Infine, si approfondirà il ruolo fondamentale del Geographic Information System (GIS) all'interno del contesto del progetto. Il GIS rappresenta un sistema informativo geografico di fondamentale importanza, che consente di acquisire, gestire, analizzare e visualizzare dati geografici in modo efficace, svolgendo un ruolo centrale nella manipolazione e nell'utilizzo dei dati geospaziali.
 
 \section{Gli standard forniti da OGC}
 
-Il consorzio Open Geospatial Consortium (OGC) ha definito diversi standard principali per i servizi web che consentono ai client di accedere e interrogare informazioni geografiche. Questi standard includono:
+Il consorzio Open Geospatial Consortium (OGC) ha definito diversi standard per i servizi web che consentono ai client di accedere e interrogare informazioni geografiche. Tra questi troviamo:
 \begin{itemize}
-      \item Web Map Service (WMS)
-      \item Web Map Tile Service (WMTS)
-      \item Web Feature Service (WFS)
-      \item Web Coverage Service (WCS)
+      \item Web Map Service (WMS);
+      \item Web Map Tile Service (WMTS);
+      \item Web Feature Service (WFS);
+      \item Web Coverage Service (WCS).
 \end{itemize}
-Ciascuno di questi standard offre funzionalità specifiche per soddisfare varie esigenze di accesso ai dati geospaziali.
+Come spiegato in \cite{DocumentazioneOGC}, ciascuno di questi standard offre funzionalità specifiche per soddisfare varie esigenze di accesso ai dati geospaziali. Questi servizi si basano su altre tecnologie come l'architettura REST e il protocollo SOAP, ai quali si accede dal client attraverso messaggi XML.
 
 \begin{figure}
       \centering
@@ -26,28 +24,36 @@ Ciascuno di questi standard offre funzionalità specifiche per soddisfare varie 
       \label{fig:Relazione tra client/server e protocolli OGC}
 \end{figure}
 
+% Spiegare che i servizi forniscono un pososno fonire un insieme di mappe, non una sola.
+
+Lo standard OGC prevede che tutti i client che necessitano di contattare il servizio debbano prima effettuare una richiesta HTTP denominata \textit{GetCapabilities}. Questa operazione è necessaria, per il client, per poter sapere quali informazioni possono essere reperite da quel servizio. In generale, queste informazioni comprendono: le mappe (una o più), le proiezioni che supportano, i loro formati (SVG, PNG) e altre richieste GET HTTP che si possono fare al servizio stesso.
+
 \subsection{Protocollo WMS}
 
-Il Web Map Service (WMS) è universalmente riconosciuto come uno dei principali standard nel contesto dei servizi geospaziali e ne rappresenta uno tra i più importanti per la distribuzione di dati di mappe attraverso la rete Internet. Le mappe vengono inviate sotto forma di immagini raster (come PNG, JPG o GIF), ma possono anche essere trasmesse in un formato vettoriale come SVB o WebCGM.
-Il WMS, in maniera anloga agli altri servizi, offre un'interfaccia basata su protocollo HTTP che consente ai client di richiedere informazioni sulle mappe, sotto forma di richiesta XML.
-\\Nello specifico, nel caso del servizio WMS, tale richiesta comprende l'identificazione di un layer geografico. Un layer geografico è un insieme di dati geospaziali che rappresentano effettivamente una mappa, quest'ultima sotto forma di immagine raster o vettoriale. È importante sottolineare che lo standard WMS supporta anche la trasparenza delle immagini restituite nelle richieste, permettendo così la sovrapposizione e la combinazione di più layer forniti da server geospaziali differenti.
-\\Oltre alla funzionalità di base per richiedere mappe, lo standard WMS offre la possibilità di ottenere informazioni dettagliate sul servizio stesso tramite metadati. Inoltre, se abilitato, consente agli utenti di ottenere informazioni specifiche su determinate caratteristiche presenti sulla mappa, come punti di interesse o dati geografici particolari.
+Il Web Map Service (WMS) è universalmente riconosciuto come uno dei principali standard nel contesto dei servizi geospaziali, ed è tra i più importanti per la distribuzione di dati di mappe attraverso la rete Internet. Le mappe vengono inviate sotto forma di immagini raster (come PNG, JPG o GIF), ma possono anche essere trasmesse in un formato vettoriale come SVB o WebCGM.
+\\Il WMS, in maniera analoga agli altri servizi, offre un'interfaccia basata su protocollo HTTP che consente ai client di richiedere informazioni sulle mappe, sotto forma di richiesta XML.
+\\Nello specifico, un client che vuole contattare un servizio WMS, esegue per prima la GetCapabilities. Le GetCapabilities del servizio WMS contengono: le proiezioni supportate dalle mappe, i formati che il server può restituire e tutte le mappe che possiede (chiamate \textit{layer}). Una volta ricevute queste informazioni, il client, invia la richiesta GetMap, che vuole come argomenti la proiezione, il layer che vuole visualizzare e il formato dell'immagine che vuole ricevere.
+Dunque, il server WMS restituisce l'intera immagine della mappa.
+\\È importante sottolineare che lo standard WMS supporta anche la trasparenza delle immagini restituite nelle richieste, permettendo così la sovrapposizione visiva e la combinazione di più layer forniti da server geospaziali.
+\\Inoltre, se abilitato, consente agli utenti di ottenere informazioni specifiche su determinate caratteristiche presenti sulla mappa, come punti di interesse o dati geografici particolari.
+
+
+
+% \\Nello specifico, nel caso del servizio WMS, tale richiesta comprende l'identificazione di un layer geografico. Un layer geografico è un insieme di dati geospaziali che rappresentano effettivamente una mappa, quest'ultima sotto forma di immagine raster o vettoriale. 
+
 
 \subsubsection{Formato della richiesta}
 
+
 Lo standard specifica diversi tipi di richieste che possono essere effettuate ai server WMS:
 \begin{itemize}
-      \item \textit{GetCapabilities}: Questa richiesta restituisce un documento XML che rappresenta le informazioni sul servizio WMS stesso, come il formato delle immagini delle mappe supportate, la compatibilità della versione
-            del WMS e i layer disponibili, inclusi i dettagli come l'estensione geografica dei layer (bounding box), i sistemi di riferimento delle coordinate e l'opacità del layer.
-      \item \textit{GetMap}: Uitilizzata per ottenere un'immagine di mappa dal servizio. I parametri inclusi nella richiesta comprendono l'estensione geografica della mappa, il sistema di coordinate, lo stile di rendering e il formato dell'immagine
-            desiderato. La risposta alla richiesta è un'immagine rasterizzata della mappa richiesta, pronta per essere visualizzata su un browser web o in un'applicazione client.
+      \item \textit{GetCapabilities}: questa richiesta restituisce un documento XML che rappresenta le informazioni sul servizio WMS stesso, come il formato delle immagini delle mappe supportate, la compatibilità della versione del WMS e i layer disponibili, inclusi i dettagli come l'estensione geografica dei layer (bounding box), i sistemi di riferimento delle coordinate e l'opacità del layer.
+      \item \textit{GetMap}: utilizzata per ottenere un'immagine di mappa dal servizio. I parametri inclusi nella richiesta comprendono l'estensione geografica della mappa, il sistema di coordinate, lo stile di rendering e il formato dell'immagine desiderato. La risposta alla richiesta è un'immagine rasterizzata della mappa desiderata, pronta per essere visualizzata su un browser web o in un'applicazione client.
 \end{itemize}
 I tipi di richiesta che i fornitori di WMS possono opzionalmente supportare includono:
 \begin{itemize}
-      \item \textit{GetFeatureInfo}: Consente di ottenere informazioni dettagliate su specifiche caratteristiche presenti sulla mappa. Di solito, viene eseguita cliccando su un punto dell'immagine
-            e restituisce informazioni associate a quella posizione, come punti di interesse o dati geografici particolari. Se un layer è contrassegnato come ``queryable'', è possibile richiedere dati su una determinata coordinata dell'immagine di mappa.
-      \item  \textit{DescribeLayer}: Restituisce i tipi di feature disponibili per i layer specificati, che possono essere ulteriormente descritti utilizzando richieste Web Feature Service (WFS) o Web Coverage Service (WCS).
-            Questa richiesta è utile per comprendere meglio la struttura e le caratteristiche dei dati geospaziali presenti nel servizio WMS.
+      \item \textit{GetFeatureInfo}: Consente di ottenere informazioni dettagliate su specifiche caratteristiche presenti sulla mappa. Restituisce informazioni associate a quella posizione, come punti di interesse o dati geografici particolari.
+      \item  \textit{DescribeLayer}: Restituisce i tipi di feature disponibili per i layer specificati, che possono essere ulteriormente descritti utilizzando richieste Web Feature Service (WFS). Questa richiesta è utile per comprendere meglio la struttura e le caratteristiche dei dati geospaziali presenti nel servizio WMS.
       \item \textit{GetLegendGraphic}: Utilizzata per ottenere un'immagine della legenda della mappa, questa richiesta fornisce una guida visiva agli elementi presenti sulla mappa, come i simboli e le etichette dei layer.
 \end{itemize}
 Qui sotto è riportato uno \textit{snippet} che contiene alcuni esempi possibili di richieste WMS, eseguite utilizzando il comando CURL per simulare il comportamento di una richiesta HTTP.
@@ -58,36 +64,30 @@ Ciò serve per ottenere dati geospaziali relativi alla mappa che illustra l'area
 \lstinputlisting[language=bash]{listings/Capitolo2/wms-requests.sh}
 Come si può vedere dal \href{http://wms.pcn.minambiente.it/ogc?map=/ms_ogc/WMS_v1.3/Vettoriali/Alluvioni_Estensione.map&service=wms&request=getCapabilities}{messaggio di risposta} in formato XML inviato dai loro Server,
 Il servizio offre funzionalità standard come la richiesta di mappe (GetMap) e informazioni (GetFeatureInfo), oltre a supportare la descrizione dei layer (DescribeLayer) e la visualizzazione della legenda (GetLegendGraphic).
-Fornisce anche metadati conformi agli standard europei INSPIRE, una direttiva dell'Unione Europea volta a creare un'infrastruttura per la condivisione e l'accesso a informazioni geospaziali.
 \\Per ulteriori informazioni dettagliate sullo standard WMS, è possibile fare riferimento alla documentazione ufficiale disponibile sul sito web di Open Geospatial Consortium \cite{DocumentazioneWMTS}
 
 \subsection{Protocollo WMTS}
 
-A differenza del WMS, il quale invia un'unica immagine per ogni mappa ai client, il WMTS la "segmenta" in piccole porzioni rettangolari, denominate "Tiles".
-\\Quest'ultime vengono prima pre-renderizzate e poi memorizzate sul server. Successivamente, sotto richiesta dei client, vengono recuperate e restituite come messaggio di risposta.
-Nello specifico, quando un utente desidera visualizzare una mappa (nel nostro caso in un applicazione web), il client invia tante richieste HTTP al server WMTS, una per ogni tile, specificando la porzione di mappa che vuole visualizzare, la proiezione e il formato dell'immagine desiderato. Il server quindi risponde inviando le tiles corrispondenti alla richiesta del client. A questo punto il client, una volta ricevute le tiles, le combina insieme per formare la porzione di immagine effettiva di mappa richiesta.
-% L'utilizzo delle tiles riduce la quantità di elaborazione di dati che il server deve eseguire per servire correttamente la mappa. Questo perché non c'è sarà più bisogno di far generare l'intera mappa al servizio per poi restituirla, ma sarà necessario solo renderizzare in tiles la porzione di mappa richiesta dal client
-% Nel caso del servizio WMTS, infatti, basterà restituire solo la porzione di mappa richiesta in tiles
-% % Grazie all'utilizzo delle tiles, inoltre, il server WMTS è più efficiente in quanto in base alla richiesta del client, deve solamente generare una porzione di mappa e restituirla in tile, invece di renderizzare l'intera mappa per poi restituirla.
-% % Il server WMTS è più efficiente dal punto di vista prestazionale, in quanto il server WMS deve generare tutte le volte l'immagine dell'intera mappa.
-% % Nel caso del WMTS
-% % Rispetto al Web Map Service (WMS), il WMTS offre diversi vantaggi in termini di efficienza, prestazioni. Innanzitutto, poiché fornisce tiles pre-generati, riduce la quantità di elaborazione richiesta dal server
-% % rispetto a WMS, che deve tutte le volte generare
-\\Una delle principali caratteristiche del WMTS è la possibilità di utilizzare una politica di caching per le tiles. Essendo piccole porzioni di immagini, queste possono essere facilmente memorizzate nella cache. Sul lato backend, infatti, il servizio WMTS può cachare le tiles più utilizzate e servirle più rapidamente al client. Lato frontend, invece, il browser è in grado di intercettare le risposte inviate dal server e di memorizzare nella sua cache interna l'immagine della tile. In questo modo, quando il client richiede la stessa tile, quest'ultima viene visualizzata senza dover contattare nuovamente il server. Questo è possibile poichè le tiles sono di piccole dimensioni e quindi il peso effettivo della richiesta è sufficientemente da poter essere memorizzato nella cache del browser.
+A differenza del WMS, il quale invia un'unica immagine per ogni mappa ai client, il WMTS la "segmenta" in piccole porzioni rettangolari, denominate \textit{tiles}.
+\\Le tiles vengono prima pre-renderizzate e poi memorizzate sul server. Successivamente, sotto richiesta dei client, vengono recuperate e restituite come messaggio di risposta.
+\\Quando un utente desidera visualizzare una mappa (nel nostro caso in un'applicazione web), il client invia tante richieste HTTP al server WMTS, una per ogni tile, specificando la porzione di mappa che vuole visualizzare, la proiezione e il formato dell'immagine desiderato. Il server, di conseguenza, risponde inviando le tiles corrispondenti alle richieste. Il client, appena ricevute le tiles, le combina insieme per formare la porzione di immagine effettiva di mappa richiesta.
+\\Una delle principali caratteristiche del WMTS è che l'utilizzo delle tiles riduce la quantità di elaborazione richiesta dal server per mostrare correttamente la mappa.
+Il server WMTS deve infatti fornire solo le tiles necessarie per l'area richiesta, anziché generare e inviare un'unica immagine completa. Così facendo, si riduce sia il carico di rete, sia la quantità di elaborazione di dati che il server deve eseguire, rendendolo più efficiente rispetto al server WMS.
+\\Inoltre, le tiles aprono le porte ad una politica di caching: trattandosi di piccole porzioni di immagini, queste possono essere facilmente memorizzate nella cache. Sul lato back-end, infatti, il servizio WMTS può cachare le tiles più utilizzate e restituirle più rapidamente al client. Lato front-end, invece, il browser è in grado di intercettare le risposte inviate dal server e di memorizzare nella sua cache interna l'immagine della tile. In questo modo, quando il client richiede la stessa tile, quest'ultima viene visualizzata senza dover contattare nuovamente il server. Questo è possibile poichè le tiles sono di piccole dimensioni, e quindi il peso effettivo della richiesta è sufficiente da poter memorizzare la risposta nella cache del browser.
 Questo consente di ridurre il carico di richieste sul server e di migliorare la velocità di caricamento delle mappe sui client.
 
 \subsubsection{Formato della richiesta}
 
 \begin{itemize}
       \item \textit{GetCapabilities}: Restituisce un documento XML che descrive le capacità del servizio WMTS, inclusi i layers disponibili, i formati supportati, le coordinate di riferimento e altro ancora.
-      \item \textit{GetTile}:Restituisce un tile specifico in base alle coordinate geografiche e alla scala specificate nella richiesta.
-      \item \textit{GetFeaturGetFeatureInfoInfo}: Opzionale. Restituisce informazioni aggiuntive associate a un tile, come attributi dei dati geospaziali presenti in quel punto della mappa.
+      \item \textit{GetTile}: Restituisce una Tile specifica in base alle coordinate geografiche e allo zoom specificato nella richiesta.
+      \item \textit{GetFeatureInfo}: Questa richiesta non è molto comune nei servizi WMTS, in quanto genealmente viene direttamente utilizzata la richiesta GetFeatureInfo fornita dal servizio WMS. Se abilitata, questa richiesta restituisce informazioni aggiuntive associate a un tile, come attributi dei dati geospaziali presenti in quel punto della mappa.
 \end{itemize}
+Qui di seguito è riportato uno snippet contenente alcuni esempi possibili di richieste
+WFS, eseguite utilizzando il comando CURL per simulare il comportamento di una richiesta HTTP.
 
-
+\lstinputlisting[language=bash]{listings/Capitolo2/wmts-requests-example.sh}
 Per ulteriori informazioni dettagliate sullo standard WMTS, è possibile fare riferimento alla documentazione ufficiale disponibile sul sito web di Open Geospatial Consortium \cite{DocumentazioneWMTS}
-
-
 
 \subsection{Protocollo WFS}
 
@@ -159,21 +159,20 @@ I formati di file geospaziali sono tipi di file utilizzati per memorizzare e sca
       \item \textit {GeoPackage} (.gpkg): è un formato di file standard OGC (Open Geospatial Consortium) per memorizzare dati geospaziali in un singolo file SQLite. Supporta dati vettoriali e raster e può includere anche metadati e stili.
 \end{itemize}
 
-\section{Geographic Information System (GIS)}
+% \section{Geographic Information System (GIS)}
 
-Un Sistema Informativo Geografico (GIS) è un sistema progettato per acquisire, memorizzare, gestire, analizzare e presentare dati geografici e spaziali. Utilizza software specializzato per comprendere e interpretare le relazioni, i modelli e i pattern all'interno dei dati geografici.
+% Un Sistema Informativo Geografico (GIS) è un sistema progettato per acquisire, memorizzare, gestire, analizzare e presentare dati geografici e spaziali. Utilizza software specializzato per comprendere e interpretare le relazioni, i modelli e i pattern all'interno dei dati geografici.
 
-\begin{figure}
-      \centering
-      \includegraphics[width=0.3\textwidth]{images/Capitolo3/Gis.png}
-      \caption{Concetto base di GIS }
-      \label{fig:immagine2}
-\end{figure}
+% \begin{figure}
+%       \centering
+%       \includegraphics[width=0.3\textwidth]{images/Capitolo3/Gis.png}
+%       \caption{Concetto base di GIS }
+%       \label{fig:immagine2}
+% \end{figure}
 
-Il GIS integra dati provenienti da diverse fonti, come mappe, immagini satellitari, dati GPS e informazioni demografiche, permettendo agli utenti di visualizzare, manipolare e analizzare i dati in modo efficace. Questi dati possono essere rappresentati attraverso vari tipi di file, come shapefile, GeoJSON, raster e altri formati geospaziali.
+% Il GIS integra dati provenienti da diverse fonti, come mappe, immagini satellitari, dati GPS e informazioni demografiche, permettendo agli utenti di visualizzare, manipolare e analizzare i dati in modo efficace. Questi dati possono essere rappresentati attraverso vari tipi di file, come shapefile, GeoJSON, raster e altri formati geospaziali.
 
-I dati geografici possono essere rappresentati in diversi formati, come mappe digitali, immagini satellitari, dati LiDAR, modelli digitali di terreno (DTM) e altro ancora. I dati geografici possono essere categorizzati in dati vettoriali e dati raster, a seconda della loro natura e struttura.
-
+% I dati geografici possono essere rappresentati in diversi formati, come mappe digitali, immagini satellitari, dati LiDAR, modelli digitali di terreno (DTM) e altro ancora. I dati geografici possono essere categorizzati in dati vettoriali e dati raster, a seconda della loro natura e struttura.
 
 \section{OpenLayers}
 
@@ -184,11 +183,26 @@ Una delle caratteristiche principali di OpenLayers è la sua capacità di offrir
 Inoltre, l'interfaccia grafica per la visualizzazione di mappe fornita da OpenLayers offre delle funzionalità di base interattive, gli utenti infatti possono eseguire operazioni come: lo zoom, il trascinamento della mappa e l'interazione con degli elementi a schermo (come marker o punti), consentendo un'esperienza utente fluida e dinamica.
 \\Questa libreria offre delle API che consentono agli sviluppatori di integrare facilmente diversi tipi di servizi geospaziali nei loro progetti. Tra i servizi supportati vi sono il WMS, WFS, WCS, WMTS, TMS e altri ancora.
 Supporta anche una vasta gamma di formati di dati geospaziali, tra cui GeoJSON, Shapefile, KML, GPX e molti altri. Ciò consente agli sviluppatori di integrare facilmente dati geografici nelle mappe, consentendo la visualizzazione di informazioni complesse e dettagliate.
+OpenLayers supporta una vasta gamma di sistemi di coordinate geografiche e proiezioni cartografiche, consentendo agli sviluppatori di creare mappe per diverse regioni del mondo e utilizzare diverse proiezioni cartografiche per rappresentare i dati in modo accurato.
 \\Infine, OpenLayers mette a dispozione il supporto per alcuni provider di mappe, tra cui: OpenStreetMap, Bing Maps, Google Maps, MapQuest e altri ancora. Questo consente agli sviluppatori di scegliere la fonte dati più adatta alle proprie esigenze o di integrare più provider per ottenere una visualizzazione più ricca e dettagliata.
+\\OpenLayers offre allo sviluppatore la possibilità di personalizzare lo stile grafico dell'interfaccia grafica delle mappe, attraverso l'utilizzo di fogli di stile CSS e l'utilizzo di plugin
 
+\subsubsection{Architettura di OpenLayer}
 
+Essendo una libreria OpenSource, il codice di OpenLayers è interamente disponibile su \href{https://github.com/openlayers/openlayers}{Github}.
+\\Inoltre, come si può vedere dalla \href{https://openlayers.org/en/latest/apidoc/}{documentazione}, l'architetutra di OpenLayers è basata su un modello di programmazione modulare, in cui ogni ogni modulo svolge precise funzionalità per la creazione e la gestione delle mappe. I moduli di OpenLayer principali sono:
 
-di sistemi di coordinate geografiche e proiezioni cartografiche, offrendo la possibilità di rappresentare mappe per diverse regioni del mondo e utilizzare diverse proiezioni geografiche per rappresentare i dati in modo accurato.
+\begin{itemize}
+      \item ol/Map: è il core della libreria. Esso rappresenta la mappa stessa e fornisce funzionalità di base come la gestione dei layer, degli eventi e delle view.
+      \item ol/View: questo modulo si occupa di gestire la View (la vista) della mappa, controlla la proiezione e il livello di zoom della mappa. La vista determina cosa viene mostrato sulla mappa e in quale modo.
+      \item ol/layer: si occupa della creazione del layer sulla mappa, inclusi layer vettoriali, raster e di tile.
+      \item ol/source: fornisce classi per definire le fonti di dati per i layer, ad esempio fonti WMS, WFS, GeoJSON, ecc.
+      \item ol/control: viene utilizzato per la creazione di controlli e widget per la mappa, come strumenti per lo zoom, la scala, la misurazione delle distanze, ecc.
+      \item ol/interaction: si occupa dell interazioni utente sulla mappa, come la selezione di una feature, lo zoom effettuato attraverso il dopppio click o lo scroll del mouse e altre azioni simili.
+      \item ol/proj: Questo modulo gestisce la gestione dei sistemi di coordinate e delle proiezioni cartografiche.
+\end{itemize}
+
+OpenLayers supporta anche l'aggiunta di plugin di terze per estendere le sue funzionalità. Una raccolta di plugin è fornita sul loro sito al seguente \href{https://openlayers.org/3rd-party/}{link}.
 
 
 
