@@ -23,16 +23,13 @@ Come spiegato in \cite{DocumentazioneOGC}, ciascuno di questi standard offre fun
       \caption{Relazione tra client/server e protocolli OGC}
       \label{fig:Relazione tra client/server e protocolli OGC}
 \end{figure}
-
-% Spiegare che i servizi forniscono un pososno fonire un insieme di mappe, non una sola.
-
 Lo standard OGC prevede che tutti i client che necessitano di contattare il servizio debbano prima effettuare una richiesta HTTP denominata \textit{GetCapabilities}. Questa operazione è necessaria, per il client, per poter sapere quali informazioni possono essere reperite da quel servizio. In generale, queste informazioni comprendono: le mappe (una o più), le proiezioni che supportano, i loro formati (SVG, PNG) e altre richieste GET HTTP che si possono fare al servizio stesso.
 
 \subsection{Protocollo WMS}
 
 Il Web Map Service (WMS) è universalmente riconosciuto come uno dei principali standard nel contesto dei servizi geospaziali, ed è tra i più importanti per la distribuzione di dati di mappe attraverso la rete Internet. Le mappe vengono inviate sotto forma di immagini raster (come PNG, JPG o GIF), ma possono anche essere trasmesse in un formato vettoriale come SVB o WebCGM.
 \\Il WMS, in maniera analoga agli altri servizi, offre un'interfaccia basata su protocollo HTTP che consente ai client di richiedere informazioni sulle mappe, sotto forma di richiesta XML.
-\\Nello specifico, un client che vuole contattare un servizio WMS, esegue per prima la GetCapabilities. Le GetCapabilities del servizio WMS contengono: le proiezioni supportate dalle mappe, i formati che il server può restituire e tutte le mappe che possiede (chiamate \textit{layer}). Una volta ricevute queste informazioni, il client, invia la richiesta GetMap, che vuole come argomenti la proiezione, il layer che vuole visualizzare e il formato dell'immagine che vuole ricevere.
+\\Nello specifico, un client che vuole contattare un servizio WMS, esegue per prima la richiesta GetCapabilities. Le GetCapabilities del servizio WMS contengono: le proiezioni supportate dalle mappe, i formati che il server può restituire e tutte le mappe che possiede (chiamate \textit{layer}). Una volta ricevute queste informazioni, il client, invia la richiesta GetMap, che vuole come argomenti la proiezione, il layer che vuole visualizzare e il formato dell'immagine che vuole ricevere.
 Dunque, il server WMS restituisce l'intera immagine della mappa.
 \\È importante sottolineare che lo standard WMS supporta anche la trasparenza delle immagini restituite nelle richieste, permettendo così la sovrapposizione visiva e la combinazione di più layer forniti da server geospaziali.
 \\Inoltre, se abilitato, consente agli utenti di ottenere informazioni specifiche su determinate caratteristiche presenti sulla mappa, come punti di interesse o dati geografici particolari.
@@ -59,7 +56,7 @@ I tipi di richiesta che i fornitori di WMS possono opzionalmente supportare incl
 Qui sotto è riportato uno \textit{snippet} che contiene alcuni esempi possibili di richieste WMS, eseguite utilizzando il comando CURL per simulare il comportamento di una richiesta HTTP.
 % \texttt{WMS example requests}.
 \lstinputlisting[language=bash]{listings/Capitolo2/wms-requests-example.sh}
-Qui di seguito invece viene mostrato al lettore un esempio di richiesta funzionante, fatta durante il mio percorso di tirocinio, ai server WMS del Geoportale Nazionale, gestito dal Ministero dell'Ambiente e della Sicurezza Energetica.
+Qui di seguito invece viene mostrato al lettore un esempio di richiesta funzionante, fatta durante il percorso di tirocinio, ai server WMS del Geoportale Nazionale, gestito dal Ministero dell'Ambiente e della Sicurezza Energetica.
 Ciò serve per ottenere dati geospaziali relativi alla mappa che illustra l'area allagabile conforme al Piano di Gestione del Rischio di Alluvioni (PGRA) del 2021.
 \lstinputlisting[language=bash]{listings/Capitolo2/wms-requests.sh}
 Come si può vedere dal \href{http://wms.pcn.minambiente.it/ogc?map=/ms_ogc/WMS_v1.3/Vettoriali/Alluvioni_Estensione.map&service=wms&request=getCapabilities}{messaggio di risposta} in formato XML inviato dai loro Server,
@@ -79,12 +76,11 @@ Questo consente di ridurre il carico di richieste sul server e di migliorare la 
 \subsubsection{Formato della richiesta}
 
 \begin{itemize}
-      \item \textit{GetCapabilities}: Restituisce un documento XML che descrive le capacità del servizio WMTS, inclusi i layers disponibili, i formati supportati, le coordinate di riferimento e altro ancora.
+      \item \textit{GetCapabilities}: Restituisce un documento XML che descrive il \textit{Manifest} del servizio WMTS, inclusi i layers disponibili, i formati supportati, le coordinate di riferimento e altro ancora.
       \item \textit{GetTile}: Restituisce una Tile specifica in base alle coordinate geografiche e allo zoom specificato nella richiesta.
       \item \textit{GetFeatureInfo}: Questa richiesta non è molto comune nei servizi WMTS, in quanto genealmente viene direttamente utilizzata la richiesta GetFeatureInfo fornita dal servizio WMS. Se abilitata, questa richiesta restituisce informazioni aggiuntive associate a un tile, come attributi dei dati geospaziali presenti in quel punto della mappa.
 \end{itemize}
-Qui di seguito è riportato uno snippet contenente alcuni esempi possibili di richieste
-WFS, eseguite utilizzando il comando CURL per simulare il comportamento di una richiesta HTTP.
+Qui di seguito è riportato uno \textit{snippet} contenente alcuni esempi possibili di richieste WMTS, eseguite utilizzando il comando CURL per simulare il comportamento di una richiesta HTTP.
 
 \lstinputlisting[language=bash]{listings/Capitolo2/wmts-requests-example.sh}
 Per ulteriori informazioni dettagliate sullo standard WMTS, è possibile fare riferimento alla documentazione ufficiale disponibile sul sito web di Open Geospatial Consortium \cite{DocumentazioneWMTS}
@@ -92,11 +88,11 @@ Per ulteriori informazioni dettagliate sullo standard WMTS, è possibile fare ri
 \subsection{Protocollo WFS}
 
 Il Web Feature Service (WFS) è un servizio web utilizzato per accedere e manipolare dati geospaziali attraverso internet.
-A differenza di un WMS (Web Map Service), che fornisce mappe statiche sotto forma di immagini raster (come PNG o JPEG), un WFS offre dati geospaziali vettoriali, come punti, linee e poligoni che rappresentano oggetti geografici reali come edifici, strade e fiumi. Ogni singolo oggetto geografico è definito come una ``feature'' e può essere caratterizzato da una serie di attributi che ne descrivono le proprietà.
-Una feature rappresenta quindi un singolo oggetto geografico, come ad esempio un edificio, una strada o un corso d'acqua ed ogni feature può essere caratterizzata da una serie di attributi, come nome, altezza, larghezza, popolazione, eccetera.
-\\Il servizio WFS consente ai client di interrogare i dati geospaziali in modo dinamico, eseguendo query per recuperare solo le feature che soddisfano determinati criteri spaziali o attributivi. I client possono anche eseguire operazioni di analisi spaziale, come il calcolo dell'area di un poligono o la ricerca delle feature più vicine a una determinata posizione.
-Ad esempio, è possibile interrogare il servizio per ottenere informazioni su tutti gli edifici situati in una determinata area o per trovare tutti i fiumi di una certa lunghezza. Allo stesso modo, è possibile richiedere tutte le strade di una specifica categoria o tutti i punti di interesse entro un'area definita.
-\\Queste informazioni vengono trasmesse attraverso il WFS utilizzando il formato GML (Geography Markup Language), che consente di descrivere in modo dettagliato la geometria e le proprietà di ciascuna feature.
+A differenza di un WMS (Web Map Service), che fornisce mappe statiche sotto forma di immagini raster (come PNG o JPEG), un WFS offre dati geospaziali vettoriali, come punti, linee e poligoni che rappresentano oggetti geografici reali come edifici, strade e fiumi. Ogni singolo oggetto geografico è definito come una ``feature'' e può essere caratterizzato da una serie di attributi che ne descrivono le proprietà, come nome, altezza, larghezza e popolazione.
+Similmente al WMS, che attraverso la richiesta GetMap può richiede una mappa specifica al server, il servizio WFS offre la richiesta GetFeature per richiedere una feature precisa che il server WFS provvederà a fornirgli.
+\\I client possono anche eseguire operazioni di analisi spaziale, come il calcolo dell'area di un poligono o la ricerca delle feature più vicine a una determinata posizione.
+Ad esempio, è possibile interrogare il servizio per ottenere informazioni su tutti gli edifici situati in una determinata area, oppure trovare tutti i fiumi di una certa lunghezza.
+\\Queste informazioni vengono trasmesse utilizzando il formato GML (Geography Markup Language), che consente di descrivere in modo dettagliato la geometria e le proprietà di ciascuna feature.
 
 \subsubsection{Formato della richiesta}
 
@@ -119,7 +115,7 @@ Qui di seguito è riportato uno \textit{snippet} contenente alcuni esempi possib
 % \texttt{WFS example requests}.
 \lstset{basicstyle=\footnotesize\ttfamily}
 \lstinputlisting[language=bash]{listings/Capitolo2/wfs-requests-example.sh}
-Ecco un altro esempio di richiesta funzionante, effettuata sempre durante il mio percorso di tirocinio, ai server WFS del Geoportale Nazionale.
+Ecco un altro esempio di richiesta funzionante, effettuata sempre durante il percorso di tirocinio, ai server WFS del Geoportale Nazionale.
 Come si può notare, questa richiesta è simile a quella effettuata precedentemente per il servizio WMS, ma questa volta viene rivolta al servizio WFS. Entrambi i servizi offrono informazioni sulla stessa mappa, ma con approcci diversi: mentre il WMS fornisce immagini della mappa, il WFS trasmette le feature geospaziali che compongono la mappa.
 
 \lstset{basicstyle=\footnotesize\ttfamily}
@@ -150,7 +146,7 @@ A differenza dei servizi convenzionali che forniscono solo immagini pre-renderiz
 
 
 \section{Formati di file GeoSpaziali}
-I formati di file geospaziali sono tipi di file utilizzati per memorizzare e scambiare dati geografici e spaziali. Questi dati possono includere informazioni come mappe, immagini satellitari, dati di elevazione, dati di utilizzo del suolo e molti altri tipi di dati geografici. Alcuni dei formati di file geospaziali più comuni includono:
+I formati di file geospaziali sono tipi di file utilizzati per memorizzare e scambiare dati geografici e spaziali. Questi dati possono includere informazioni come mappe, immagini satellitari, dati di altitudine, di utilizzo del suolo e molti altri. Alcuni dei formati di file geospaziali più comuni includono:
 \begin{itemize}
       \item \textit {Shapefile} (.shp): è uno dei formati più diffusi per memorizzare dati geografici vettoriali, come punti, linee e poligoni. È stato sviluppato da ESRI e può essere utilizzato con una varietà di software GIS.
       \item \textit {GeoTIFF} (.tif): è una versione del formato di file TIFF (Tagged Image File Format) che include dati georeferenziati. È comunemente utilizzato per memorizzare immagini raster geograficamente riferite.
@@ -158,6 +154,10 @@ I formati di file geospaziali sono tipi di file utilizzati per memorizzare e sca
       \item \textit {KML/KMZ} (.kml, .kmz): KML (Keyhole Markup Language) è un formato di file XML utilizzato per memorizzare dati geografici, come punti di interesse e percorsi. KMZ è una versione compressa di KML che include anche le risorse associate, come immagini e modelli 3D.
       \item \textit {GeoPackage} (.gpkg): è un formato di file standard OGC (Open Geospatial Consortium) per memorizzare dati geospaziali in un singolo file SQLite. Supporta dati vettoriali e raster e può includere anche metadati e stili.
 \end{itemize}
+La diversità di formati esistenti non costituisce un problema per i client che necessitano di utilizzare dati geospaziali. Normalmente,
+si tende a conservare dati sui server nei formati di cui sopra (principalmente, nel tirocinio, sono stati utilizzati Shapefile e GeoJson). Un server può supportare contemporaneamente più servizi (WMS, WMTS, WFS, TMS, etc..). Questo perché ciascuno di essi è in grado di convertire gli stessi dati di mappa iniziali in formati diversi, solitamente quelli richiesti dai client.
+Ad esempio, WMS permette di richiedere una mappa in formato PNG, JPG e GIF. Quando viene effettuata una richiesta tramite questo servizio, questi accede ai dati conservati, ad esempio, in Shapefile, e li converte nel formato specificato. è da notare come non ci si debba necessariamente attenere ad uno dei servizi standard esistenti, ma si possa anche specificarne uno custom che permetta di restituire i dati iniziali in un formato scelto a proprio piacimento. Il caso più comune è che si vadano restituire i dati nel loro formato originario.
+
 
 % \section{Geographic Information System (GIS)}
 
@@ -176,21 +176,20 @@ I formati di file geospaziali sono tipi di file utilizzati per memorizzare e sca
 
 \section{OpenLayers}
 
-OpenLayers è una libreria JavaScript che fornisce strumenti per la creazione di mappe interattive su pagine web. Fondata sui principi dell'open-source, OpenLayers offre una soluzione flessibile e altamente personalizzabile per l'integrazione di mappe geospaziali nelle applicazioni online.
+OpenLayers è una libreria open source JavaScript che fornisce strumenti per la visualizzazione di mappe interattive su pagine web. Fornisce grande capacità di astrazione per gli sviluppatori, andando ad incapsulare tutte le funzionalità dei servizi menzionati fino ad ora.
 
 \subsubsection{Caratteristiche Principali}
-Una delle caratteristiche principali di OpenLayers è la sua capacità di offrire un interfaccia grafica di mappe già funzionante su diversi tipi di dispositivi e browser, garantendo una visualizzazione uniforme e ottimizzata su desktop, dispositivi mobili e piattaforme cross-browser.
-Inoltre, l'interfaccia grafica per la visualizzazione di mappe fornita da OpenLayers offre delle funzionalità di base interattive, gli utenti infatti possono eseguire operazioni come: lo zoom, il trascinamento della mappa e l'interazione con degli elementi a schermo (come marker o punti), consentendo un'esperienza utente fluida e dinamica.
-\\Questa libreria offre delle API che consentono agli sviluppatori di integrare facilmente diversi tipi di servizi geospaziali nei loro progetti. Tra i servizi supportati vi sono il WMS, WFS, WCS, WMTS, TMS e altri ancora.
-Supporta anche una vasta gamma di formati di dati geospaziali, tra cui GeoJSON, Shapefile, KML, GPX e molti altri. Ciò consente agli sviluppatori di integrare facilmente dati geografici nelle mappe, consentendo la visualizzazione di informazioni complesse e dettagliate.
-OpenLayers supporta una vasta gamma di sistemi di coordinate geografiche e proiezioni cartografiche, consentendo agli sviluppatori di creare mappe per diverse regioni del mondo e utilizzare diverse proiezioni cartografiche per rappresentare i dati in modo accurato.
-\\Infine, OpenLayers mette a dispozione il supporto per alcuni provider di mappe, tra cui: OpenStreetMap, Bing Maps, Google Maps, MapQuest e altri ancora. Questo consente agli sviluppatori di scegliere la fonte dati più adatta alle proprie esigenze o di integrare più provider per ottenere una visualizzazione più ricca e dettagliata.
-\\OpenLayers offre allo sviluppatore la possibilità di personalizzare lo stile grafico dell'interfaccia grafica delle mappe, attraverso l'utilizzo di fogli di stile CSS e l'utilizzo di plugin
+Una delle caratteristiche principali di OpenLayers è la sua capacità di offrire un interfaccia grafica di mappe omogenea su diversi tipi di dispositivi e browser. Essa permette, in modo intuitivo e coinciso, di accedere a una serie di funzionalità basilari, quali zoom, capacità di trascinare la mappa e interazione con elementi a schermo (come marker o punti).
+\\Offre inoltre API ad alto livello che consentono di integrare facilmente diversi tipi di servizi geospaziali nei progetti, come WMS, WMTS, WFS, WCS, TMS etc..
+Sono supportati anche formati strettamente geospaziali, tra cui GeoJSON, Shapefile, KML, GPX, etc.. L'accesso a questi dati è possibile sia contattando un server esterno, senza aver bisogno di utilizzare esplicitamente i servizi sopra citati, sia salvando i relativi file direttamente il locale per poi accedervi.
+Tutti i sistemi di coordinate geografiche e proiezioni cartografiche sono disponibili in questa libreria, evitando di doverli calcolare da zero
+\\Infine, OpenLayers supporta di default alcuni provider di mappe, tra cui: OpenStreetMap, Bing Maps, Google Maps, MapQuest etc.. Ciò non preclude la possibilità di utilizzare altri servizi di mappe esterni.
+% \\OpenLayers offre allo sviluppatore la possibilità di personalizzare lo stile grafico dell'interfaccia grafica delle mappe, attraverso l'utilizzo di fogli di stile CSS e l'utilizzo di plugin
 
 \subsubsection{Architettura di OpenLayer}
 
 Essendo una libreria OpenSource, il codice di OpenLayers è interamente disponibile su \href{https://github.com/openlayers/openlayers}{Github}.
-\\Inoltre, come si può vedere dalla \href{https://openlayers.org/en/latest/apidoc/}{documentazione}, l'architetutra di OpenLayers è basata su un modello di programmazione modulare, in cui ogni ogni modulo svolge precise funzionalità per la creazione e la gestione delle mappe. I moduli di OpenLayer principali sono:
+\\Inoltre, come si può vedere dalla \href{https://openlayers.org/en/latest/apidoc/}{documentazione}, l'architettura di OpenLayers è basata su un modello di programmazione modulare, in cui ogni modulo svolge precise funzionalità per la creazione e la gestione delle mappe. I moduli di OpenLayer principali sono:
 
 \begin{itemize}
       \item ol/Map: è il core della libreria. Esso rappresenta la mappa stessa e fornisce funzionalità di base come la gestione dei layer, degli eventi e delle view.
@@ -201,13 +200,7 @@ Essendo una libreria OpenSource, il codice di OpenLayers è interamente disponib
       \item ol/interaction: si occupa dell interazioni utente sulla mappa, come la selezione di una feature, lo zoom effettuato attraverso il dopppio click o lo scroll del mouse e altre azioni simili.
       \item ol/proj: Questo modulo gestisce la gestione dei sistemi di coordinate e delle proiezioni cartografiche.
 \end{itemize}
-
-OpenLayers supporta anche l'aggiunta di plugin di terze per estendere le sue funzionalità. Una raccolta di plugin è fornita sul loro sito al seguente \href{https://openlayers.org/3rd-party/}{link}.
-
-
-
-% https://en.wikipedia.org/wiki/Open_Source_Geospatial_Foundation
-
+OpenLayers supporta anche l'aggiunta di plugin di terze parti per estendere le sue funzionalità. Una raccolta di plugin è fornita sul loro sito al seguente \href{https://openlayers.org/3rd-party/}{link}.
 
 \section{GeoServer}
 
