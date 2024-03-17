@@ -138,12 +138,51 @@ A differenza dei servizi convenzionali che forniscono solo immagini pre-renderiz
 
 % Il WCS fornisce i dati disponibili insieme alle loro descrizioni dettagliate; permette richieste complesse per questi dati e restituisce i dati con relativa semantica di origine (anziché le immagini) in modo da essere interpretato, estrapolato, ecc. e non solo disegnato. Questo servizio è l'alternativa al WFS, che restituisce i dati vettoriali, e al WMS che produce una immagine digitale.
 
-\section{Open Source Geospatial Foundation (OSGeo)}
+\section{OSGeo, Tiled Map Service (TMS)}
 
-\section{Tile Map Service (TMS)}
+Il protocollo Tiled Map Service (TMS), è un altro standard utilizzato per servire mappe geospaziali. A differenza di quelli sopra citati, questa specifica non è definita dall'Open Geospatial Consortium, ma è stata introdotta dall'Open Source Geospatial Foundation (OSGeo). Per questo motivo, nonostante entrambi i protocolli si occupano di fornire dati di mappe, presentano alcune differenze.
+\\Questo standard può essere considerato come una semplificazione del servizio WMTS, in quanto continua a servire mappe geospaziali sotto forma di tiles, ma offre contemporaneamente meno funzionalità.
+Infatti questo standard non prevede alcun tipo di richiesta simile alla \textit{GetCapabilities}. Il client accede direttamente alle tiles della mappa tramite percorso URL, senza dover chiedere prima alcun tipo di informazioni al servizio stesso. Questo comporta da un lato un protocollo più semplice, ma dall'altro meno funzionalità: per esempio, il servizio non può fornirti informazioni su tutti i tipi di richieste a cui può essere interrogato. Nel caso di un servizio WMS, infatti, il client attraverso la GetCapabilities può capire o meno se il server supporta ulteriori richieste come GetFeatureInfo o GetLegendGraphic.
+Inoltre, il protocollo TMS prevede solo la trasmissioni di immagini tile, non restituisce altri tipi di informazioni (come nel caso della GetFeatureInfo che restituisce informazioni aggiuntive insieme all'immagine di mappa).
+\\Ciò può sembrare una cosa negativa, ma è importante tenere conto anche del peso delle richieste. Una richiesta di getCapabilities ad un servizio di mappe può restituire un messaggio di risposta molto grande e pesante, durante il tirocinio è capitato per esempio di ricevere risposte di un peso oltre i 30MB. Anche se può sembrare insignificante, gestire un peso simile all'interno di servizi web risulta molto tedioso, specialmente dal punto di vista della memorizzazione nella cache del browser.
+\\Tuttavia, come indicato nella documentazione che spiega la specifica del servizio TMS link, esistono delle richieste più semplici e compatte che un client può per ottenere delle informazioni. Le più importanti sono:
+\begin{itemize}
+      \item TileMapServiceResource, che fornisce in XML la lista di tutte le mappe disponibili che il servizio tms possiede.
+            Per ognuna di questa è definita la proiezione e i l'url diretto da contattare per ricevere le tile
+\end{itemize}
+Quindi il servizio TMS, in un modo più semplice e coinciso, offre comunque la possibilità ai client di scoprire tutte le possibili mappe e proiezioni associate.
+\\Il client prima contatta il server prendendo la lista di tutte le mappe disponibili, compresa proiezione.
+Successivamente, contatta l'url associato alla mappa scelta per ottenere tutti i \textit{TileSets}. Un TileSet rappresenta l'insieme di tutte le tile possibili a quello zoom specifico. Una volta scelto lo zoom si esegue la richiesta con coordinate x y z. Il server risponde direttamente con l'immaigne della tile.
+
+Possiamo vedere quindi le tile fornite dal tms come una piramide di immaini multiple a vari livelli di zoom
+
+\begin{figure}
+      \centering
+      \includegraphics[width=0.5\textwidth]{images/Capitolo2/tilesPyramid.png}
+      \caption{TMS}
+      \label{fig:immagine3}
+\end{figure}
 
 
 
+% https://flexberry.github.io/en/efg_tile.html
+
+% nota per samuele futuro: ricordati di spiegare che le get capabilities pesano uno sfracello, e avere il map enumerator che ti restituisce tutto in json con i vari servizi di mappe, evita di fare questa richiesta
+
+% no get capabilities
+% più leggero perché le richieste xml get capabilities sono pesanti e grosse
+
+% questo comporta ad avere meno informazioni lato client
+% non conosco le mappe disponibili, non conosco le proiezioni, non
+% conosco tutte le richieste che posso fare al servizio wms/wmts/etc
+% qui direttamente attraverso l'url chiedo le coordinate della mappa x,y,z
+
+% essendo tutto su unica richiesta, è possibile però esplorare il servizio attraverso l'url proprio da come è fatta la sua struttura
+% possiamo vedere le tiles come una piramide di imagini a livelli multipli di zoom
+% è possibile far vedere attraverso una particolare richiesta comunque tutte le mappe disponibili e selezionata la mappa è possibile vedere tutte le richieste di tile che posso fare, con il suo opportuno zoom e con i margini (extent) massimi che posso fare con quelle coordinate.
+% far vedere esempio di richiesta e spiegare struttura a cartella nelle url
+% 
+% link https://wiki.osgeo.org/wiki/Tile_Map_Service_Specification
 
 \section{Formati di file GeoSpaziali}
 I formati di file geospaziali sono tipi di file utilizzati per memorizzare e scambiare dati geografici e spaziali. Questi dati possono includere informazioni come mappe, immagini satellitari, dati di altitudine, di utilizzo del suolo e molti altri. Alcuni dei formati di file geospaziali più comuni includono:
