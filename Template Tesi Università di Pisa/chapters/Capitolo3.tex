@@ -4,7 +4,7 @@
 Questo capitolo si occupa di spiegare le tecnologie che sono state impiegate durante il tirocinio, al fine di comprendere successivamente le scelte progettuali intraprese durante lo sviluppo.
 \\Particolare attenzione sarà dedicata agli standard definiti dall'Open Geospatial Consortium (OGC), tra cui Web Map Service (WMS), il Web Map Tiles Service (WMTS), Web Feature Service (WFS) e Web Coverage Service (WCS). Si tratta di protocolli universalmente riconosciuti per la distribuzione e l'accesso ai dati geospaziali tramite Internet.
 Saranno inoltre analizzate altre tecnologie rilevanti per la gestione e la visualizzazione di dati geospaziali (come GeoJSON e ShapeFile), formati comuni per lo scambio di dati geografici.
-% \\Infine, si approfondirà il ruolo fondamentale del Geographic Information System (GIS) all'interno del contesto del progetto. Il GIS rappresenta un sistema informativo geografico di fondamentale importanza, che consente di acquisire, gestire, analizzare e visualizzare dati geografici in modo efficace, svolgendo un ruolo centrale nella manipolazione e nell'utilizzo dei dati geospaziali.
+% rifare l'introduzione
 
 \section{Gli standard forniti da OGC}
 
@@ -156,27 +156,24 @@ Questa richiesta restituisce direttamente una tile della mappa, generalmente gra
       \caption{Tiles with zoom level}
       \label{fig:tmsTiles}
 \end{figure}
-\\Come indicato nella specifica del servizio TMS, esistono altre richieste che un client può fare per ottenere comunque maggiori informazioni.
+\\Come indicato nella specificata del servizio TMS \cite{DocumentazioneTMS}, esistono anche altre richieste che un client può effettuare per ottenere ulteriori informazioni oltre a quella relativa alle tiles. Le principali sono:
+\begin{itemize}
+      \item \textit{TileMapServiceResource}: questa richiesta è quella più simile a getCapabilities, permette di vedere tutte le mappe disponibili che il servizio TMS ha a disposizione, specificando il nome della mappa, il formato dell'immagine e la sua proiezione. Può anche essere fornita più volte la stessa mappa, con formati e proiezioni differenti. Un esempio di risposta a tale richiesta è la seguente:
+            \lstset{basicstyle=\footnotesize\ttfamily}
+            \lstinputlisting[language=xml]{listings/Capitolo2/TileMapServiceResource.xml}
+      \item \textit{TileMapResource}: questa richiesta fornisce informazioni più dettagliate su una mappa, specificandone i confini, la dimensione delle tile, la proiezione e tutti i livelli di zoom disponibili che il client può richiedere (coordinata z) con i suoi rispettivi confini (extent). Un esempio di risposta a tale richiesta è la seguente:
+            \lstset{basicstyle=\footnotesize\ttfamily}
+            \lstinputlisting[language=xml]{listings/Capitolo2/TileMapResource.xml}
+      \item \textit{TileResource}: la richiesta effettiva per richiedere la tile che corrispondete esattamente a quella spiegata in precedenza.
+\end{itemize}
+Il ciclo di vita di un client che richiede una mappa da un server TMS può essere descritto nel seguente modo:
+Inizialmente, il client contatta tramite richiesta TileMapServiceResource un server TMS per ottenere le informazioni di tutte le mappe disponibili.
+Dopo aver selezionato la mappa desiderata, il client utilizza la richiesta TileMapResource per ottenere tutti i possibili livelli di zoom, con i relativi confini.
+A questo punto il client richiede direttamente le tiles della mappa desiderata attraverso le coordinate x, y e z, senza sforare dai confini. Il server risponde risponde con l'immagine della tile.
 
-% Attraverso la richiesta \textit{TileMapServiceResource} si possono vedere per esempio tutte le mappe disponibili che il servizio TMS ha a disposizione, proiezione associata.
-% \lstset{basicstyle=\footnotesize\ttfamily}
-% \lstinputlisting[language=xml]{listings/Capitolo2/TileMapServiceResource.xml}
-% \begin{itemize}
-%       \item TileMapServiceResource, che fornisce in XML la lista di tutte le mappe disponibili che il servizio tms possiede. Per ognuna di questa è definita la proiezione e i l'url diretto da contattare per ricevere le tile
-% \end{itemize}
-% \\Il client prima contatta il server prendendo la lista di tutte le mappe disponibili, compresa proiezione.
-% Successivamente, contatta l'url associato alla mappa scelta per ottenere tutti i \textit{TileSets}. Un TileSet rappresenta l'insieme di tutte le tile possibili a quello zoom specifico. Una volta scelto lo zoom si esegue la richiesta con coordinate x y z. Il server risponde direttamente con l'immaigne della tile.
-
-
-% https://flexberry.github.io/en/efg_tile.html
+% spiegare che non è obbligatorio, per esempio nel tirocinio abbiamo fatto il map enumerator e abbiamo saltato il get tiles, perché essendo url le possiamo buttare da un altra parte? Ancora non è stato fatto quindi aspettiamo.
 
 % nota per samuele futuro: ricordati di spiegare che le get capabilities pesano uno sfracello, e avere il map enumerator che ti restituisce tutto in json con i vari servizi di mappe, evita di fare questa richiesta
-
-
-% è possibile far vedere attraverso una particolare richiesta comunque tutte le mappe disponibili e selezionata la mappa è possibile vedere tutte le richieste di tile che posso fare, con il suo opportuno zoom e con i margini (extent) massimi che posso fare con quelle coordinate.
-% far vedere esempio di richiesta e spiegare struttura a cartella nelle url
-
-% link https://wiki.osgeo.org/wiki/Tile_Map_Service_Specification
 
 \section{Formati di file GeoSpaziali}
 I formati di file geospaziali sono tipi di file utilizzati per memorizzare e scambiare dati geografici e spaziali. Questi dati possono includere informazioni come mappe, immagini satellitari, dati di altitudine, di utilizzo del suolo e molti altri. Alcuni dei formati di file geospaziali più comuni includono:
@@ -190,22 +187,6 @@ I formati di file geospaziali sono tipi di file utilizzati per memorizzare e sca
 La diversità di formati esistenti non costituisce un problema per i client che necessitano di utilizzare dati geospaziali. Normalmente,
 si tende a conservare dati sui server nei formati di cui sopra (principalmente, nel tirocinio, sono stati utilizzati Shapefile e GeoJson). Un server può supportare contemporaneamente più servizi (WMS, WMTS, WFS, TMS, etc..). Questo perché ciascuno di essi è in grado di convertire gli stessi dati di mappa iniziali in formati diversi, solitamente quelli richiesti dai client.
 Ad esempio, WMS permette di richiedere una mappa in formato PNG, JPG e GIF. Quando viene effettuata una richiesta tramite questo servizio, questi accede ai dati conservati, ad esempio, in Shapefile, e li converte nel formato specificato. è da notare come non ci si debba necessariamente attenere ad uno dei servizi standard esistenti, ma si possa anche specificarne uno custom che permetta di restituire i dati iniziali in un formato scelto a proprio piacimento. Il caso più comune è che si vadano restituire i dati nel loro formato originario.
-
-
-% \section{Geographic Information System (GIS)}
-
-% Un Sistema Informativo Geografico (GIS) è un sistema progettato per acquisire, memorizzare, gestire, analizzare e presentare dati geografici e spaziali. Utilizza software specializzato per comprendere e interpretare le relazioni, i modelli e i pattern all'interno dei dati geografici.
-
-% \begin{figure}
-%       \centering
-%       \includegraphics[width=0.3\textwidth]{images/Capitolo3/Gis.png}
-%       \caption{Concetto base di GIS }
-%       \label{fig:immagine2}
-% \end{figure}
-
-% Il GIS integra dati provenienti da diverse fonti, come mappe, immagini satellitari, dati GPS e informazioni demografiche, permettendo agli utenti di visualizzare, manipolare e analizzare i dati in modo efficace. Questi dati possono essere rappresentati attraverso vari tipi di file, come shapefile, GeoJSON, raster e altri formati geospaziali.
-
-% I dati geografici possono essere rappresentati in diversi formati, come mappe digitali, immagini satellitari, dati LiDAR, modelli digitali di terreno (DTM) e altro ancora. I dati geografici possono essere categorizzati in dati vettoriali e dati raster, a seconda della loro natura e struttura.
 
 \section{OpenLayers}
 
@@ -236,71 +217,3 @@ Essendo una libreria OpenSource, il codice di OpenLayers è interamente disponib
 OpenLayers supporta anche l'aggiunta di plugin di terze parti per estendere le sue funzionalità. Una raccolta di plugin è fornita sul loro sito al seguente \href{https://openlayers.org/3rd-party/}{link}.
 
 \section{GeoServer}
-
-
-
-
-
-
-
-% \section{Questa è una sezione}
-
-% \lipsum[2]
-
-% \subsection{Questa è una aaaaaa}
-
-% \lipsum[3]
-
-% \subsubsection{Questa è una sotto-sottosezione}
-
-% \lipsum[4]
-
-% É possibile riferire l'immagine, una volta assegnatagli una label, tramite il comando \texttt{\textbackslash autoref\{fig:immagine\}}, ottenendo il seguente risultato: \autoref{fig:immagine}.
-
-% \begin{figure}
-%     \centering
-%     \includegraphics[width= 0.8\textwidth]{images/Capitolo1/immagine.jpg}
-%     \caption{Questa è un'immagine}
-%     \label{fig:immagine}
-% \end{figure}
-
-% Questa è una citazione \cite{LabelPerLaCitazione}.
-
-% \subsubsection{Questa è un'altra sottosezionelipsum}
-
-% Quello che segue è un esempio di codice. E' possibile modificare il linguaggio per il synyax highlight, aggiungere parole chiave... E' tutto disponibile nella guida del pacchetto \texttt{listings}.
-
-% \lstinputlisting[language=C++]{listings/Capitolo1/code1.cpp}
-
-% \section{Questa è un'ennesima sezione}
-
-% \lipsum[4]
-
-% \subsection{Sottosezione con una tabella}
-
-% La tabella si indirizza sempre con l'uso di una label, ottenendo il risultato \autoref{tab:labelTabella}.
-
-% \begin{table}
-%     \caption{Una simpatica tabella!}\label{tab:labelTabella}
-%     \begin{center}
-%         \begin{tabular}{c|c|c|c}
-%             \textbf{Colonna 1} & \textbf{Colonna 2} & \textbf{Colonna 3} & \textbf{Colonna 4} \\
-%             \hline
-%             $3$                & $24$               & $24$               & $29$               \\
-%             $36$               & $31$               & $49$               & $39$               \\
-%             $32$               & $41$               & $59$               & $57$               \\
-%             $34$               & $60$               & $79$               & $74$               \\
-%             $328$              & $96$               & $194$              & $99$               \\
-%             $356$              & $117$              & $297$              & $149$              \\
-%             $312$              & $315$              & $293$              & $242$              \\
-%             $3024$             & $184$              & $253$              & $019$              \\
-%             $3048$             & $7795$             & $253$              & $077$              \\
-%             $3096$             & $7767$             & $2432$             & $0514$             \\
-%             $3192$             & $3769$             & $2435$             & $0551$             \\
-%             $36384$            & $6625$             & $3432$             & $0497$             \\
-%             $32768$            & $15469$            & $6472$             & $0471$             \\
-%             $35536$            & $15425$            & $14539$            & $10289$            \\
-%             $331072$           & $34623$            & $24941$            & $20444$            \\
-%         \end{tabular}
-%     \end{center}
-% \end{table}

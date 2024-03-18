@@ -1,5 +1,10 @@
 \begin{thebibliography}{1}
 
+\bibitem{DocumentazioneTMS}
+{Tile Map Service Specification}.
+\newblock \url{https://wiki.osgeo.org/wiki/Tile_Map_Service_Specification},
+  2012-05-16.
+
 \bibitem{DocumentazioneWMS}
 Jeff de~la Beaujardiere.
 \newblock {OpenGIS Web Map Service (WMS) Implementation Specification}.
