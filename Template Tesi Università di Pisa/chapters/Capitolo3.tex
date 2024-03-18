@@ -142,46 +142,40 @@ A differenza dei servizi convenzionali che forniscono solo immagini pre-renderiz
 
 Il protocollo Tiled Map Service (TMS), è un altro standard utilizzato per servire mappe geospaziali. A differenza di quelli sopra citati, questa specifica non è definita dall'Open Geospatial Consortium, ma è stata introdotta dall'Open Source Geospatial Foundation (OSGeo). Per questo motivo, nonostante entrambi i protocolli si occupano di fornire dati di mappe, presentano alcune differenze.
 \\Questo standard può essere considerato come una semplificazione del servizio WMTS, in quanto continua a servire mappe geospaziali sotto forma di tiles, ma offre contemporaneamente meno funzionalità.
-Infatti questo standard non prevede alcun tipo di richiesta simile alla \textit{GetCapabilities}. Il client accede direttamente alle tiles della mappa tramite percorso URL, senza dover chiedere prima alcun tipo di informazioni al servizio stesso. Questo comporta da un lato un protocollo più semplice, ma dall'altro meno funzionalità: per esempio, il servizio non può fornirti informazioni su tutti i tipi di richieste a cui può essere interrogato. Nel caso di un servizio WMS, infatti, il client attraverso la GetCapabilities può capire o meno se il server supporta ulteriori richieste come GetFeatureInfo o GetLegendGraphic.
+Infatti questo standard non richiede che il client debba prima ottenere informazioni sul servizio attraverso una richiesta simile a  \textit{GetCapabilities}. Il client può dedurre le informazioni sul servizio TMS dalla struttura dell'URL e può quindi accedere direttamente alle tiles della mappa tramite percorso URL, senza dover chiedere prima alcun tipo di informazioni al servizio stesso. Possiamo quindi affermare che la struttura degli URL di un servizio TMS segue una convenzione simile a quella delle cartelle: ogni livello di zoom della mappa e ogni tile è rappresentata da un URL univoco e questi possono essere organizzati in modo gerarchico, nello stesso modo delle cartelle in un File System.
+\\Questo comporta da un lato un protocollo più semplice, ma dall'altro meno funzionalità: per esempio, il servizio non può fornirti informazioni su tutti i tipi di richieste a cui può essere interrogato. Nel caso di un servizio WMS, infatti, il client attraverso la GetCapabilities può capire o meno se il server supporta ulteriori richieste come GetFeatureInfo o GetLegendGraphic.
 Inoltre, il protocollo TMS prevede solo la trasmissioni di immagini tile, non restituisce altri tipi di informazioni (come nel caso della GetFeatureInfo che restituisce informazioni aggiuntive insieme all'immagine di mappa).
-\\Ciò può sembrare una cosa negativa, ma è importante tenere conto anche del peso delle richieste. Una richiesta di getCapabilities ad un servizio di mappe può restituire un messaggio di risposta molto grande e pesante, durante il tirocinio è capitato per esempio di ricevere risposte di un peso oltre i 30MB. Anche se può sembrare insignificante, gestire un peso simile all'interno di servizi web risulta molto tedioso, specialmente dal punto di vista della memorizzazione nella cache del browser.
-\\Tuttavia, come indicato nella documentazione che spiega la specifica del servizio TMS link, esistono delle richieste più semplici e compatte che un client può per ottenere delle informazioni. Le più importanti sono:
-\begin{itemize}
-      \item TileMapServiceResource, che fornisce in XML la lista di tutte le mappe disponibili che il servizio tms possiede.
-            Per ognuna di questa è definita la proiezione e i l'url diretto da contattare per ricevere le tile
-\end{itemize}
-Quindi il servizio TMS, in un modo più semplice e coinciso, offre comunque la possibilità ai client di scoprire tutte le possibili mappe e proiezioni associate.
-\\Il client prima contatta il server prendendo la lista di tutte le mappe disponibili, compresa proiezione.
-Successivamente, contatta l'url associato alla mappa scelta per ottenere tutti i \textit{TileSets}. Un TileSet rappresenta l'insieme di tutte le tile possibili a quello zoom specifico. Una volta scelto lo zoom si esegue la richiesta con coordinate x y z. Il server risponde direttamente con l'immaigne della tile.
-
-Possiamo vedere quindi le tile fornite dal tms come una piramide di immaini multiple a vari livelli di zoom
-
-\begin{figure}
+\\Ciò può sembrare una cosa negativa, ma è importante tenere conto anche del peso delle richieste. Una richiesta di getCapabilities ad un servizio di mappe può restituire un messaggio di risposta molto grande e pesante, sopratutto se contiene molti layer (mappe) al suo interno. Durante il tirocinio è capitato per esempio di ricevere risposte di un peso oltre i 30MB. Anche se può sembrare insignificante, gestire un peso simile all'interno di servizi web risulta molto tedioso, specialmente dal punto di vista della memorizzazione nella cache del browser.
+\\Inoltre, avere una struttura gerarchica simile a quella di un File System, può portare a tanti benifici. Uno di essi, ad esempio, è la facilità nel distribuire tutte le tiles all'interno di una CDN (Content Delivery Network), La stessa cosa può essere fatta anche nel caso dei servizi WMTS tramite query params, ma risulta molto più complesso e difficile da gestire. L'utilizzo di CDN può migliorare significativamente le prestazioni, l'affidabilità e la scalabilità del servizio, (?) possiamo utilizzare per esempio i bucket s3 di amazon. alleggeriscono il carico del server perché vengono spostati su altri server, l'utilizzo di bucket s3 tramite amazon permette con facilità la scalabilità del servizio, così da offrire la stessa mappa su più server. Affidabilià petché ci pensa amazon a rendere sicuri le mappe. Infine, le richieste di un servizio TMS sono più facili da memorizzare nella cache del browser rispetto al WMTS perché i suoi URL sono semplici e diretti. Al contrario, il WMTS spesso utilizza parametri più complessi nelle sue richieste, attraverso l'utilizzo dei query parameters, rendendo il memorizzazione nella cache del browser meno diretta e più soggetta a variazioni.
+\\La struttura di una richiesta TMS per accedere ad una specifica tile è la seguente
+\lstinputlisting[language=bash]{listings/Capitolo2/tms-requests-example.sh}
+Questa richiesta restituisce direttamente una tile della mappa, generalmente grande 256x256, nel formato e proiezione richiesti. Le coordinate x e y rappresentano la posizione della tile all'interno della griglia, mentre la z il suo livello di zoom. Per ogni livello di zoom sono presenti dei confini, chiamati "bounding box" o "extent" che indicano l'estensione geografica delle tiles disponibili per quel livello di zoom. Se richieste delle tile al di fuori di questi confini, il server TMS restituisce un messaggio di errore.
+\begin{figure}[htbp]
       \centering
       \includegraphics[width=0.5\textwidth]{images/Capitolo2/tilesPyramid.png}
-      \caption{TMS}
-      \label{fig:immagine3}
+      \caption{Tiles with zoom level}
+      \label{fig:tmsTiles}
 \end{figure}
+\\Come indicato nella specifica del servizio TMS, esistono altre richieste che un client può fare per ottenere comunque maggiori informazioni.
 
+% Attraverso la richiesta \textit{TileMapServiceResource} si possono vedere per esempio tutte le mappe disponibili che il servizio TMS ha a disposizione, proiezione associata.
+% \lstset{basicstyle=\footnotesize\ttfamily}
+% \lstinputlisting[language=xml]{listings/Capitolo2/TileMapServiceResource.xml}
+% \begin{itemize}
+%       \item TileMapServiceResource, che fornisce in XML la lista di tutte le mappe disponibili che il servizio tms possiede. Per ognuna di questa è definita la proiezione e i l'url diretto da contattare per ricevere le tile
+% \end{itemize}
+% \\Il client prima contatta il server prendendo la lista di tutte le mappe disponibili, compresa proiezione.
+% Successivamente, contatta l'url associato alla mappa scelta per ottenere tutti i \textit{TileSets}. Un TileSet rappresenta l'insieme di tutte le tile possibili a quello zoom specifico. Una volta scelto lo zoom si esegue la richiesta con coordinate x y z. Il server risponde direttamente con l'immaigne della tile.
 
 
 % https://flexberry.github.io/en/efg_tile.html
 
 % nota per samuele futuro: ricordati di spiegare che le get capabilities pesano uno sfracello, e avere il map enumerator che ti restituisce tutto in json con i vari servizi di mappe, evita di fare questa richiesta
 
-% no get capabilities
-% più leggero perché le richieste xml get capabilities sono pesanti e grosse
 
-% questo comporta ad avere meno informazioni lato client
-% non conosco le mappe disponibili, non conosco le proiezioni, non
-% conosco tutte le richieste che posso fare al servizio wms/wmts/etc
-% qui direttamente attraverso l'url chiedo le coordinate della mappa x,y,z
-
-% essendo tutto su unica richiesta, è possibile però esplorare il servizio attraverso l'url proprio da come è fatta la sua struttura
-% possiamo vedere le tiles come una piramide di imagini a livelli multipli di zoom
 % è possibile far vedere attraverso una particolare richiesta comunque tutte le mappe disponibili e selezionata la mappa è possibile vedere tutte le richieste di tile che posso fare, con il suo opportuno zoom e con i margini (extent) massimi che posso fare con quelle coordinate.
 % far vedere esempio di richiesta e spiegare struttura a cartella nelle url
-% 
+
 % link https://wiki.osgeo.org/wiki/Tile_Map_Service_Specification
 
 \section{Formati di file GeoSpaziali}
