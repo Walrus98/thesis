@@ -156,7 +156,10 @@ Questa richiesta restituisce direttamente una tile della mappa, generalmente gra
       \caption{Tiles with zoom level}
       \label{fig:tmsTiles}
 \end{figure}
-\\Come indicato nella specificata del servizio TMS \cite{DocumentazioneTMS}, esistono anche altre richieste che un client può effettuare per ottenere ulteriori informazioni oltre a quella relativa alle tiles. Le principali sono:
+
+\subsubsection{Formato della richiesta}
+
+Come indicato nella specificata del servizio TMS \cite{DocumentazioneTMS}, esistono anche altre richieste che un client può effettuare per ottenere ulteriori informazioni oltre a quella relativa alle tiles. Le principali sono:
 \begin{itemize}
       \item \textit{TileMapServiceResource}: questa richiesta è quella più simile a getCapabilities, permette di vedere tutte le mappe disponibili che il servizio TMS ha a disposizione, specificando il nome della mappa, il formato dell'immagine e la sua proiezione. Può anche essere fornita più volte la stessa mappa, con formati e proiezioni differenti. Un esempio di risposta a tale richiesta è la seguente:
             \lstset{basicstyle=\footnotesize\ttfamily}
@@ -182,7 +185,7 @@ I formati di file geospaziali sono tipi di file utilizzati per memorizzare e sca
       \item \textit {GeoTIFF} (.tif): è una versione del formato di file TIFF (Tagged Image File Format) che include dati georeferenziati. È comunemente utilizzato per memorizzare immagini raster geograficamente riferite.
       \item \textit {GeoJSON} (.geojson): è un formato di file basato su JSON (JavaScript Object Notation) utilizzato per memorizzare dati geospaziali vettoriali. È spesso utilizzato per lo scambio di dati geografici su web e tra diversi software GIS.
       \item \textit {KML/KMZ} (.kml, .kmz): KML (Keyhole Markup Language) è un formato di file XML utilizzato per memorizzare dati geografici, come punti di interesse e percorsi. KMZ è una versione compressa di KML che include anche le risorse associate, come immagini e modelli 3D.
-      \item \textit {GeoPackage} (.gpkg): è un formato di file standard OGC (Open Geospatial Consortium) per memorizzare dati geospaziali in un singolo file SQLite. Supporta dati vettoriali e raster e può includere anche metadati e stili.
+      \item \textit {GeoPackage} (.gpkg): è un formato di file standard OGC (Open Geospatial Consortium) per memorizzare dati geospaziali in un singolo file SQLite. Supporta dati vettoriali e raster e può includere anche metadati e stili. Rappresentano dei database geografici.
 \end{itemize}
 La diversità di formati esistenti non costituisce un problema per i client che necessitano di utilizzare dati geospaziali. Normalmente,
 si tende a conservare dati sui server nei formati di cui sopra (principalmente, nel tirocinio, sono stati utilizzati Shapefile e GeoJson). Un server può supportare contemporaneamente più servizi (WMS, WMTS, WFS, TMS, etc..). Questo perché ciascuno di essi è in grado di convertire gli stessi dati di mappa iniziali in formati diversi, solitamente quelli richiesti dai client.
@@ -217,3 +220,78 @@ Essendo una libreria OpenSource, il codice di OpenLayers è interamente disponib
 OpenLayers supporta anche l'aggiunta di plugin di terze parti per estendere le sue funzionalità. Una raccolta di plugin è fornita sul loro sito al seguente \href{https://openlayers.org/3rd-party/}{link}.
 
 \section{GeoServer}
+
+% fornire, condividere, trasmettere, esporre
+
+GeoServer è un software OpenSource scritto in Java che permette di caricare e servire dati di mappe geospaziali.
+All'interno di GeoServer i dati possono essere caricati in vari formati (come Shapefile, GeoPackage, etc..) per poi essere esposti attraverso l'utilizzo di protocolli standard OGC (come WMS, WFS, etc..), oppure attraverso l'utilizzo di altri protocolli come TMS.
+Ad esempio, è possible caricare un file di mappa in formato Shapefile ed esporlo sul proprio server mediante un servizio WMS.
+In questo modo un client che supporta tale protocollo (per esempio OpenLayer), può visualizzare la mappa interessata e richiederla in un formato raster come PNG, JPG o simili.
+\\Una funzionalità del GeoServer è il "mirroring" di servizi OGC, ovvero consente di replicare e mantenere aggiornati i servizi di mappe forniti da server esterni, i quali espongono i dati geospaziali tramite protocolli WMS, WFS, etc..
+\\Ciò è possibile in quanto il GeoServer è in grado di memorizzare al suo interno l'URL che rappresenta la richiesta di \textit{GetCapabilities}. Come già spiegato, questa richiesta è essenziale per ottenere tutte le informazioni necessarie (layer di mappe, proiezioni, formati, etc..) al fine di richiedere le mappe fornite dal server esterno.
+\\In pratica, ogni volta che un client richiede al GeoServer una mappa che non è presente localmente, il GeoServer inizia contattando il server esterno tramite una richiesta di GetCapabilities. Una volta ricevuta la risposta, il GeoServer esegue un'altra richiesta (ad esempio una GetMap nel caso dei servizi WMS) per ottenere la mappa specifica richiesta dal client. Una volta che il GeoServer riceve i dati della mappa dal server esterno, li invia al client come risposta alla sua richiesta originale.
+% (no bibop) Così facendo, in pratica, ogni volta che un client chiede al GeoServer una mappa che in realtà non possiede, il GeoServer contatta prima il server esterno tramite GetCapabilities, poi una volta ricevuta la risposta, esegue un’ulteriore richiesta (per esempio una GetMap, nel caso dei WMS) per richiede la mappa che il client ha chiesto inizial mente al GeoServer. Una volta ottenuta la risposta, il GeoServer invia i dati della mappa sotto forma di risposta al client.
+\\Questo consente di memorizzare tutti i dati delle mappe, potenzialmente esposte medianti protocolli diversi, sotto un unico server. Tale pratica non solo semplifica la gestione e la manutenzione dei dati geospaziali, ma dal punto di vista del client, viene offerta l'illusione che tutte le mappe siano contenute direttamente nel GeoServer. Questo favorisce anche l'utilizzo di meccanismi di caching, poichè essendo un software installabile liberamente su un qualsiasi server, è possibile a
+
+% A livello del web server, ad esempio utilizzando un reverse proxy come Caddy o Nginx, è possibile configurare politiche di caching per memorizzare temporaneamente le risposte alle richieste HTTP in arrivo. Questo consente di ridurre il carico sul GeoServer, in quanto alcune richieste possono essere soddisfatte direttamente dalla cache del web server senza dover essere inoltrate a GeoServer.
+
+% Inoltre, GeoServer stesso offre funzionalità di caching dei dati geospaziali. È possibile configurare GeoServer per memorizzare in cache le risposte alle richieste di mappe che richiedono tempo per essere elaborate. Questo consente a GeoServer di rispondere più rapidamente alle richieste successive per le stesse mappe, utilizzando i dati già memorizzati nella cache anziché elaborarli nuovamente.
+
+
+
+% GeoServer è un software che può essere installato su un server dedicato. Su questo stesso server, è possibile installare anche un web server come ad esempio Caddy. Il web server funge da reverse proxy per le richieste dirette a GeoServer, il che significa che il client invia le richieste al web server e queste vengono quindi inoltrate al GeoServer.
+
+% Questo setup consente di sfruttare il caching a diversi livelli. Il web server può implementare un caching delle richieste in arrivo, memorizzando temporaneamente i risultati delle richieste frequenti. Inoltre, GeoServer stesso può implementare un caching dei dati geospaziali, memorizzando le risposte alle richieste di mappe che richiedono tempo per essere elaborate.
+
+% In questo modo, l'utilizzo di un web server come reverse proxy per GeoServer permette di ottimizzare le prestazioni complessive del sistema, riducendo il carico sul server e migliorando i tempi di risposta per gli utenti.
+
+
+
+% In questo modo tutte le mappe vengono centralizzate su un unico server. Questo è utile in quanto è più semplice gestire e mantenere aggiornati i dati geospaziali perché non è necessario cercare le mappe su diversi server, riducendo la complessità e il rischio di errori. 
+
+
+% Inolte il geoserver può effettuare dei meccanismi di caching al servizio esterno. Cioè che lo contatta una sola volta, si memorizza la richiesta http in una sua cache e tutte le volte che un client richiede la stessa mappa il geoserver risponde senza dove di nuovo contattare il servzio esterno. Senza questa cosa, tutte le volte è necessario contattare il servizio esterno.
+% Inoltre, il geoserver è un software che viene installato su un nostro server, quindi il client può fare un ulteriore livello di caching con le richieste http al nostro server.
+
+% Questa centralizzazione delle mappe su GeoServer semplifica notevolmente la gestione e il mantenimento dei dati geospaziali, in quanto non è più necessario cercare le mappe su diversi server esterni, riducendo così la complessità e il rischio di errori.
+% Inoltre, GeoServer può implementare meccanismi di caching dei dati dal servizio esterno. Questo significa che una volta ottenute le informazioni necessarie per una mappa, GeoServer può memorizzare la richiesta HTTP in una sua cache. Quando un client richiede la stessa mappa in futuro, GeoServer può rispondere direttamente dalla sua cache senza dover contattare nuovamente il servizio esterno. Questo migliora le prestazioni complessive e riduce il carico sui server esterni.
+% Infine, poiché GeoServer è installato su un server gestito dall'utente, il client può anche implementare ulteriori livelli di caching con le richieste HTTP dirette al server GeoServer. Ciò contribuisce a migliorare ulteriormente le prestazioni e la scalabilità del sistema.
+
+Possiamo quindi definire il GeoServer come il "backend per le mappe". Attualmente questo software supporta diversi tipi fonti di mappe:
+\begin{itemize}
+      \item WMS, WMTS
+      \item GeoPackage, ArcGrid, GeoTIFF, ImageMosaic, WorldImage
+      \item ShapeFiles, GeoPackage, PostGIS, Web Feature Server
+\end{itemize}
+
+La maggior parte di queste fonti può essere esposta in formati standardizzati. Ad esempio, è possibile registrare un servizio cartografico WMS e poi il GeoServer può fornirlo come servizio WMTS. Questo è utile per il frontend perché in questo modo non è necessario supportare tutti i formati. Inoltre, ciò consente alcune ottimizzazioni aggiuntive, sfruttando il caching e il tiling.
+
+- Maps Service Format
+All maps surveyed in this document are the maps that have been uploaded to the GeoServer. this documents contains the maps provided from:
+
+IdroGEO → it provides maps in ShapeFile and GeoJSON format. Apparently, It seems that GeoServer doesn’t support GeoJSON format, so all the maps have been loaded in ShapeFile format.
+
+Geoportale Nazionale → it provides maps in WMS, WFS and WCS format. Currently, we have decided to avoid uploading maps from the WCS service because there are few of them and they are probably already provided in other different formats. Also there's not much documentation on how to provide maps in that format on the GeoServer side.
+
+GeoCart → it provides map in ShapeFile format.
+
+An important note to report is that the WMS, WCS and WFS services are links, which if properly contacted, provide a set of maps (here an example). So these maps have not been downloaded and saved locally, but simply the GeoServer contacts the service, collect all the maps provided by the service and and exposes them.
+The GeoServer also gives the possibility to provide cached maps, this helps to avoid being rate limited from WMS/WFS/WCS services and it decreases the overhead on the GeoServer side.
+
+However, there's still a chance to download the map anyway, very slowly because of rate-limiting. But this option, at least for now, has been discarded because of the high weight of the maps. Perhaps we could do that in the future on some heavier maps. This obviously increases the speed of map loading, since the GeoServer is contacted directly at the expense of a greater increase in map weight.
+
+The ShapeFile format, on the other hand, is a raw file that needs to be uploaded to GeoServer’s hard drive. So it doesn't contact an external service, and the loading of the maps is immediate.
+
+All the ShapeFile maps have been downloaded and storage in a virtual hard drive and with the help of rclone, connected to the directly to the GeoServer. So simply the GeoServer sees a folder within its hard drive and believes that the files are really located into it.
+
+- Providing Maps
+At the moment the GeoServer provides the maps in WMTS format both for ShapeFile and WMS service. This is the better way to provide maps because these are divided in Tile formats.
+
+So in this way, the Frontend instead of directly asking for the entire map image, it only asks for smaller, less heavy portions. This helps caching portions of the map on the frontend-side since these are http requests.
+
+Architecture
+GeoServer uses the Spring Framework, providing a request dispatch architecture for modules implementing OGC services. The web administration application uses wicket, allowing extensions to contribute additional configuration screens. The application provides a REST API implemented using the spring-mvc-framework.
+
+GeoServer is a web application, supporting any common servlet container (a standalone distribution is available with the Jetty (web server) as an embedded server). GeoWebCache, a Java-based caching component similar to TileCache, is bundled with GeoServer, but available separately.[7] Similarly, GeoServer packages GeoTools as a Java library, but it is also available separately.[8]
+
+GeoServer is a longstanding application and has undergone several architectural changes. GeoServer 1.0 was built around the STRUTS framework, with the migration to Spring and Wicket taking place for GeoServer 2.0. Early versions of the REST API used restlet before migration to spring-mvc-framework.
