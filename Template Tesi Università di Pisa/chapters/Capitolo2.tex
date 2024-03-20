@@ -15,14 +15,14 @@ Il consorzio Open Geospatial Consortium (OGC) ha definito diversi standard per i
       \item Web Feature Service (WFS);
       \item Web Coverage Service (WCS).
 \end{itemize}
-Come spiegato in \cite{DocumentazioneOGC}, ciascuno di questi standard offre funzionalità specifiche per soddisfare varie esigenze di accesso ai dati geospaziali. Questi servizi si basano su altre tecnologie come l'architettura REST e il protocollo SOAP, ai quali si accede dal client attraverso messaggi XML.
+Come spiegato nella documentazione \cite{DocumentazioneOGC}, ciascuno di questi standard offre funzionalità specifiche per soddisfare varie esigenze di accesso ai dati geospaziali. Questi servizi si basano su altre tecnologie come l'architettura REST e il protocollo SOAP, ai quali si accede dal client attraverso messaggi XML.
 
-\begin{figure}
-      \centering
-      \includegraphics[width=0.8\textwidth]{images/Capitolo2/OGC.png}
-      \caption{Relazione tra client/server e protocolli OGC}
-      \label{fig:Relazione tra client/server e protocolli OGC}
-\end{figure}
+% \begin{figure}
+%       \centering
+%       \includegraphics[width=0.8\textwidth]{images/Capitolo2/OGC.png}
+%       \caption{Relazione tra client/server e protocolli OGC}
+%       \label{fig:Relazione tra client/server e protocolli OGC}
+% \end{figure}
 Lo standard OGC prevede che tutti i client che necessitano di contattare il servizio debbano prima effettuare una richiesta HTTP denominata \textit{GetCapabilities}. Questa operazione è necessaria, per il client, per poter sapere quali informazioni possono essere reperite da quel servizio. In generale, queste informazioni comprendono: le mappe (una o più), le proiezioni che supportano, i loro formati (SVG, PNG) e altre richieste GET HTTP che si possono fare al servizio stesso.
 
 \subsection{Protocollo WMS}
@@ -34,10 +34,15 @@ Dunque, il server WMS restituisce l'intera immagine della mappa.
 \\È importante sottolineare che lo standard WMS supporta anche la trasparenza delle immagini restituite nelle richieste, permettendo così la sovrapposizione visiva e la combinazione di più layer forniti da server geospaziali.
 \\Inoltre, se abilitato, consente agli utenti di ottenere informazioni specifiche su determinate caratteristiche presenti sulla mappa, come punti di interesse o dati geografici particolari.
 
-% \\Nello specifico, nel caso del servizio WMS, tale richiesta comprende l'identificazione di un layer geografico. Un layer geografico è un insieme di dati geospaziali che rappresentano effettivamente una mappa, quest'ultima sotto forma di immagine raster o vettoriale. 
+% \\Nello specifico, nel caso del servizio WMS, tale richiesta comprende l'identificazione di un layer geografico. Un layer geografico è un insieme di dati geospaziali che rappresentano effettivamente una mappa, quest'ultima sotto forma di immagine raster o vettoriale.
+\begin{figure}[htbp]
+      \centering
+      \includegraphics[width=1\textwidth]{images/Capitolo2/ProtocolWMS.png}
+      \caption{Diagramma di Sequenza del protocollo WMS}
+      \label{fig:wms protocol}
+\end{figure}
 
 \subsubsection{Formato della richiesta}
-
 
 Lo standard specifica diversi tipi di richieste che possono essere effettuate ai server WMS:
 \begin{itemize}
@@ -70,6 +75,13 @@ Il server WMTS deve infatti fornire solo le tiles necessarie per l'area richiest
 \\Inoltre, le tiles aprono le porte ad una politica di caching: trattandosi di piccole porzioni di immagini, queste possono essere facilmente memorizzate nella cache. Sul lato back-end, infatti, il servizio WMTS può cachare le tiles più utilizzate e restituirle più rapidamente al client. Lato front-end, invece, il browser è in grado di intercettare le risposte inviate dal server e di memorizzare nella sua cache interna l'immagine della tile. In questo modo, quando il client richiede la stessa tile, quest'ultima viene visualizzata senza dover contattare nuovamente il server. Questo è possibile poichè le tiles sono di piccole dimensioni, e quindi il peso effettivo della richiesta è sufficiente da poter memorizzare la risposta nella cache del browser.
 Questo consente di ridurre il carico di richieste sul server e di migliorare la velocità di caricamento delle mappe sui client.
 
+\begin{figure}[htbp]
+      \centering
+      \includegraphics[width=1\textwidth]{images/Capitolo2/ProtocolWMTS.png}
+      \caption{Diagramma di Sequenza del protocollo WMTS}
+      \label{fig:wmts protocol}
+\end{figure}
+
 \subsubsection{Formato della richiesta}
 
 \begin{itemize}
@@ -90,6 +102,13 @@ Similmente al WMS, che attraverso la richiesta GetMap può richiede una mappa sp
 \\I client possono anche eseguire operazioni di analisi spaziale, come il calcolo dell'area di un poligono o la ricerca delle feature più vicine a una determinata posizione.
 Ad esempio, è possibile interrogare il servizio per ottenere informazioni su tutti gli edifici situati in una determinata area, oppure trovare tutti i fiumi di una certa lunghezza.
 \\Queste informazioni vengono trasmesse utilizzando il formato GML (Geography Markup Language), che consente di descrivere in modo dettagliato la geometria e le proprietà di ciascuna feature.
+
+\begin{figure}[htbp]
+      \centering
+      \includegraphics[width=1\textwidth]{images/Capitolo2/ProtocolWFS.png}
+      \caption{Diagramma di Sequenza del protocollo WFS}
+      \label{fig:wfs protocol}
+\end{figure}
 
 \subsubsection{Formato della richiesta}
 
@@ -145,10 +164,10 @@ Inoltre, il protocollo TMS prevede solo la trasmissioni di immagini tile, non re
 \\La struttura di una richiesta TMS per accedere ad una specifica tile è la seguente
 \lstinputlisting[language=bash]{listings/Capitolo2/tms-requests-example.sh}
 Questa richiesta restituisce direttamente una tile della mappa, generalmente grande 256x256, nel formato e proiezione richiesti. Le coordinate x e y rappresentano la posizione della tile all'interno della griglia, mentre la z il suo livello di zoom. Per ogni livello di zoom sono presenti dei confini, chiamati "bounding box" o "extent" che indicano l'estensione geografica delle tiles disponibili per quel livello di zoom. Se richieste delle tile al di fuori di questi confini, il server TMS restituisce un messaggio di errore.
-\begin{figure}[htbp]
+\begin{figure}[h]
       \centering
       \includegraphics[width=0.5\textwidth]{images/Capitolo2/tilesPyramid.png}
-      \caption{Tiles with zoom level}
+      \caption{Tiles con livello di zoom}
       \label{fig:tmsTiles}
 \end{figure}
 
@@ -201,7 +220,7 @@ Tutti i sistemi di coordinate geografiche e proiezioni cartografiche sono dispon
 \subsubsection{Architettura di OpenLayer}
 
 Essendo una libreria OpenSource, il codice di OpenLayers è interamente disponibile su \href{https://github.com/openlayers/openlayers}{Github}.
-\\Inoltre, come si può vedere dalla \href{https://openlayers.org/en/latest/apidoc/}{documentazione}, l'architettura di OpenLayers è basata su un modello di programmazione modulare, in cui ogni modulo svolge precise funzionalità per la creazione e la gestione delle mappe. I moduli di OpenLayer principali sono:
+\\Inoltre, come si può vedere dalla documentazione \cite{DocumentazioneOpenLayers}, l'architettura di OpenLayers è basata su un modello di programmazione modulare, in cui ogni modulo svolge precise funzionalità per la creazione e la gestione delle mappe. I moduli di OpenLayer principali sono:
 
 \begin{itemize}
       \item ol/Map: è il core della libreria. Esso rappresenta la mappa stessa e fornisce funzionalità di base come la gestione dei layer, degli eventi e delle view.
@@ -231,16 +250,17 @@ a livello di WebServer, per esempio, tramite l'utilizzo di un Reverse Proxy, è 
 \\Esiste anche la possibilità di memorizzare nella cache la risposta ottenuta dalla richiesta GetCapabilities inviata ai servizi OGC esterni, in modo da evitarne il recupero ogni volta. Questo risulta utile soprattutto quando si trattano mappe geospaziali che cambiano raramente nel tempo o che non cambiano affatto, anche se è possibile comunque rispolvere il problema in parte mettendo una cache di durata più breve.
 Questo consente a GeoServer di rispondere più rapidamente alle richieste di mappe, utilizzando i dati già memorizzati nella cache anziché elaborarli nuovamente, riducendo così il carico e migliorando i tempi di risposta.
 % nota per samuele futuro: la cache è stata fatta perché altrimenti ci si beccava il rate limiting
-\\Attualmente questo software supporta diversi tipi fonti di mappe, le più importanti sono:
+\\La maggior parte di queste fonti può essere esposta in formati standardizzati. Ad esempio, è possibile registrare un servizio cartografico WMS e poi il GeoServer può fornirlo come servizio WMTS. Questo è utile per il frontend perché in questo modo non è necessario supportare tutti i formati. Inoltre, ciò consente alcune ottimizzazioni aggiuntive, sfruttando il caching e il tiling.
+
+\subsubsection{Architettura di GeoServer}
+
+\subsubsection{Struttura di GeoServer}
+Supporta diversi tipi fonti di mappe, le più importanti sono:
 \begin{itemize}
       \item WMS, WMTS, WFS, WCS, TMS per i servizi di mappe
       \item GeoPackage, ArcGrid, GeoTIFF, ImageMosaic, WorldImage per
       \item ShapeFiles, GeoPackage, PostGIS, Web Feature Server
 \end{itemize}
-
-\subsubsection{Architettura di GeoServer}
-
-La maggior parte di queste fonti può essere esposta in formati standardizzati. Ad esempio, è possibile registrare un servizio cartografico WMS e poi il GeoServer può fornirlo come servizio WMTS. Questo è utile per il frontend perché in questo modo non è necessario supportare tutti i formati. Inoltre, ciò consente alcune ottimizzazioni aggiuntive, sfruttando il caching e il tiling.
 
 The GeoServer also gives the possibility to provide cached maps, this helps to avoid being rate limited from WMS/WFS/WCS services and it decreases the overhead on the GeoServer side.
 
