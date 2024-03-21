@@ -1,5 +1,5 @@
 \chapter{Tecnologie di interesse}
-\label{cap:chapter3}
+\label{cap:chapter2}
 
 Questo capitolo si occupa di spiegare le tecnologie che sono state impiegate durante il tirocinio, al fine di comprendere successivamente le scelte progettuali intraprese durante lo sviluppo.
 \\Particolare attenzione sarà dedicata agli standard definiti dall'Open Geospatial Consortium (OGC), tra cui Web Map Service (WMS), il Web Map Tiles Service (WMTS), Web Feature Service (WFS) e Web Coverage Service (WCS). Si tratta di protocolli universalmente riconosciuti per la distribuzione e l'accesso ai dati geospaziali tramite Internet.
@@ -52,7 +52,7 @@ Lo standard specifica diversi tipi di richieste che possono essere effettuate ai
 I tipi di richiesta che i fornitori di WMS possono opzionalmente supportare includono:
 \begin{itemize}
       \item \textit{GetFeatureInfo}: Consente di ottenere informazioni dettagliate su specifiche caratteristiche presenti sulla mappa. Restituisce informazioni associate a quella posizione, come punti di interesse o dati geografici particolari.
-      \item  \textit{DescribeLayer}: Restituisce i tipi di feature disponibili per i layer specificati, che possono essere ulteriormente descritti utilizzando richieste Web Feature Service (WFS). Questa richiesta è utile per comprendere meglio la struttura e le caratteristiche dei dati geospaziali presenti nel servizio WMS.
+      \item \textit{DescribeLayer}: Restituisce i tipi di feature disponibili per i layer specificati, che possono essere ulteriormente descritti utilizzando richieste Web Feature Service (WFS). Questa richiesta è utile per comprendere meglio la struttura e le caratteristiche dei dati geospaziali presenti nel servizio WMS.
       \item \textit{GetLegendGraphic}: Utilizzata per ottenere un'immagine della legenda della mappa, questa richiesta fornisce una guida visiva agli elementi presenti sulla mappa, come i simboli e le etichette dei layer.
 \end{itemize}
 Qui sotto è riportato uno \textit{snippet} che contiene alcuni esempi possibili di richieste WMS, eseguite utilizzando il comando CURL per simulare il comportamento di una richiesta HTTP.
@@ -152,7 +152,7 @@ A differenza dei servizi convenzionali che forniscono solo immagini pre-renderiz
 
 % Il WCS fornisce i dati disponibili insieme alle loro descrizioni dettagliate; permette richieste complesse per questi dati e restituisce i dati con relativa semantica di origine (anziché le immagini) in modo da essere interpretato, estrapolato, ecc. e non solo disegnato. Questo servizio è l'alternativa al WFS, che restituisce i dati vettoriali, e al WMS che produce una immagine digitale.
 
-\section{OSGeo, Tiled Map Service (TMS)}
+\section{Tiled Map Service (TMS)}
 
 Il protocollo Tiled Map Service (TMS), è un altro standard utilizzato per servire mappe geospaziali. A differenza di quelli sopra citati, questa specifica non è definita dall'Open Geospatial Consortium, ma è stata introdotta dall'Open Source Geospatial Foundation (OSGeo). Per questo motivo, nonostante entrambi i protocolli si occupano di fornire dati di mappe, presentano alcune differenze.
 \\Questo standard può essere considerato come una semplificazione del servizio WMTS, in quanto continua a servire mappe geospaziali sotto forma di tiles, ma offre contemporaneamente meno funzionalità.

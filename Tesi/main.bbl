@@ -1,20 +1,20 @@
 \begin{thebibliography}{1}
 
 \bibitem{DocumentazioneGeoServer}
-{GeoServer Documentation}.
+{GeoServer Documentazione}.
 \newblock \url{https://docs.geoserver.org/stable/en/user/rest/}.
-
-\bibitem{GithubOpenLayers}
-{GeoServer Github}.
-\newblock \url{https://github.com/openlayers/openlayers }.
 
 \bibitem{GithubGeoServer}
 {GeoServer Github}.
-\newblock \url{https://github.com/geoserver/geoserver }.
+\newblock \url{https://github.com/geoserver/geoserver}.
 
 \bibitem{DocumentazioneOpenLayers}
 {OpenLayer Documentation}.
 \newblock \url{https://openlayers.org/en/latest/apidoc/}.
+
+\bibitem{GithubOpenLayers}
+{OpenLayers Github}.
+\newblock \url{https://github.com/openlayers/openlayers}.
 
 \bibitem{DocumentazioneTMS}
 {Tile Map Service Specification}.
@@ -25,6 +25,11 @@
 Jeff de~la Beaujardiere.
 \newblock {OpenGIS Web Map Service (WMS) Implementation Specification}.
 \newblock \url{https://portal.ogc.org/files/?artifact_id=14416}, 2006-03-15.
+
+\bibitem{GeoPortaleNazionale}
+Ministero dell'Ambiente e~della Sicurezza~Energetica.
+\newblock {Mappe fornite mediante protocolli OGC dal GeoPortale Nazionale}.
+\newblock \url{https://gn.mase.gov.it/portale/servizi-di-rete-ogc}.
 
 \bibitem{DocumentazioneWMTS}
 Keith~Pomakis Joan~Masó and Núria Julià.
