@@ -1,5 +1,17 @@
 \begin{thebibliography}{1}
 
+\bibitem{DocumentazioneGeoServer}
+{GeoServer Documentation}.
+\newblock \url{https://docs.geoserver.org/stable/en/user/rest/}.
+
+\bibitem{GithubOpenLayers}
+{GeoServer Github}.
+\newblock \url{https://github.com/openlayers/openlayers }.
+
+\bibitem{GithubGeoServer}
+{GeoServer Github}.
+\newblock \url{https://github.com/geoserver/geoserver }.
+
 \bibitem{DocumentazioneOpenLayers}
 {OpenLayer Documentation}.
 \newblock \url{https://openlayers.org/en/latest/apidoc/}.

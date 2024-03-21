@@ -219,7 +219,7 @@ Tutti i sistemi di coordinate geografiche e proiezioni cartografiche sono dispon
 
 \subsubsection{Architettura di OpenLayer}
 
-Essendo una libreria OpenSource, il codice di OpenLayers è interamente disponibile su \href{https://github.com/openlayers/openlayers}{Github}.
+Essendo una libreria OpenSource, il codice di OpenLayers è interamente disponibile su Github \cite{GithubOpenLayers}.
 \\Inoltre, come si può vedere dalla documentazione \cite{DocumentazioneOpenLayers}, l'architettura di OpenLayers è basata su un modello di programmazione modulare, in cui ogni modulo svolge precise funzionalità per la creazione e la gestione delle mappe. I moduli di OpenLayer principali sono:
 
 \begin{itemize}
@@ -261,30 +261,26 @@ Questo consente a GeoServer di rispondere più rapidamente alle richieste di map
 
 \subsubsection{Architettura di GeoServer}
 
-Supporta diversi tipi formati e servizi geospaziali, i più noti sono:
+Geoserver supporta diversi tipi formati e servizi geospaziali, i più noti sono:
 
 \begin{itemize}
       \item Servizi di mappe: WMS, WMTS, WFS, WCS, TMS per i servizi di mappe;
       \item Dati raster: GeoPackage, ArcGrid, GeoTIFF, ImageMosaic, WorldImage;
       \item Dati vettoriali o a oggetti geospaziali: ShapeFiles, GeoPackage, PostGIS;
 \end{itemize}
-
-
-%Todo: Parlare di workspace, storage etc
-
-GeoServer possiede anche un interfaccia grafica, realizzata come applicazone web, che permete di eseguire tutte le operazioni sopra citate. Supporta
-
-GeoServer utilizza Spring come Framework per gestire la maggior parte delle sue funzionalità, mentre per l'interfaccia utente è stata realizzata tramite l'utilizzo di Wicket. Inoltre GeoServer fornisce anche un'API Rest, implementata usando sempre Spring (Spring MVC Framework) che permette di eseguire tutte le operazioni
-
-
-L'API REST è implementata utilizzando il framework spring-mvc-framework.
-
-
-
-GeoServer uses the Spring Framework, providing a request dispatch architecture for modules implementing OGC services. The web administration application uses wicket, allowing extensions to contribute additional configuration screens. The application provides a REST API implemented using the spring-mvc-framework.
-
-GeoServer is a web application, supporting any common servlet container (a standalone distribution is available with the Jetty (web server) as an embedded server). GeoWebCache, a Java-based caching component similar to TileCache, is bundled with GeoServer, but available separately.[7] Similarly, GeoServer packages GeoTools as a Java library, but it is also available separately.[8]
-
-GeoServer is a longstanding application and has undergone several architectural changes. GeoServer 1.0 was built around the STRUTS framework, with the migration to Spring and Wicket taking place for GeoServer 2.0. Early versions of the REST API used restlet before migration to spring-mvc-framework.
-
-% Rest API
+% GeoServer is a web application, supporting any common servlet container (a standalone distribution is available with the Jetty (web server) as an embedded server). GeoWebCache, a Java-based caching component similar to TileCache, is bundled with GeoServer, but available separately.[7] Similarly, GeoServer packages GeoTools as a Java library, but it is also available separately.[8]
+Questi ultimi possono essere caricati e gestiti tramite l'utilizzo di un'interfaccia grafica, realizzata sotto forma di un'applicazione web, oppure tramite l'utilizzo di chiamate ad una REST API.
+\\Al fine di poter caricare correttamente una mappa all'interno di GeoServer, è necessario creare tre componenti basilari:
+\begin{itemize}
+      \item Workspace: rappresenta precisamente l'"area di lavoro", cioè il luogo in cui tutte le mappe vengono effettivamente caricate, quest'utlime a sua volta vengono organizzate in all'interno di Storage. Una workspace può contenere uno o più Storage.
+      \item Storage: rappresenta il tipo di servizio di mappa che si vuole caricare all'interno di GeoServer. Può essere un servizio WMS, WFS, WCS, o un tipo di dato geospaziale come Shapefile, GeoTIFF, etc.. Ovviamente in base al tipo di Storage che si va a creare, le impostazioni visualizzate sull'interfaccia grafica (o i query param da inviare secondo la rest API) saranno differenti. Per esempio, se si va a creare un servizio esterno WMS, sarà chiesto il link delle capabilities da contattare. Se si andrà a caricare uno Shapefile, sarà richiesto il percorso locale in cui il file si trova.
+      \item Layer: rappresenta la mappa effettiva, quella che verrà poi fornita al Front-end. È ciò che restituisce lo storage una volta ricevuta la risposta alla getCapabilities, nel caso di un servizio OGC, o ciò che contiene uno Shapefile. Ovviamente più layer possono stare all'interno di uno storage.
+\end{itemize}
+Dal punto di vista di architetturale, come si può vedere su Github \cite{GithubGeoServer}, GeoServer è stato sviluppato utilizzando Spring come Framework Java, e viene utilizzato per gestire tutte le funzionalità sopra citate. Anche la REST API è stata implementata sempre tramite Spring (Spring MVC Framework), mentre l'interfaccia grafica è stata realizzata invece tramite l'utilizzo di Wicket.
+% Warning The API is documented as Swagger 2.0 files. However, these files have been written by hand back in 2017, and have not always been kept up to date with the evolution of the GeoServer configuration object structure. Also, they have not been tested for proper client generation, and will likely not work for that purpose. Take them only as a form of documentation.
+% \\Tuttavia, come si può leggere dalla documentazione, la REST API non solo non è ancora stata aggiornata allo standard di OpenAPI 3 (rimanendo ancora ferma Swagger 2.0), ma non rispetta nemmeno
+\\Tutta via, come viene riportato dagli sviluppatori di GeoServer nella loro documentazione \cite{DocumentazioneGeoServer}, la REST API presenta alcune criticità importanti che possono influenzare il suo utilizzo e la sua affidabilità.
+Innanzitutto, la specifica della REST API è rimasta alla versione di Swagger 2.0 e non è aggiornata allo al nuovo standard di OpenAPI 3.0, ciò comporta ad una peggiore comprensione e utilizzo dell'API stessa.
+Ma soprattuto, viene fatto notare che i file di Swagger utilizzati per documentare l'API sono stati creati manualmente nel 2017 e non sono stati più aggiornati con l'evoluzione dell'infrastruttura del software.
+\\L'utilizzo dell'API di GeoServer è stata una parte cruciale durante periodo di tirocinio, e questo problema ha rappresentato una sfida significativa, in quanto è stato necessario sistemare manualmente le richieste al fine di poterle utilizzare correttamente utilizzare correttamente.
+% Questo processo è stato non solo laborioso e impegnativo, ma ha anche richiesto una profonda comprensione della struttura dell'API e dei suoi requisiti. Tuttavia, nonostante le difficoltà incontrate, ho potuto apprezzare appieno il valore dell'API di GeoServer e il suo ruolo fondamentale nel contesto del mio lavoro di tirocinio.
