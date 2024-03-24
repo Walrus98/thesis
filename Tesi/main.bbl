@@ -1,4 +1,4 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 
 \bibitem{DocumentazioneGeoServer}
 {GeoServer Documentazione}.
@@ -30,6 +30,11 @@ Jeff de~la Beaujardiere.
 Ministero dell'Ambiente e~della Sicurezza~Energetica.
 \newblock {Mappe fornite mediante protocolli OGC dal GeoPortale Nazionale}.
 \newblock \url{https://gn.mase.gov.it/portale/servizi-di-rete-ogc}.
+
+\bibitem{GeoCart}
+GeoCart.
+\newblock {Dati geospaziali forniti da GeoCart}.
+\newblock \url{https://www.geocartspa.it/}.
 
 \bibitem{DocumentazioneWMTS}
 Keith~Pomakis Joan~Masó and Núria Julià.

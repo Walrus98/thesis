@@ -1,56 +1,92 @@
 \chapter{Svolgimento del Tirocinio}
 
+% In questo capitolo verrà spiegato nel dettaglio lo svolgimento del tirocinio. L'obiettivo preposto è stato quello di realizzare un'applicazione funzionante per visualizzare e gestire mappe geospaziali. Lo sviluppo si è diviso tra front-end, per consentire la visualizzazione delle mappe, e back-end, per la loro gestione e fornirle al primo. Parte del codice si è inoltre focalizzata sulla comunicazione tra front-end e back-end.
+In questo capitolo verrà spiegato nel dettaglio lo svolgimento del tirocinio. L'obiettivo preposto è stato quello di realizzare un'applicazione funzionante per visualizzare e gestire mappe geospaziali. Lo sviluppo si è diviso tra front-end, per consentire la visualizzazione delle mappe, e back-end, per la loro gestione e fornitura. Infine, si è concluso il mio percorso lavorativo con una fase di integrazione tra i due componenti.
+
+\section{Tecnologie Utilizzate}
+All'arrivo in azienda, ho conosciuto il mio tutore aziendale, Andrea Canciani, il quale mi ha fornito una panoramica generale sulle tecnologie e i framework utilizzati dall'azienda nei vari progetti, incluso quello su cui avrei lavorato.
+% bibop Questi framework consentono lo sviluppo a componenti, il che significa che ogni elemento dell'interfaccia utente può essere sviluppato come un componente separato e riutilizzabile.
+% Pertanto, quando uno sviluppatore crea un componente nell'UI kit, può poi facilmente importarlo e utilizzarlo all'interno delle varie pagine del sito senza doverlo ricreare da zero ogni volta. Ciò non solo accelera il processo di sviluppo, ma anche aumenta la coerenza e la manutenibilità del codice.
+\\Lato front-end, nel contesto di applicazioni Enterprise, come nel caso di BMS, l'interfaccia grafica viene sviluppata utilizzando framework JavaScript moderni, nello specifico Angular. Questi framework presentano un'architettura basata su componenti, cioè permettono di costruire l'interfaccia grafica attraverso l'uso di componenti che possono essere riutilizzati. Questo consente di avere una programmazione modulare, in cui ogni componente HTML viene visto come un modulo a se stante che può essere importato e riutilizzato su pagine web differenti. Questo rende il codice più organizzato, facile da comprendere e mantenibile, specialmente all'aumentare delle dimensioni e della complessità dell'applicazione.
+\\Lato back-end, invece, è stato adottato l'utilizzo di un framework ad alto livello come .NET, il quale offre un insieme di funzionalità e strumenti per lo sviluppo di applicazioni complesse e scalabili.
+Inoltre, .NET è supportato da Microsoft, il che garantisce un elevato livello di affidabilità e una robusta base di supporto.
+
+\begin{itemize}
+    \item Angular: utilizzato per il front-end;
+    \item DotNet: utilizzato per il back-end;
+    \item Caddy: utilizzato come WebServer;
+    \item Github: per la manutenzione e revisione del codice;
+    \item Docker: per i microservizi;
+    \item Teamcity per i test test cases, continuous integration e continuous delivery;
+\end{itemize}
+
+\subsection{Stato Iniziale}
+
+Durante la mia introduzione, mi è stato presentato lo stato attuale della piattaforma, la quale era ancora nella fase iniziale di sviluppo. Dal punto di vista del front-end, infatti, lo sviluppo era ancora concetrato nella realizzazione dell'UiKit, ovvero una pagina web che contiene tutti i componenti grafici che verrano poi utilizzati all'interno dell'applicazione web stessa.
+\\L'uso dell'UiKit è una pratica comune, specialmente all'interno di applicazioni Enterprise ed è utile, sia dal punto di vista della programmazione, in quanto aiuta gli sviluppatori front-end ad avere una base solida ed uniforme di progettazione dell'interfaccia utente, sia perché funge da strumento di presentazione del design ai potenziali clienti, consentendo loro di visualizzare in anteprima l'aspetto e le funzionalità dell'applicazione.
+% fornire una base consistente per la progettazione dell'interfaccia utente,
+% bibop
+% L'obiettivo principale di un UI kit è quello di fornire una base consistente per la progettazione e lo sviluppo dell'interfaccia utente, facilitando così il lavoro degli sviluppatori e garantendo una migliore coerenza visiva e funzionale nell'applicazione finale. Utilizzando un UI kit, gli sviluppatori possono risparmiare tempo nella progettazione e implementazione dell'interfaccia utente, concentrandosi invece sulle funzionalità e sull'esperienza utente dell'applicazione.
+\\L'utilizzo dell'UI kit è reso possibile grazie all'impiego di Angular (o di un qualsiasi altro framework JavaScript moderno, come React) e alla sua architettura modulare.
+Pertanto, quando uno sviluppatore crea un componente nell'UiKit, può facilmente importarlo e utilizzarlo all'interno delle varie pagine del sito senza doverlo ricreare da zero ogni volta. Senza Angular, questa operazione sarebbe molto più laboriosa, richiedendo di ripetere lo stesso lavoro più volte e quindi non risulterebbe più conveniente.
+\\Dal punto di vista del back-end, invece, come già spiegato nell'introduzione lo sviluppo delle mappe non era ancora iniziato. L'unica cosa che era stata sviluppata, era un piccolo componente nell'ui kit
 
 
-% i primi giorni di tirocinio sono stati spesi nel comprendere lo standard ogc, e i dati geospaziali. precisamente protocollo WMS e WFS
+Una componente chiave che ancora non era stata minimamente implementata
 
-\section{Obiettivi posti a inizio Tirocnio}
+Le mappe ancora non c'erano, l'unica cosa presente era una piccola demo fatta con openlayer nell'ui kit
+
+% Sono arrivato in azienda, ho conosciuto il tutore aziendale, che mi ha dato una panoramica generale su quello che avrei dovuto fare all'interno dell'azienda. Ovvero quello di realizzaare un front-end, backe-end per le mappe. Mi hanno fatto vedere per prima cosa l'applicazione front-end, facendomi vedere a che stato era, mi è stato mostrato che attualmente il front-end che non aveva ancora delle pagine web ma stavano sviluppando sviluppando l'ui-kit (una pagina che contiene tutti quanti i componenti che poi avrebbero utilizzato durante lo sviluppo del sito), è essenziale perché in questo c'è la possibilità di realizzare tutti i e poi integrarli già fatti nell'applicazione successivamente. Inotre utile per far vedere ai clienti il design dell'applicazione. All'interno .Mi hanno fatto vedere tramite l'ui kit che le mappe non erano ancora state implementate, l'unica cosa che c'era, era un piccolo esempio fatto all'interno dell'ui kit di una mappa sviluppata con openlayer. Poi mi hanno spiegato le tecnologie che utilizzavano in azienda. Mi hanno detto che utilizzando le seguenti tecnologie per questi motivi:
+% Angular, dotnet, caddy github docker e Teamcity. 
+% Ho chiesto per quale motivo si utilizza openlayer per le mappe
+
+% per ale: il tirocinio è iniziato con una panoramica generale di quello che c'era da fare, mi hanno spiegato il contesto di sviluppo, le tecnolgie da utilizzare (linguaggi programmazione, framework, librerie che avrei utilizzato all'inizio (soltanto openalayers), mi hanno fatto vedere lo stato della piattaforma e l'unica cosa che c'era era un piccolo esempio di mappe implementate con openlayer (infatti ho continuato poi da lì)
+
+% agile
+% scrum
 
 
-\section{Base di partenza}
+% e poi abbiamo fatto una scaletta con degli obiettivi iniziali, per la prima parte di tirocinio, da cui partire. Molto utile per avere idea di quello che sarei andato a fare.
+% i primi obiettivi erano quelli di:
+% vorremmo:
+% - coprire i casi d'uso elencati sopra (e altri)
+% - mostrare mappe wms/wfs/wcs in browser
+% - strumenti di "navigazione" di base (gestione pan/zoom/layers); sentiamo Davide/Fabio per mockup
+% - avere il tutto inscatolato in una (o più?) componente angular
+% - meccanismi di esposizione del dato "mappa" (standard wms/wfs/wcs? altro?)
+% - ingestion di dati (geojson, shapefile, altri backend standard)
+
+
+% primi problemi accennati durante la presentazione del progetto:
+
+% rendering di più layer delle mappe tutte assieme e trovare un modo per non farle laggare e tenerle sincronizzate
+
+% servizi di fornitura mappa lenti, alcuni ci metto una vita a caricare, forse dovremmo utilizzare una politica di caching?
+
+% ingestion dei dati: non tutti i dati vengono supportati da OpenLayer, fare quindi un piccolo backend che sanitizza i dati e li passa poi a openlayer.
+
+% perche’ usare open layer invece che un altro servizio di mappe? Per esempio quello usato da google o apple.
+
+% perche’ quelli sono piu’ specializzati sulla parte stradale, a noi non ci interessano. Ci interessano i ponti!
+
+% utilizziamo come framework OpenLayer (frontend) per unire tutto e avere uno standard per i dati in mappa, con tanto di mappa già funzionante. Perché OpenLayer e non un altro framework? **Motivare**!
+
+\subsection{Inizio Tirocinio}
 
 I primi giorni di tirocinio sono stati dedicati allo studio e alla comprensione dei protocolli OGC e dei concetti fondamentali relativi ai dati geospaziali. In particolare, ho concentrato la mia attenzione sui protocolli WMS (Web Map Service) e WFS (Web Feature Service), poiché sono tra i più utilizzati e facili da distinguere. Questo mi ha permesso di comprendere il loro funzionamento e le principali differenze tra essi. Per quanto riguarda i dati geospaziali, invece, ho studiato principalmente il formato GeoJSON e Shapefile, in quanto sono anch'essi formati geospaziali comuni e ampiamente utilizzati.
 \\Dopo questa fase di apprendimento iniziale, ho collaborato con l'azienda per identificare le fonti da cui raccogliere le mappe necessarie, censendole in un documento dettagliato. Questo processo mi ha permesso di avere una panoramica completa delle risorse geospaziali disponibili e di comprendere meglio come organizzarle e utilizzarle nel contesto del mio tirocinio. Le mappe utilizzate all'interno del progetto provengono principalmente da tre fonti:
 \begin{itemize}
     \item \textit{Geoportale Nazionale}, un portale gestito dal Ministero dell'Ambiente e della Sicurezza Energetica che contiene dati geospaziali forniti tramite protocollo OGC, quali WMS, WFS e WCS. É possibile reperire le mappe utilizzate dal loro sito \cite{GeoPortaleNazionale}.
     \item \textit{IdroGEO}, una piattaforma gestita ISPRA (Istituto Superiore per la Protezione de la Ricerca Ambientale), che permette agli utenti di accedere e di scaricare dati di mappe, in formato Shapefile o GeoJSON, relativi al rischio idrogeologico in Italia. Precisamente fornisce informazioni sull'Inventario dei Fenomeni Franosi in Italia (IFFI), e sulle mappe nazionali di pericolosità da frane e alluvioni e sugli indicatori di rischio associati.
-    \item \textit{GeoCart}, un'azienda italiana specializzata nella produzione e distribuzione di mappe e prodotti cartografici. Annche in questo caso le mappe sono in formato Shapefile, ma a differenza di quelle precedenti, non sono di dominio pubblico e non sono accessibili in modo gratuito. Sono risorse sviluppate ai fini commerciali.
+    \item \textit{GeoCart}, un'azienda italiana specializzata nella produzione e distribuzione di mappe e prodotti cartografici \cite{GeoCart}. Anche in questo caso le mappe sono in formato Shapefile, ma a differenza di quelle precedenti, non sono di dominio pubblico e non sono accessibili in modo gratuito. Sono risorse sviluppate ai fini commerciali.
 \end{itemize}
 
 
-\subsection{Contesto di sviluppo}
+% studio angular dalla documentazione di angular.dev
+% studio di typescript e di javascript approfondito https://javascript.info/
 
 % come si programma all'interno dell'azienda, utilizzo di git, sviluppo agile, lo stack di sviluppo.
 % continuous integration e continuous delivery del software
-
-
-
-
-
-
-
-% Come già accennato nell'introduzione. All'inizio del tirocinio la piattaforma Inspicio
-
-
-% agile
-% scrum
-% continuous integration vs continuous delivery
-
-% \lipsum[2]
-
-% \section{Stack di Sviluppo}
-
-% angular
-% github
-% dotnet
-% Swagger
-% agile,
-% docker
-% teamcity
-
-
-% \lipsum[2]
-
 
 
 % Il presente capitolo fornisce una panoramica del progetto di tirocinio, offrendo una spiegazione sull'ambito del progetto e indicando le tecnologie impiegate per la sua realizzazione.
@@ -71,11 +107,6 @@ I primi giorni di tirocinio sono stati dedicati allo studio e alla comprensione 
 % \section{Stack di sviluppo}
 % \section{Way of Working e strumenti}
 
-
-% Il presente tirocinio si è svolto per tre mesi presso Geckosoft nel periodo dal 15/01/2024 al 15/04/2024.
-% \\Il tirocinante ha avuto l'opportunità di lavorare sia sul lato frontend che sul lato backend
-% del progetto, implementando un'interfaccia utente interattiva con Angular e deployando un backend per la fornitura dei dati in conformità agli standard OGC
-% angular come framework di sviluppo si basa sulla sua popolarità e sulla sua capacità di facilitare lo sviluppo di applicazioni web complesse e scalabili.
 
 % \section{Questa è una sezione}
 
