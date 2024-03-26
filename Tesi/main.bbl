@@ -21,6 +21,11 @@
 \newblock \url{https://wiki.osgeo.org/wiki/Tile_Map_Service_Specification},
   2012-05-16.
 
+\bibitem{DocumentazioneAngular}
+Angular.
+\newblock {Documentazione di Angular}.
+\newblock \url{https://angular.dev/tutorials/first-app}.
+
 \bibitem{DocumentazioneWMS}
 Jeff de~la Beaujardiere.
 \newblock {OpenGIS Web Map Service (WMS) Implementation Specification}.

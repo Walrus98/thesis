@@ -8,23 +8,29 @@ All'inizio dell'esperienza di tirocinio il tutor aziendale si è occupato di for
 \\Per gestire questo tipo di architettura, è stato scelto l'utilizzo di Docker, ovvero una piattaforma che consente di creare e gestire container, cioè degli ambienti isolati che contengono tutte le risorse necessarie per eseguire un'applicazione. %, inclusi il codice, le dipendenze e le librerie necessarie.
 Ogni servizio viene dunque "containerizzato", ovvero viene isolato in un ambiente autonomo con tutte le risorse e le dipendenze necessarie per il suo funzionamento. La containerizzazione attraverso Docker rende notevolmente più semplice lo sviluppo dell'applicazione, in quanto gli sviluppatori, lavorando sullo stesso container, possiedono tutti lo stesso ambiente di sviluppo: cioè la stessa versione delle dipendenze, librerie e versione del linguaggio di programmazione. Inoltre, una volta che l'applicazione è pronta per il deployment (cioè pronta per essere messa in produzione), viene eseguita su server in un ambiente ancora containerizzato. Così facendo, si ha la garanzia che l'applicazione continua a funzionare nello stesso modo di quando è stata sviluppata, e se necessario, è possibile scalarla orizzontalmente attraverso l'uso di servizi di Cloud come Amazon AWS.
 %Per gestire tutti i cosi di docker abbiamo l'utilizzato caddy per fare reverse proxy su tutti i cosi di docker, così da non dover avere tutto in localhost e simulare effettivamente come se l'app fosse deployato e abbiamo installato il certificato sopra.
-\\Per gestire il traffico HTTP tra i servizi eseguiti all'interno dei container di Docker, è stato utilizzato un WebServer come reverse proxy. Un WebServer è un software progettato per gestire le richieste HTTP inviate dai client (per esempio dei client browser) e per servire a loro delle risposte, di solito sotto forma di dati o pagina web. L'utilizzo di un reverse proxy permette di mascherare tutti i programmi containerizzati dietro un unico servzio, ovvero il WebServer. Il reverse proxy agisce quindi come intermediario tra i client e i servizi containerizzati: tutte le richieste inviate dai client vengono inviate al WebServer, e quest'ultimo, basantosi su regole di routing, instrada le richieste al servizio interessato. Il servizio elabora la richiesta e invia la risposta al reverse proxy, che quindi la trasmette al client. L'utilizzo del reverse proxy offre molti vantaggi come la possibilità di eseguire load balancing, distribuendo il carico tra più server così da prevenire sovraccarichi.
-% Il reverse proxy può bilanciare il carico tra più server backend per garantire una distribuzione equa delle richieste e prevenire sovraccarichi sui singoli server.
+\\Per gestire il traffico HTTP tra i servizi eseguiti all'interno dei container di Docker, è stato utilizzato un WebServer come reverse proxy.
+Un WebServer è un software progettato per gestire le richieste HTTP inviate dai client (per esempio dei browser) e per servire a loro delle risposte, di solito sotto forma di dati o pagine web. L'utilizzo di un reverse proxy permette di mascherare tutti i programmi containerizzati dietro un unico servzio, ovvero il WebServer. Il reverse proxy agisce come intermediario tra i client e i servizi containerizzati: tutte le richieste inviate dai client vengono inviate al WebServer, e quest'ultimo, basantosi su regole di routing, instrada le richieste al servizio interessato. Il servizio elabora la richiesta e invia la risposta al reverse proxy, che quindi la trasmette al client.
+
+L'utilizzo del reverse proxy offre molti vantaggi come la possibilità di eseguire load balancing, distribuendo il carico tra più server così da prevenire sovraccarichi.
+
+caching
+
+Il WebServer permette anche di crittografare con SSL/TLS
+
+Il web server Caddy offre la possibilità di utilizzare domini personalizzati anziché il semplice 'localhost' per accedere ai servizi. Inoltre, Caddy consente di integrare facilmente container Docker e di gestire il traffico HTTPS in modo automatico grazie alla funzionalità di gestione dei certificati TLS. Infine, Caddy supporta il load balancing, consentendo di distribuire il carico tra più istanze del servizio per garantire una migliore scalabilità e affidabilità del sistema
 
 
 il reverse proxy può svolgere un ruolo importante nella sicurezza dell'applicazione, eseguendo azioni come la crittografia SSL/TLS terminante, il filtraggio delle richieste dannose e l'autenticazione degli utenti.
 
-
-
-
-
-
 % \\Per gestire il traffico HTTP attraverso i servizi eseguiti all'interno dei container di Docker, è stato necesario utilizzare Caddy come reverse proxy. Caddy è un web server open-source
+
+
+% così da avere tutto sotto dominio e non in localhost
+
 
 "Per gestire il traffico HTTP verso i servizi eseguiti nei container Docker, abbiamo utilizzato Caddy come reverse proxy., abbiamo introdotto un componente aggiuntivo chiamato Caddy. Caddy è un server web open-source progettato per essere semplice da configurare e utilizzare. Una delle sue funzionalità principali è quella di agire come un reverse proxy.
 
 invece, è stato Caddy per la sua semplicità d'uso e per le funzionalità avanzate di gestione dei certificati SSL/TLS tramite Let's Encrypt. Caddy semplifica notevolmente la configurazione del server web e offre prestazioni elevate, rendendolo ideale per progetti che richiedono una rapida messa in produzione e una gestione sicura delle connessioni.
-
 
 Nel nostro caso, utilizzando Caddy come reverse proxy, siamo in grado di instradare le richieste provenienti dai client ai vari container Docker in esecuzione, senza dover esporre direttamente i container al traffico esterno. Questo ci consente di mantenere un ambiente più sicuro e controllato, oltre a semplificare la gestione delle richieste in arrivo e dei servizi di backend.
 
@@ -104,13 +110,42 @@ Le mappe ancora non c'erano, l'unica cosa presente era una piccola demo fatta co
 
 \subsection{Inizio Tirocinio}
 
-I primi giorni di tirocinio sono stati dedicati allo studio e alla comprensione dei protocolli OGC e dei concetti fondamentali relativi ai dati geospaziali. In particolare, ho concentrato la mia attenzione sui protocolli WMS (Web Map Service) e WFS (Web Feature Service), poiché sono tra i più utilizzati e facili da distinguere. Questo mi ha permesso di comprendere il loro funzionamento e le principali differenze tra essi. Per quanto riguarda i dati geospaziali, invece, ho studiato principalmente il formato GeoJSON e Shapefile, in quanto sono anch'essi formati geospaziali comuni e ampiamente utilizzati.
+I primi giorni di tirocinio sono stati dedicati allo studio e alla comprensione dei protocolli OGC e dei concetti fondamentali relativi ai dati geospaziali. In particolare, l'attenzione è stata concentrata sui protocolli WMS (Web Map Service) e WFS (Web Feature Service), poiché sono tra i più utilizzati e facili da distinguere. Questo ha permesso di comprendere al meglio il loro funzionamento e le principali differenze tra essi. Per quanto concerne i dati geospaziali, invece, lo studio si è dedicato principalmente ai formati GeoJSON e Shapefile, in quanto sono anch'essi formati geospaziali comuni e ampiamente utilizzati.
 \\Dopo questa fase di apprendimento iniziale, ho collaborato con l'azienda per identificare le fonti da cui raccogliere le mappe necessarie, censendole in un documento dettagliato. Questo processo mi ha permesso di avere una panoramica completa delle risorse geospaziali disponibili e di comprendere meglio come organizzarle e utilizzarle nel contesto del mio tirocinio. Le mappe utilizzate all'interno del progetto provengono principalmente da tre fonti:
 \begin{itemize}
     \item \textit{Geoportale Nazionale}, un portale gestito dal Ministero dell'Ambiente e della Sicurezza Energetica che contiene dati geospaziali forniti tramite protocollo OGC, quali WMS, WFS e WCS. É possibile reperire le mappe utilizzate dal loro sito \cite{GeoPortaleNazionale}.
     \item \textit{IdroGEO}, una piattaforma gestita ISPRA (Istituto Superiore per la Protezione de la Ricerca Ambientale), che permette agli utenti di accedere e di scaricare dati di mappe, in formato Shapefile o GeoJSON, relativi al rischio idrogeologico in Italia. Precisamente fornisce informazioni sull'Inventario dei Fenomeni Franosi in Italia (IFFI), e sulle mappe nazionali di pericolosità da frane e alluvioni e sugli indicatori di rischio associati.
     \item \textit{GeoCart}, un'azienda italiana specializzata nella produzione e distribuzione di mappe e prodotti cartografici \cite{GeoCart}. Anche in questo caso le mappe sono in formato Shapefile, ma a differenza di quelle precedenti, non sono di dominio pubblico e non sono accessibili in modo gratuito. Sono risorse sviluppate ai fini commerciali.
 \end{itemize}
+Il tirocinio è poi continuato con uno studio autonomo dei linguaggi e di programmazione e delle libreria utilizzate all'interno del progetto. Particolare attenzione è stata dedicata inizialmente alla parte di sviluppo front-end, dedicando le prime settimane allo studio del framework JavaScript Angular, e al suo corrispettivo linguaggio di programmazione TypeScript.
+Lo studio di queste tecnologie è terminato con la realizzazione di un piccolo progetto in Angular 17, che è possibile replicare seguendo la sua documentazione \cite{DocumentazioneAngular}. Il tirocinio è poi proseguito con lo studio della libreria RxJS, fondamentale per l'uso Angular, in quanto è parte integrante dello stesso. La seguente libreria viene utilizzata per la gestione di Stream di dati asincroni utilizzando il paradigma di "Reactive Programming". % FA SCHIFO!
+\\In un approccio tradizionale, come quello del paradigma a eventi, viene scritto del codice per gestire il singolo evento in maniera esplicita. Ad esempio, si può definire un gestore di eventi per il click del mouse, ovvero è possibile definire una funzione, nota come callback, che viene invocata per gestire l'evento di click.
+Nell'approccio reattivo, invece, viene scritto del codice per gestire uno Stream di dati che rappresenta una sequenza continua di eventi. Ad esempio, invece di gestire il singolo click del mouse, viene creato uno Stream che rappresenta i click che avvengono del tempo. Tale Stream può essere manipolato, filtrato o trasformato utilizzando degli operatori.
+Utilizzando RxJS, è possibile quindi
+
+Utilizzando RxJS all'interno di Angular, è possibile concatenare serie di operazioni che manipolano e trasformano i dati in modo asincrono, senza dover gestire manualmente il degli eventi o le callback. Questo rende il codice più pulito, più conciso e più facile da mantenere, poiché si possono utilizzare gli operatori forniti da RxJS per eseguire molte operazioni comuni come il filtraggio, il mapping e la concatenazione dei dati.
+
+
+Tale libreria si concentra sulla gestione di questi Stream in maniera asincrona, utilizzando gli Observable e i Subscriber per rappresentarli e manipolarli.
+
+RxJS fornisce una serie di operazioni (chiamati Operators), che permettono la manipolazione dei dati sullo Stream in maniera asincrona: Le operazioni più note sono la mappatura, il filtraggio, la combinazione e la trasformazione.
+
+Attraverso l'uso di Observable e Observer, forniti da Angular,
+
+
+Gli Observable sono sequenze di valori che possono essere emessi nel tempo e che Angular utilizza per gestire eventi come click del mouse, richieste HTTP o cambiamenti di stato.
+
+
+Arazie all'uso di tale libreria, la programmazione in Angular adotta infatti un paradigma di Programmazione Reattiva, in cui una programmazione reattiva, in cui
+
+Quando si parla di programmazione reattiva in Angular, ci si riferisce all'uso di Observable e degli operatori di RxJS per gestire i dati e le interazioni all'interno dell'applicazione.
+
+
+
+
+
+
+
 
 
 % studio angular dalla documentazione di angular.dev
