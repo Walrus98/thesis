@@ -1,5 +1,9 @@
 \begin{thebibliography}{10}
 
+\bibitem{DocumentazioneOpenLayersWMS}
+{Esempio di integrazione del protocollo WMS con OpenLayers}.
+\newblock \url{https://openlayers.org/en/latest/examples/wms-image.html}.
+
 \bibitem{DocumentazioneGeoServer}
 {GeoServer Documentazione}.
 \newblock \url{https://docs.geoserver.org/stable/en/user/rest/}.
