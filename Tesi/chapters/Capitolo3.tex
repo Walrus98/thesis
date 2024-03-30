@@ -15,7 +15,9 @@ Ogni servizio viene dunque "containerizzato", ovvero viene isolato in un ambient
 
 \subsection{WebServer e Reverse Proxy}
 È stato impiegato un WebServer che, tra le altre cose, ha svolto il ruolo di un Reverse Proxy, permettendo di semplificare la gestione del traffico HTTP diretto verso i container Docker. Un WebServer è un software che riceve tutte le richieste HTTP inviate da client (per esempio browser) e che alla fine fornirà loro delle risposte, solitamente sotto forma di dati o pagine web.
-\\Comportandosi da reverse proxy, reinstrada le richieste ricevute verso il microservizio appropiato, mascherando ai client la pluralità di servizi esistenti. Una volta ricevuta la risposta dal microservizio, la trasmette al client che ne aveva fatto richiesta.
+\\Comportandosi da reverse proxy, il WebServer reinstrada le richieste ricevute verso il microservizio appropiato, mascherando ai client la pluralità di servizi esistenti. Una volta ricevuta la risposta dal microservizio, la trasmette al client che ne aveva fatto richiesta.
+
+
 % L'utilizzo di un reverse proxy permette di mascherare tutti i programmi containerizzati dietro un unico servzio, ovvero il WebServer. Il reverse proxy agisce come intermediario tra i client e i servizi containerizzati: tutte le richieste inviate dai client vengono inviate al WebServer, e quest'ultimo, basantosi su regole di routing, instrada le richieste al servizio interessato. Il servizio elabora la richiesta e invia la risposta al reverse proxy, che quindi la trasmette al client.
 %Per gestire tutti i cosi di docker abbiamo l'utilizzato caddy per fare reverse proxy su tutti i cosi di docker, così da non dover avere tutto in localhost e simulare effettivamente come se l'app fosse deployato e abbiamo installato il certificato sopra.
 
@@ -59,11 +61,15 @@ Per la parte di front-end, nel contesto di applicazioni Enterprise, come nel cas
 
 \subsection{Stato iniziale dell'applicazione}
 
-Durante la mia introduzione, mi è stato presentato lo stato attuale della piattaforma, la quale era ancora nella fase iniziale di sviluppo. Dal punto di vista del front-end, infatti, lo sviluppo era ancora concetrato nella realizzazione dell'UiKit, ovvero una pagina web che contiene tutti i componenti grafici che verrano poi utilizzati all'interno dell'applicazione web stessa.
+All'inizio è stato presentato al candidato lo stato della piattaforma, la quale era ancora nella fase iniziale di sviluppo. Dal punto di vista del front-end, lo sviluppo era ancora concentrato nella realizzazione dell'UiKit, ovvero una pagina web che contiene tutti i componenti grafici che verrano poi utilizzati all'interno dell'applicazione. L'UiKit è una pratica comune, specialmente all'interno di applicazioni Enterprise, in quanto offre diversi vantaggi come l'aiuto agli sviluppatori front-end ad avere una base solida ed uniforme dell'interfaccia utente
 
-% \\L'uso dell'UiKit è una pratica comune, specialmente all'interno di applicazioni Enterprise, in quanto offre diversi vantaggi.
+ia dal punto di vista della programmazione, in quanto aiuta gli sviluppatori front-end ad avere una base solida ed uniforme di progettazione dell'interfaccia utente,
 
-L'UiKit è una pratica comune, infatti, offre numerosi vantaggi nell'ambito . Uno di questi vantaggi è la coerenza visiva e funzionale che offre all'interfaccia utente dell'applicazione. Grazie alla standardizzazione dei componenti e delle direttive di design, l'UiKit consente di mantenere un aspetto uniforme e una user experience coerente in tutta l'applicazione, facilitando la comprensione e l'utilizzo da parte degli utenti.
+
+
+sia perché funge da strumento di presentazione del design ai potenziali clienti, consentendo loro di visualizzare in anteprima l'aspetto e le funzionalità dell'applicazione.
+
+
 
 Inoltre, l'utilizzo dell'UiKit favorisce l'efficienza nello sviluppo. Gli sviluppatori possono ridurre il tempo necessario per progettare e implementare nuove funzionalità dell'interfaccia utente, poiché possono fare affidamento sui componenti predefiniti e sulle linee guida di design forniti dall'UiKit. Questo permette di accelerare il processo di sviluppo e di ridurre i costi associati.
 
@@ -71,7 +77,6 @@ Infine, l'UiKit favorisce la manutenibilità del codice. Poiché i componenti de
 
 
 
-ia dal punto di vista della programmazione, in quanto aiuta gli sviluppatori front-end ad avere una base solida ed uniforme di progettazione dell'interfaccia utente, sia perché funge da strumento di presentazione del design ai potenziali clienti, consentendo loro di visualizzare in anteprima l'aspetto e le funzionalità dell'applicazione.
 % fornire una base consistente per la progettazione dell'interfaccia utente,
 % bibop
 % L'obiettivo principale di un UI kit è quello di fornire una base consistente per la progettazione e lo sviluppo dell'interfaccia utente, facilitando così il lavoro degli sviluppatori e garantendo una migliore coerenza visiva e funzionale nell'applicazione finale. Utilizzando un UI kit, gli sviluppatori possono risparmiare tempo nella progettazione e implementazione dell'interfaccia utente, concentrandosi invece sulle funzionalità e sull'esperienza utente dell'applicazione.
@@ -154,13 +159,13 @@ Il tirocinio è poi continuato con lo studio e alla comprensione dei protocolli 
 \subsection{Perché OpenLayers}
 
 Lo sviluppo delle mappe da parte del tirocinante è iniziato con lo studio e l'utilizzo della libreria OpenLayers. Tale libreria è stata scelta, rispetto alle altre concorrenti, in quanto offre internamente molte funzionalità utili per la rappresentazione di questo tipo di mappe.
-\\Come già spiegato nel capitolo precedente, OpenLayers offre un supporto già integrato ai protocolli OGC, essenziali per la rappresentazione di questi tipi di dati geospaziali. La maggior parte delle sorgenti di mappe fornite, infatti, sono trasmesse mediante protocolli OGC quali WMS, WFS e WCS. Con l'utilizzo di tale libreria, la comunicazione ai servizi OGC esterni risulta essere più semplice, in quanto non è necessario eseguire manualmente tutte le richieste imposte dallo Standard, e, successivamente, parsare il contenuto delle risposte in formato XML. OpenLayers fornisce, a più livelli, delle Classi che si occupano di eseguire queste operazioni al posto nostro, e attraverso il principio di Information Hiding, espongono allo sviluppatore solo il minimo necessario per eseguire correttamente la richiesta.
-\\Per esempio, nel caso dell'implentazione del protocollo WMS, non sarà quindi necessario eseguire una richiesta di GetCapabilities e successivamente GetMap, al fine di ricevere l'immagine della mappa. Ma, se noto il nome del layer, basterà istanziare la classe ImageWMS che, passatogli i parametri corretti, automaticamente eseguirà "under the hood" le operazioni necessarie al fine di ricevere l'immagine della mappa corretta. Qui sotto viene riportato un esempio di implementazione della classe ImageWMS, il quale è possibile reperire anche dalla documentazione di OpenLayer\cite{DocumentazioneOpenLayersWMS}
+\\Come già spiegato nel capitolo precedente, OpenLayers offre un supporto già integrato ai protocolli OGC, essenziali per la rappresentazione di questi tipi di dati geospaziali. La maggior parte delle sorgenti di mappe fornite, infatti, sono trasmesse mediante protocolli OGC quali WMS, WFS e WCS. Con l'utilizzo di tale libreria, la comunicazione ai servizi OGC esterni risulta essere più semplice, in quanto non è necessario eseguire manualmente tutte le richieste imposte dallo Standard, e, successivamente, eseguire il parsing sul contenuto delle risposte in formato XML. OpenLayers fornisce, a più livelli, delle Classi che si occupano di eseguire queste operazioni al posto nostro, e attraverso il principio di Information Hiding, espongono allo sviluppatore solo il minimo necessario per eseguire correttamente la richiesta.
+\\Per esempio, nel caso dell'implentazione del protocollo WMS, non sarà quindi necessario eseguire una richiesta di GetCapabilities e successivamente GetMap, al fine di ricevere l'immagine della mappa. Se il nome del layer è noto, basterà istanziare la classe ImageWMS che passandogli i parametri corretti, eseguirà automaticamente le operazioni necessarie al fine di ricevere l'immagine della mappa corretta. Qui sotto viene riportato un esempio di implementazione della classe ImageWMS, il quale è possibile reperire anche dalla documentazione di OpenLayer\cite{DocumentazioneOpenLayersWMS}
 \lstinputlisting[language=Java, caption={Esempio di ImageWMS}]{listings/Capitolo3/openLayerWMS.js}
 Come si può vedere dall'esempio, al fine di recuperare l'immagine della mappa fornita dal server WMS esterno, è necessario istanziare la classe ImageWMS passandogli come argomento soltanto l'URL e il layer che si vuole visualizzare.
 OpenLayer si occuperà di eseguire la richiesta di GetMap al posto nostro e di mostrare a schermo l'immagine della mappa.
-\\Tale esempio richiede ovviamente che il nome del layer sia noto: nel caso in cui il client non conosce la lista di layer disponibili, sarà comunque necessario eseguire una richiesta di GetCapabilities.
-\\Anche in questo caso, OpenLayer si occupa di eseguire la richiesta e di parsare in automatico il contentuo dell'XML, senza dover creare una struttura dati apposita per manipolare i dati ricevuti da essa.
+\\Tale esempio richiede ovviamente che il nome del layer sia noto, nel caso in cui il client non conosca la lista di layer disponibili, sarà comunque necessario eseguire una richiesta di GetCapabilities.
+\\Anche in questo caso, OpenLayer si occupa di eseguire la richiesta e di effettuare il parsing in automatico sul contentuo dell'XML, senza dover creare una struttura dati apposita per manipolare i dati ricevuti da essa.
 \lstinputlisting[language=Java, caption={Esempio di GetCapabilities per WMS}]{listings/Capitolo3/openLayerWMSCapabilities.js}
 All'inizio è stato essenziale l'uso di OpenLayers per testare le mappe fornite da GeoCart e da IdroGEO, poiché sono delle mappe "fisiche", cioè non vengono fornite tramite un servizio OGC esterno, ma sono disponibili direttamente come un file locale in formato Shapefile o GeoJSON. OpenLayer infatti supporta con facilità il formato GeoJSON, così da testare
 
