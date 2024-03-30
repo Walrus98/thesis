@@ -1,5 +1,7 @@
 \chapter{Svolgimento del Tirocinio}
 
+
+
 % In questo capitolo verrà spiegato nel dettaglio lo svolgimento del tirocinio. L'obiettivo preposto è stato quello di realizzare un'applicazione funzionante per visualizzare e gestire mappe geospaziali. Lo sviluppo si è diviso tra front-end, per consentire la visualizzazione delle mappe, e back-end, per la loro gestione e fornirle al primo. Parte del codice si è inoltre focalizzata sulla comunicazione tra front-end e back-end.
 In questo capitolo verrà spiegato nel dettaglio lo svolgimento del tirocinio. L'obiettivo preposto è stato quello di realizzare un'applicazione funzionante per visualizzare e gestire mappe geospaziali. Lo sviluppo si è diviso tra front-end, per consentire la visualizzazione delle mappe, e back-end, per la loro gestione e fornitura. Infine, si è concluso il mio percorso lavorativo con una fase di integrazione tra i due componenti.
 
@@ -160,11 +162,7 @@ OpenLayer si occuperà di eseguire la richiesta di GetMap al posto nostro e di m
 \\Tale esempio richiede ovviamente che il nome del layer sia noto: nel caso in cui il client non conosce la lista di layer disponibili, sarà comunque necessario eseguire una richiesta di GetCapabilities.
 \\Anche in questo caso, OpenLayer si occupa di eseguire la richiesta e di parsare in automatico il contentuo dell'XML, senza dover creare una struttura dati apposita per manipolare i dati ricevuti da essa.
 \lstinputlisting[language=Java, caption={Esempio di GetCapabilities per WMS}]{listings/Capitolo3/openLayerWMSCapabilities.js}
-
-All'interno del censimento delle mappe
-Poiché tutte le mappe interessate non erano solamente forniti da servizi OGC esterni, ma alcune di esse
-
-
+All'inizio è stato essenziale l'uso di OpenLayers per testare le mappe fornite da GeoCart e da IdroGEO, poiché sono delle mappe "fisiche", cioè non vengono fornite tramite un servizio OGC esterno, ma sono disponibili direttamente come un file locale in formato Shapefile o GeoJSON. OpenLayer infatti supporta con facilità il formato GeoJSON, così da testare
 
 %supporto shapefile, opensource, facile da integrare in angular, proiezione con pro4j, spiegare come funziona openlayer con i 3 componenti base quali map, tile layer e view??
 

@@ -16,14 +16,13 @@ Il consorzio Open Geospatial Consortium (OGC) ha definito diversi standard per i
       \item Web Coverage Service (WCS).
 \end{itemize}
 Come spiegato nella documentazione \cite{DocumentazioneOGC}, ciascuno di questi standard offre funzionalità specifiche per soddisfare varie esigenze di accesso ai dati geospaziali. Questi servizi si basano su altre tecnologie come l'architettura REST e il protocollo SOAP, ai quali si accede dal client attraverso messaggi XML.
-
 \begin{figure}
       \centering
       \includegraphics[width=0.8\textwidth]{images/Capitolo2/OGC.png}
       \caption{Relazione tra client/server e protocolli OGC}
       \label{fig:Relazione tra client/server e protocolli OGC}
 \end{figure}
-Lo standard OGC prevede che tutti i client che necessitano di contattare il servizio debbano prima effettuare una richiesta HTTP denominata \textit{GetCapabilities}. Questa operazione è necessaria, per il client, per poter sapere quali informazioni possono essere reperite da quel servizio. In generale, queste informazioni comprendono: le mappe (una o più), le proiezioni che supportano, i loro formati (SVG, PNG) e altre richieste GET HTTP che si possono fare al servizio stesso.
+\\Lo standard OGC prevede che tutti i client che necessitano di contattare il servizio debbano prima effettuare una richiesta HTTP denominata \textit{GetCapabilities}. Questa operazione è necessaria, per il client, per poter sapere quali informazioni possono essere reperite da quel servizio. In generale, queste informazioni comprendono: le mappe (una o più), le proiezioni che supportano, i loro formati (SVG, PNG) e altre richieste GET HTTP che si possono fare al servizio stesso.
 
 \subsection{Protocollo WMS}
 
@@ -96,12 +95,14 @@ Per ulteriori informazioni dettagliate sullo standard WMTS, è possibile fare ri
 
 \subsection{Protocollo WFS}
 
-Il Web Feature Service (WFS) è un servizio web utilizzato per accedere e manipolare dati geospaziali attraverso internet.
-A differenza di un WMS (Web Map Service), che fornisce mappe statiche sotto forma di immagini raster (come PNG o JPEG), un WFS offre dati geospaziali vettoriali, come punti, linee e poligoni che rappresentano oggetti geografici reali come edifici, strade e fiumi. Ogni singolo oggetto geografico è definito come una ``feature'' e può essere caratterizzato da una serie di attributi che ne descrivono le proprietà, come nome, altezza, larghezza e popolazione.
-Similmente al WMS, che attraverso la richiesta GetMap può richiede una mappa specifica al server, il servizio WFS offre la richiesta GetFeature per richiedere una feature precisa che il server WFS provvederà a fornirgli.
+% \\Da aggiungere: La differenza principale rispetto al servizio WMS è che nel caso del WFS, il server non invia l'immagine della mappa già pronta per la sua rappresentazione. Invece, trasmette dati grezzi, come numeri, coordinate e altre proprietà, che devono essere interpretati e visualizzati dal client.
+Il Web Feature Service (WFS) è un servizio web utilizzato per accedere e manipolare dati geospaziali attraverso internet. La differenza principale tra un servizio WMS e WFS risiede nel tipo di dati che vengono trasmessi e nel modo in cui vengono rappresentati dal client.
+\\Come già spiegato, il servizio WMS si occupa principalmente di offrire una rappresentazione visiva delle informazioni geografiche, distribuendo le mappe principalmente sotto forma di immagini PNG o JPG. Quest'ultime, essendo immagini rasterizzate, sono già pronte per essere visualizzate e non richiedono ulteriori elaborazioni: il client dovrà soltanto rappresentarle nella corretta proiezione.
+\\Un WFS trasmette dati geospaziali grezzi, come numeri, coordinate e altre proprietà, che devono essere interpretati e visualizzati dal client. Ciò signficia che sarà compito del client elaborare questi dati e rappresentarli graficamente sulla mappa, disegnando ad esempio punti, linee o poligoni secondo le specifiche della visualizzazione desiderata. Tali dati, che prendono il nome di "Feature", sono dati geospaziali vettoriali che vanno a rappresentare oggetti geografici reali come per esempio strade, fiumi o frane. Ogni feature possiede al proprio interno un insieme di attributi necessari, che ne vanno a definire il tipo di geometria e la posizione sulla mappa e inoltre possiede ulteriori proprietà facoltative che vanno a dare più informazioni sulla feature stessa, come per esempio nome, altezza, larghezza, regione, etc..
+\\Similmente al WMS, che attraverso la richiesta GetMap può richiede una mappa specifica al server, il servizio WFS offre la richiesta GetFeature per richiedere una feature precisa che il server WFS provvederà a fornirgli.
 \\I client possono anche eseguire operazioni di analisi spaziale, come il calcolo dell'area di un poligono o la ricerca delle feature più vicine a una determinata posizione.
 Ad esempio, è possibile interrogare il servizio per ottenere informazioni su tutti gli edifici situati in una determinata area, oppure trovare tutti i fiumi di una certa lunghezza.
-\\Queste informazioni vengono trasmesse utilizzando il formato GML (Geography Markup Language), che consente di descrivere in modo dettagliato la geometria e le proprietà di ciascuna feature.
+\\Queste informazioni vengono trasmesse utilizzando il formato GML (Geography Markup Language), ovvero un formato basato su XML che consente di descrivere in modo dettagliato la geometria e le proprietà di ciascuna feature. Ciò non toglie che i servizi WFS possano supportare anche altri tipi di formati, come il GeoJSON. In questo caso sarà dovere del server, definire all'interno delle informazioni presenti nella richiesta di GetCapabilities, tutti i formati geospaziali supportati. A quel punto il client, potrà richiedere il tipo di formato desiderato specificandolo nei queryParams (per esempio \textit{outputFormat=application/json}).
 
 \begin{figure}[htbp]
       \centering
@@ -115,15 +116,15 @@ Ad esempio, è possibile interrogare il servizio per ottenere informazioni su tu
 Le richieste che è possibile fare a un servizio WFS (Web Feature Service) sono le seguenti:
 
 \begin{itemize}
-      \item \textit{GetCapabilities}: Come per i WMS, la richiesta GetCapabilities restituisce un documento XML che fornisce informazioni dettagliate sul servizio WFS stesso. Queste informazioni includono i tipi di feature supportati, i formati di trasmissione dei dati, i metodi di interrogazione supportati e altre capacità del servizio. Il documento XML include anche i dettagli sulle feature disponibili, gli attributi associati a ciascuna feature e le estensioni geografiche. Inoltre, fornisce informazioni sui sistemi di riferimento delle coordinate supportate e altre proprietà dei dati geografici disponibili.
+      \item \textit{GetCapabilities}: Come per i WMS, la richiesta GetCapabilities restituisce un documento XML che fornisce informazioni dettagliate sul servizio WFS stesso. Queste informazioni includono i tipi di feature disponibili, i formati di trasmissione dei dati supportati (GML, GeoJSON, ecc..), i tipi di richieste supportate, le proiezioni geografiche disponibili e altre capacità del servizio.
+      \item \textit{GetFeature}: è la richiesta principale nel protcollo WFS in quanto consente agli utenti di recuperare la feature interessata. I parametri inclusi nella richiesta comprendono il nome della feature, il tipo di formato desiderato, la sua proiezione, ecc..
       \item \textit{DescribeFeatureType}: è utilizzata per ottenere una descrizione dettagliata della struttura dei dati vettoriali (feature types) disponibili attraverso il servizio. In pratica, questa operazione fornisce informazioni sullo schema dei dati vettoriali, inclusi i tipi di attributi, i nomi dei campi e i tipi di geometria.
-      \item \textit{GetFeature}: è una delle richieste principali nel protocollo WFS. Questa richiesta consente agli utenti di recuperare le feature geografiche in base a criteri specifici, come l'area di interesse, i tipi di feature o attributi desiderati. In pratica, tramite la richiesta GetFeature è possibile interrogare il servizio WFS per ottenere i dati geografici vettoriali corrispondenti a determinati parametri di ricerca. Ad esempio, è possibile richiedere tutte le strade in una determinata città, tutti gli edifici con una certa altezza o tutte le aree verdi in un parco.
 \end{itemize}
-I tipi di richiesta che i fornitori di WFS possono opzionalmente supportare si concentrano principalmente sulle feature, esse sono:
+I tipi di richiesta che i servizi WFS possono opzionalmente supportare sono:
 \begin{itemize}
-      \item \textit{Transaction}: Consente agli utenti di modificare i dati geografici nel servizio WFS, consentendo operazioni di aggiornamento come l'aggiunta, la modificia o l'eliminazione di una feature. Ciò è particolarmente utile per gli utenti che necessitano di mantenere aggiornati i dati geografici all'interno del servizio, consentendo loro di interagire direttamente e apportare modifiche in tempo reale.
-      \item \textit{LockFeature}: Consente agli utenti di acquisire un blocco di accesso esclusivo alle feature, impedendo ad altri utenti di modificarle durante determinate operazioni.
-      \item \textit{GetPropertyValue}: Questa richiesta consente agli utenti di ottenere i valori degli attributi di una o più feature senza recuperare l'intera geometria delle feature stesse. È utile quando si desidera ottenere solo informazioni specifiche sugli attributi delle feature senza dover recuperare tutti i dettagli geometrici associati.
+      \item \textit{Transaction}: consente agli utenti di modificare i dati geografici nel servizio WFS, attraverso operazioni come l'insirimento, la modifica o l'eliminazione di una feature. Ciò è utile per gli utenti che hanno bisogno di mantenere aggiornati i dati geografici all'interno del servizio, consentendo loro di interagire direttamente e apportare modifiche in tempo reale.
+      \item \textit{GetPropertyValue}: questa richiesta consente agli utenti di ottenere i valori degli attributi di una o più feature, senza recuperarne tutti i dettagli geometrici associati.
+      \item \textit{LockFeature}: consente agli utenti di acquisire una Lock di accesso in mutua esclusione alla feature, impedendo ad altri utenti di modificarla contemporaneamente.
       \item \textit{GetFeatureWithLock}: viene usata per ottenere le feature con un blocco di accesso esclusivo in una singola operazione, combinando le funzionalità di GetFeature e LockFeature. Questo permette agli utenti di acquisire un blocco di accesso esclusivo alle feature desiderate prima di eseguire operazioni di interrogazione o aggiornamento su di esse.
 \end{itemize}
 Qui di seguito è riportato uno \textit{snippet} contenente alcuni esempi possibili di richieste WFS, eseguite utilizzando il comando CURL per simulare il comportamento di una richiesta HTTP.
