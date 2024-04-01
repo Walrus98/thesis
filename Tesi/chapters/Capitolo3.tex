@@ -62,21 +62,10 @@ Per la parte di front-end, nel contesto di applicazioni Enterprise, come nel cas
 \subsection{Stato iniziale dell'applicazione}
 
 All'inizio è stato presentato al candidato lo stato della piattaforma, la quale era ancora nella fase iniziale di sviluppo. Dal punto di vista del front-end, lo sviluppo era ancora concentrato nella realizzazione dell'UiKit, ovvero una pagina web che contiene tutti i componenti grafici che verrano poi utilizzati all'interno dell'applicazione. L'UiKit è una pratica comune, specialmente all'interno di applicazioni Enterprise, in quanto offre diversi vantaggi come l'aiuto agli sviluppatori front-end ad avere una base solida ed uniforme dell'interfaccia utente
-
 ia dal punto di vista della programmazione, in quanto aiuta gli sviluppatori front-end ad avere una base solida ed uniforme di progettazione dell'interfaccia utente,
-
-
-
 sia perché funge da strumento di presentazione del design ai potenziali clienti, consentendo loro di visualizzare in anteprima l'aspetto e le funzionalità dell'applicazione.
-
-
-
 Inoltre, l'utilizzo dell'UiKit favorisce l'efficienza nello sviluppo. Gli sviluppatori possono ridurre il tempo necessario per progettare e implementare nuove funzionalità dell'interfaccia utente, poiché possono fare affidamento sui componenti predefiniti e sulle linee guida di design forniti dall'UiKit. Questo permette di accelerare il processo di sviluppo e di ridurre i costi associati.
-
 Infine, l'UiKit favorisce la manutenibilità del codice. Poiché i componenti dell'interfaccia utente sono riutilizzabili e modulari, è più semplice apportare modifiche e aggiornamenti all'interfaccia utente senza dover modificare il codice sorgente in più punti. Questo rende più agevole la gestione e l'evoluzione dell'applicazione nel tempo, garantendo una maggiore flessibilità e scalabilità.
-
-
-
 % fornire una base consistente per la progettazione dell'interfaccia utente,
 % bibop
 % L'obiettivo principale di un UI kit è quello di fornire una base consistente per la progettazione e lo sviluppo dell'interfaccia utente, facilitando così il lavoro degli sviluppatori e garantendo una migliore coerenza visiva e funzionale nell'applicazione finale. Utilizzando un UI kit, gli sviluppatori possono risparmiare tempo nella progettazione e implementazione dell'interfaccia utente, concentrandosi invece sulle funzionalità e sull'esperienza utente dell'applicazione.
@@ -159,7 +148,7 @@ Il tirocinio è poi continuato con lo studio e alla comprensione dei protocolli 
 \subsection{Perché OpenLayers}
 
 Lo sviluppo delle mappe da parte del tirocinante è iniziato con lo studio e l'utilizzo della libreria OpenLayers. Tale libreria è stata scelta, rispetto alle altre concorrenti, in quanto offre internamente molte funzionalità utili per la rappresentazione di questo tipo di mappe.
-\\Come già spiegato nel capitolo precedente, OpenLayers offre un supporto già integrato ai protocolli OGC, essenziali per la rappresentazione di questi tipi di dati geospaziali. La maggior parte delle sorgenti di mappe fornite, infatti, sono trasmesse mediante protocolli OGC quali WMS, WFS e WCS. Con l'utilizzo di tale libreria, la comunicazione ai servizi OGC esterni risulta essere più semplice, in quanto non è necessario eseguire manualmente tutte le richieste imposte dallo Standard, e, successivamente, eseguire il parsing sul contenuto delle risposte in formato XML. OpenLayers fornisce, a più livelli, delle Classi che si occupano di eseguire queste operazioni al posto nostro, e attraverso il principio di Information Hiding, espongono allo sviluppatore solo il minimo necessario per eseguire correttamente la richiesta.
+\\Come già spiegato nel capitolo precedente, OpenLayers offre un supporto già integrato ai protocolli OGC, essenziali per la rappresentazione di questi tipi di dati geospaziali. La maggior parte delle sorgenti di mappe fornite, infatti, sono trasmesse mediante protocolli OGC quali WMS, WFS e WCS. Con l'utilizzo di tale libreria, la comunicazione ai servizi OGC esterni risulta essere più semplice, in quanto non è necessario eseguire manualmente tutte le richieste imposte dallo Standard, e, successivamente, eseguire il parsing sul contenuto delle risposte in formato XML. OpenLayers fornisce, a più livelli, delle classi che si occupano di eseguire queste operazioni al posto nostro, e attraverso il principio di Information Hiding, espongono allo sviluppatore solo il minimo necessario per eseguire correttamente la richiesta.
 \\Per esempio, nel caso dell'implentazione del protocollo WMS, non sarà quindi necessario eseguire una richiesta di GetCapabilities e successivamente GetMap, al fine di ricevere l'immagine della mappa. Se il nome del layer è noto, basterà istanziare la classe ImageWMS che passandogli i parametri corretti, eseguirà automaticamente le operazioni necessarie al fine di ricevere l'immagine della mappa corretta. Qui sotto viene riportato un esempio di implementazione della classe ImageWMS, il quale è possibile reperire anche dalla documentazione di OpenLayer\cite{DocumentazioneOpenLayersWMS}
 \lstinputlisting[language=Java, caption={Esempio di ImageWMS}]{listings/Capitolo3/openLayerWMS.js}
 Come si può vedere dall'esempio, al fine di recuperare l'immagine della mappa fornita dal server WMS esterno, è necessario istanziare la classe ImageWMS passandogli come argomento soltanto l'URL e il layer che si vuole visualizzare.
@@ -171,22 +160,33 @@ All'inizio è stato essenziale l'uso di OpenLayers per testare le mappe fornite 
 
 %supporto shapefile, opensource, facile da integrare in angular, proiezione con pro4j, spiegare come funziona openlayer con i 3 componenti base quali map, tile layer e view??
 
+\subsection{Funzionamento di Openlayers}
+
+Al fine di comprendere meglio il suo funzionamento e di semplificarne l'utilizzo, il candidato ha preferito non iniziare direttamente con lo sviluppo del progetto, ma ha proseguito con l'implementazione di una piccola applicazione esterna, priva del framework Angular e librerie di terzi.
+\\Il funzionamento di OpenLayers si basa principalmente su 4 componenti principali:
+
+\begin{itemize}
+    \item Map: per la manutenzione e revisione del codice;
+    \item View per i test test cases, continuous integration e
+    \item Source
+    \item Layers
+\end{itemize}
+
+
+% https://openlayers.org/doc/tutorials/concepts.html#:~:text=OpenLayers%20has%20four%20basic%20types,Renders%20vector%20data%20client%2Dside.
+
+% prima spiego openlayers con i concetti base
+% poi spiego perché openlayers e quale migliorie comporta
+% poi spiego come ho fatto l'applicazione
+% poi spiego i problemi come li ho affrontati (pro4j, geojson)
 
 \lstinputlisting[language=html, caption={Codice HTML}]{listings/Capitolo3/index.html}
 % \texttt{Codice JavaScript}.
 \lstinputlisting[caption={Codice JavaScript}, language=Java]{listings/Capitolo3/main.js}
 
-% \begin{figure}[htbp]
-%     \centering
-%     \includegraphics[width=1\textwidth]{images/Capitolo3/image.png}
-%     \caption{Tiles con livello di zoom}
-%     \label{fig:tmsTiles}
-% \end{figure}
+\subsection{Approccio al problema}
 
 
-Lo sviluppo dell'integrazione delle mappe è iniziato con OpenLayer,
-
-spiegare perché openLyaer e non un altro vantaggi etc
 
 % studio angular dalla documentazione di angular.dev
 % studio di typescript e di javascript approfondito https://javascript.info/
@@ -200,17 +200,6 @@ spiegare perché openLyaer e non un altro vantaggi etc
 % Il presente tirocinio si è svolto per tre messi presso l'azienda Geckosoft, nel periodo dal 15/01/2024 al 15/04/2024. All'inizio del tirocinio che si è protatto per una durata complessiva di circa trecento ore, l'applicazione Inspicio presentava una struttura già in fase di sviluppo.
 
 
-% Le fondamenta erano state poste, con l'identificazione dell'architettura, dello Stack di sviluppo, la scelta degli strumenti e delle tecnologie da utilizzare.
-% Tuttavia, in questa fase iniziale, l'architettura delle mappe non era ancora stata definita, e quindi né l'interfaccia utente né la componente logica dell'applicazione includevano le funzionalità necessarie per la visualizzazione delle mappe geospaziali.
-% Il focus era invece rivolto all'integrazione dei componenti di base necessari per il proseguimento dell'applicazione.
-% Pertanto, sebbene le fondamenta fossero già state poste e l'architettura del Software fosse già stata definita, la parte delle mappe non era ancora stata implementata poiché altri componenti del sistema stavano ricevendo priorità nello sviluppo.
-
-
-
-
-% \section{L'azienda}
-% \section{Stack di sviluppo}
-% \section{Way of Working e strumenti}
 
 
 % \section{Questa è una sezione}
