@@ -1,4 +1,48 @@
-% \chapter{Svolgimento del Tirocinio}
+\chapter{Svolgimento del Tirocinio}
+
+In questo capitolo verrà spiegato nel dettaglio lo svolgimento del tirocinio. L'obiettivo preposto è stato quello di realizzare un'applicazione funzionante per visualizzare e gestire mappe geospaziali. Lo sviluppo si è diviso tra front-end, per consentire la visualizzazione delle mappe, e back-end, per la loro gestione e fornitura. Infine, si è concluso il mio percorso lavorativo con una fase di integrazione tra i due componenti.
+
+\section{Sviluppo Front-end con OpenLayers}
+
+\subsection{Perché OpenLayers}
+
+Tale libreria è stata scelta, rispetto alle altre concorrenti, in quanto offre internamente molte funzionalità utili per la rappresentazione di questo tipo di mappe.
+\\Come già spiegato nel secondo capitolo, OpenLayers offre un supporto già integrato ai protocolli OGC, essenziali per la rappresentazione di questi tipi di dati geospaziali. La maggior parte delle sorgenti di mappe fornite, infatti, sono trasmesse mediante protocolli OGC quali WMS, WFS e WCS. Con l'utilizzo di questa libreria, la comunicazione ai servizi OGC esterni risulta essere più semplice, in quanto non è necessario eseguire manualmente tutte le richieste imposte dallo Standard, e, successivamente, eseguire il parsing sul contenuto delle risposte in formato XML. OpenLayers fornisce, a più livelli, delle classi che si occupano di eseguire queste operazioni al posto nostro, e attraverso il principio di Information Hiding, espongono allo sviluppatore solo il minimo necessario per eseguire correttamente la richiesta.
+\\Per esempio, nel caso dell'implentazione del protocollo WMS, non sarà quindi necessario eseguire una richiesta di GetCapabilities e successivamente GetMap, al fine di ricevere l'immagine della mappa. Se il nome del layer è noto, basterà istanziare la classe ImageWMS che passandogli i parametri corretti, eseguirà automaticamente le operazioni necessarie al fine di ricevere l'immagine della mappa corretta. Qui sotto viene riportato un esempio di implementazione della classe ImageWMS, il quale è possibile reperire anche dalla documentazione di OpenLayer\cite{DocumentazioneOpenLayersWMS}
+\lstinputlisting[language=Java, caption={Esempio di ImageWMS}]{listings/Capitolo3/openLayerWMS.js}
+Come si può vedere dall'esempio, al fine di recuperare l'immagine della mappa fornita dal server WMS esterno, è necessario istanziare la classe ImageWMS passandogli come argomento soltanto l'URL e il layer che si vuole visualizzare.
+OpenLayer si occuperà di eseguire la richiesta di GetMap al posto nostro e di mostrare a schermo l'immagine della mappa.
+\\Tale esempio richiede ovviamente che il nome del layer sia noto, nel caso in cui il client non conosca la lista di layer disponibili, sarà comunque necessario eseguire una richiesta di GetCapabilities.
+\\Anche in questo caso, OpenLayer si occupa di eseguire la richiesta e di effettuare il parsing in automatico sul contentuo dell'XML, senza dover creare una struttura dati apposita per manipolare i dati ricevuti da essa.
+\lstinputlisting[language=Java, caption={Esempio di GetCapabilities per WMS}]{listings/Capitolo3/openLayerWMSCapabilities.js}
+All'inizio è stato essenziale l'uso di OpenLayers per testare le mappe fornite da GeoCart e da IdroGEO, poiché sono delle mappe "fisiche", cioè non vengono fornite tramite un servizio OGC esterno, ma sono disponibili direttamente come un file locale in formato Shapefile o GeoJSON. OpenLayer infatti supporta con facilità il formato GeoJSON, così da testare
+
+%supporto shapefile, opensource, facile da integrare in angular, proiezione con pro4j, 
+
+% https://openlayers.org/doc/tutorials/concepts.html#:~:text=OpenLayers%20has%20four%20basic%20types,Renders%20vector%20data%20client%2Dside.
+
+% prima spiego openlayers con i concetti base
+% poi spiego perché openlayers e quale migliorie comporta
+% poi spiego come ho fatto l'applicazione
+% poi spiego i problemi come li ho affrontati (pro4j, geojson)
+
+\subsection{Approccio al problema}
+
+
+
+% studio angular dalla documentazione di angular.dev
+% studio di typescript e di javascript approfondito https://javascript.info/
+
+% come si programma all'interno dell'azienda, utilizzo di git, sviluppo agile, lo stack di sviluppo.
+% continuous integration e continuous delivery del software
+
+
+% Il presente capitolo fornisce una panoramica del progetto di tirocinio, offrendo una spiegazione sull'ambito del progetto e indicando le tecnologie impiegate per la sua realizzazione.
+
+% Il presente tirocinio si è svolto per tre messi presso l'azienda Geckosoft, nel periodo dal 15/01/2024 al 15/04/2024. All'inizio del tirocinio che si è protatto per una durata complessiva di circa trecento ore, l'applicazione Inspicio presentava una struttura già in fase di sviluppo.
+
+
+
 
 % \section{Questa è una sezione}
 

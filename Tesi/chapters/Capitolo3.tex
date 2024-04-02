@@ -1,9 +1,6 @@
-\chapter{Svolgimento del Tirocinio}
-
-
+\chapter{Introduzione al Tirocinio}
 
 % In questo capitolo verrà spiegato nel dettaglio lo svolgimento del tirocinio. L'obiettivo preposto è stato quello di realizzare un'applicazione funzionante per visualizzare e gestire mappe geospaziali. Lo sviluppo si è diviso tra front-end, per consentire la visualizzazione delle mappe, e back-end, per la loro gestione e fornirle al primo. Parte del codice si è inoltre focalizzata sulla comunicazione tra front-end e back-end.
-In questo capitolo verrà spiegato nel dettaglio lo svolgimento del tirocinio. L'obiettivo preposto è stato quello di realizzare un'applicazione funzionante per visualizzare e gestire mappe geospaziali. Lo sviluppo si è diviso tra front-end, per consentire la visualizzazione delle mappe, e back-end, per la loro gestione e fornitura. Infine, si è concluso il mio percorso lavorativo con una fase di integrazione tra i due componenti.
 
 \section{Tecnologie Utilizzate}
 All'inizio dell'esperienza di tirocinio, il tutor aziendale si è occupato di fornire una panoramica generale sulle tecnologie e sui framework utilizzati all'interno dell'azienda.
@@ -59,7 +56,7 @@ Per la parte di front-end, nel contesto di applicazioni Enterprise, come nel cas
     \item Teamcity per i test test cases, continuous integration e continuous delivery;
 \end{itemize}
 
-\subsection{Stato iniziale dell'applicazione}
+\section{Stato iniziale dell'applicazione}
 
 All'inizio è stato presentato al candidato lo stato della piattaforma, la quale era ancora nella fase iniziale di sviluppo. Dal punto di vista del front-end, lo sviluppo era ancora concentrato nella realizzazione dell'UiKit, ovvero una pagina web che contiene tutti i componenti grafici che verrano poi utilizzati all'interno dell'applicazione. L'UiKit è una pratica comune, specialmente all'interno di applicazioni Enterprise, in quanto offre diversi vantaggi come l'aiuto agli sviluppatori front-end ad avere una base solida ed uniforme dell'interfaccia utente
 ia dal punto di vista della programmazione, in quanto aiuta gli sviluppatori front-end ad avere una base solida ed uniforme di progettazione dell'interfaccia utente,
@@ -113,9 +110,9 @@ Le mappe ancora non c'erano, l'unica cosa presente era una piccola demo fatta co
 
 % utilizziamo come framework OpenLayer (frontend) per unire tutto e avere uno standard per i dati in mappa, con tanto di mappa già funzionante. Perché OpenLayer e non un altro framework? **Motivare**!
 
-\section{Inizio Tirocinio}
+\section{Preparazione al Tirocinio}
 
-\subsection{Studio di Reactive Programming e Angular}
+\subsection{Reactive Programming e Angular}
 I primi giorni di tirocinio sono stati dedicati allo studio autonomo dei linguaggi di programmazione e delle librerie utilizzate all'interno del progetto. Particolare attenzione è stata dedicata inizialmente alla parte di sviluppo front-end, dedicando le prime settimane allo studio del framework JavaScript Angular, e al suo corrispettivo linguaggio di programmazione TypeScript.
 Lo studio di queste tecnologie è terminato con la realizzazione di un piccolo progetto in Angular 17, che è possibile replicare seguendo la sua documentazione \cite{DocumentazioneAngular}. Si è poi proseguito con lo studio della libreria RxJS, fondamentale per l'uso di Angular, in quanto è parte integrante dello stesso.
 Tale libreria viene utilizzata internamente da Angular per gestire numerose operazioni asincrone attraverso l'uso di Stream, adottando il paradigma di "Reactive Programming" invece che "Event Driven".
@@ -136,6 +133,23 @@ Nell'approccio reattivo, invece, viene scritto del codice per gestire uno Stream
 %     \label{fig:CDA Card Component}
 % \end{figure}
 
+\subsection{Prototipo di Openlayers}
+
+% vecchio: Al fine di comprendere meglio il suo funzionamento e di semplificarne l'utilizzo, il candidato ha deciso non iniziare direttamente con lo sviluppo del progetto, ma ha proseguito con l'implementazione di una piccola applicazione esterna, priva del framework Angular e librerie di terzi. 
+Lo sviluppo delle mappe da parte del tirocinante è iniziato con lo studio e l'utilizzo della libreria OpenLayers. Al fine di capirne meglio il suo funzionamento, il candidato ha deciso di non iniziare direttamente con lo sviluppo del progetto di tirocinio, ma ha proseguito con l'implementazione di una piccola applicazione esterna, priva del framework Angular e librerie di terzi, così da semplificarne il suo utilizzo. Come riportato dalla documentazione \cite{DocumentazioneOpenLayersBase}, OpenLayers si basa su quattro componenti principali:
+
+\begin{itemize}
+    \item Map: per la manutenzione e revisione del codice;
+    \item View per i test test cases, continuous integration e
+    \item Source
+    \item Layers
+\end{itemize}
+Qui sotto viene riportato una parte del codice del prototipo, così da comprendere meglio il funzionamento della libreria.
+\lstinputlisting[language=html, caption={Codice HTML}]{listings/Capitolo3/index.html}
+% \texttt{Codice JavaScript}.
+\lstinputlisting[caption={Codice JavaScript}, language=Java]{listings/Capitolo3/main.js}
+
+
 \subsection{Censimento delle Mappe}
 Il tirocinio è poi continuato con lo studio e alla comprensione dei protocolli OGC e dei concetti fondamentali relativi ai dati geospaziali. In particolare, l'attenzione è stata concentrata sui protocolli WMS (Web Map Service) e WFS (Web Feature Service), poiché sono tra i più utilizzati e facili da distinguere. Questo ha permesso di comprendere al meglio il loro funzionamento e le principali differenze tra essi. Per quanto concerne i dati geospaziali, invece, lo studio si è dedicato principalmente ai formati GeoJSON e Shapefile, in quanto sono anch'essi formati geospaziali comuni e ampiamente utilizzati.
 \\Dopo questa fase di apprendimento iniziale, il candidato ha collaborato con l'azienda per identificare le fonti da cui raccogliere le mappe necessarie, censendole in un documento dettagliato. Questo processo ha permesso di avere una panoramica completa delle risorse geospaziali disponibili e di comprendere meglio come organizzarle e utilizzarle nel contesto del mio tirocinio. Le mappe utilizzate all'interno del progetto provengono principalmente da tre fonti:
@@ -144,122 +158,3 @@ Il tirocinio è poi continuato con lo studio e alla comprensione dei protocolli 
     \item \textit{IdroGEO}, una piattaforma gestita ISPRA (Istituto Superiore per la Protezione de la Ricerca Ambientale), che permette agli utenti di accedere e di scaricare dati di mappe, in formato Shapefile o GeoJSON, relativi al rischio idrogeologico in Italia. Precisamente fornisce informazioni sull'Inventario dei Fenomeni Franosi in Italia (IFFI), e sulle mappe nazionali di pericolosità da frane e alluvioni e sugli indicatori di rischio associati.
     \item \textit{GeoCart}, un'azienda italiana specializzata nella produzione e distribuzione di mappe e prodotti cartografici \cite{GeoCart}. Anche in questo caso le mappe sono in formato Shapefile, ma a differenza di quelle precedenti, non sono di dominio pubblico e non sono accessibili in modo gratuito. Sono risorse sviluppate ai fini commerciali.
 \end{itemize}
-
-\subsection{Perché OpenLayers}
-
-Lo sviluppo delle mappe da parte del tirocinante è iniziato con lo studio e l'utilizzo della libreria OpenLayers. Tale libreria è stata scelta, rispetto alle altre concorrenti, in quanto offre internamente molte funzionalità utili per la rappresentazione di questo tipo di mappe.
-\\Come già spiegato nel capitolo precedente, OpenLayers offre un supporto già integrato ai protocolli OGC, essenziali per la rappresentazione di questi tipi di dati geospaziali. La maggior parte delle sorgenti di mappe fornite, infatti, sono trasmesse mediante protocolli OGC quali WMS, WFS e WCS. Con l'utilizzo di tale libreria, la comunicazione ai servizi OGC esterni risulta essere più semplice, in quanto non è necessario eseguire manualmente tutte le richieste imposte dallo Standard, e, successivamente, eseguire il parsing sul contenuto delle risposte in formato XML. OpenLayers fornisce, a più livelli, delle classi che si occupano di eseguire queste operazioni al posto nostro, e attraverso il principio di Information Hiding, espongono allo sviluppatore solo il minimo necessario per eseguire correttamente la richiesta.
-\\Per esempio, nel caso dell'implentazione del protocollo WMS, non sarà quindi necessario eseguire una richiesta di GetCapabilities e successivamente GetMap, al fine di ricevere l'immagine della mappa. Se il nome del layer è noto, basterà istanziare la classe ImageWMS che passandogli i parametri corretti, eseguirà automaticamente le operazioni necessarie al fine di ricevere l'immagine della mappa corretta. Qui sotto viene riportato un esempio di implementazione della classe ImageWMS, il quale è possibile reperire anche dalla documentazione di OpenLayer\cite{DocumentazioneOpenLayersWMS}
-\lstinputlisting[language=Java, caption={Esempio di ImageWMS}]{listings/Capitolo3/openLayerWMS.js}
-Come si può vedere dall'esempio, al fine di recuperare l'immagine della mappa fornita dal server WMS esterno, è necessario istanziare la classe ImageWMS passandogli come argomento soltanto l'URL e il layer che si vuole visualizzare.
-OpenLayer si occuperà di eseguire la richiesta di GetMap al posto nostro e di mostrare a schermo l'immagine della mappa.
-\\Tale esempio richiede ovviamente che il nome del layer sia noto, nel caso in cui il client non conosca la lista di layer disponibili, sarà comunque necessario eseguire una richiesta di GetCapabilities.
-\\Anche in questo caso, OpenLayer si occupa di eseguire la richiesta e di effettuare il parsing in automatico sul contentuo dell'XML, senza dover creare una struttura dati apposita per manipolare i dati ricevuti da essa.
-\lstinputlisting[language=Java, caption={Esempio di GetCapabilities per WMS}]{listings/Capitolo3/openLayerWMSCapabilities.js}
-All'inizio è stato essenziale l'uso di OpenLayers per testare le mappe fornite da GeoCart e da IdroGEO, poiché sono delle mappe "fisiche", cioè non vengono fornite tramite un servizio OGC esterno, ma sono disponibili direttamente come un file locale in formato Shapefile o GeoJSON. OpenLayer infatti supporta con facilità il formato GeoJSON, così da testare
-
-%supporto shapefile, opensource, facile da integrare in angular, proiezione con pro4j, spiegare come funziona openlayer con i 3 componenti base quali map, tile layer e view??
-
-\subsection{Funzionamento di Openlayers}
-
-Al fine di comprendere meglio il suo funzionamento e di semplificarne l'utilizzo, il candidato ha preferito non iniziare direttamente con lo sviluppo del progetto, ma ha proseguito con l'implementazione di una piccola applicazione esterna, priva del framework Angular e librerie di terzi.
-\\Il funzionamento di OpenLayers si basa principalmente su 4 componenti principali:
-
-\begin{itemize}
-    \item Map: per la manutenzione e revisione del codice;
-    \item View per i test test cases, continuous integration e
-    \item Source
-    \item Layers
-\end{itemize}
-
-
-% https://openlayers.org/doc/tutorials/concepts.html#:~:text=OpenLayers%20has%20four%20basic%20types,Renders%20vector%20data%20client%2Dside.
-
-% prima spiego openlayers con i concetti base
-% poi spiego perché openlayers e quale migliorie comporta
-% poi spiego come ho fatto l'applicazione
-% poi spiego i problemi come li ho affrontati (pro4j, geojson)
-
-\lstinputlisting[language=html, caption={Codice HTML}]{listings/Capitolo3/index.html}
-% \texttt{Codice JavaScript}.
-\lstinputlisting[caption={Codice JavaScript}, language=Java]{listings/Capitolo3/main.js}
-
-\subsection{Approccio al problema}
-
-
-
-% studio angular dalla documentazione di angular.dev
-% studio di typescript e di javascript approfondito https://javascript.info/
-
-% come si programma all'interno dell'azienda, utilizzo di git, sviluppo agile, lo stack di sviluppo.
-% continuous integration e continuous delivery del software
-
-
-% Il presente capitolo fornisce una panoramica del progetto di tirocinio, offrendo una spiegazione sull'ambito del progetto e indicando le tecnologie impiegate per la sua realizzazione.
-
-% Il presente tirocinio si è svolto per tre messi presso l'azienda Geckosoft, nel periodo dal 15/01/2024 al 15/04/2024. All'inizio del tirocinio che si è protatto per una durata complessiva di circa trecento ore, l'applicazione Inspicio presentava una struttura già in fase di sviluppo.
-
-
-
-
-% \section{Questa è una sezione}
-
-% \lipsum[2]
-
-% \subsection{Questa è una aaaaaa}
-
-% \lipsum[3]
-
-% \subsubsection{Questa è una sotto-sottosezione}
-
-% \lipsum[4]
-
-% É possibile riferire l'immagine, una volta assegnatagli una label, tramite il comando \texttt{\textbackslash autoref\{fig:immagine\}}, ottenendo il seguente risultato: \autoref{fig:immagine}.
-
-% \begin{figure}
-%     \centering
-%     \includegraphics[width= 0.8\textwidth]{images/Capitolo1/immagine.jpg}
-%     \caption{Questa è un'immagine}
-%     \label{fig:immagine}
-% \end{figure}
-
-% Questa è una citazione \cite{LabelPerLaCitazione}.
-
-% \subsubsection{Questa è un'altra sottosezionelipsum}
-
-% Quello che segue è un esempio di codice. E' possibile modificare il linguaggio per il synyax highlight, aggiungere parole chiave... E' tutto disponibile nella guida del pacchetto \texttt{listings}.
-
-% \lstinputlisting[language=C++]{listings/Capitolo1/code1.cpp}
-
-% \section{Questa è un'ennesima sezione}
-
-% \lipsum[4]
-
-% \subsection{Sottosezione con una tabella}
-
-% La tabella si indirizza sempre con l'uso di una label, ottenendo il risultato \autoref{tab:labelTabella}.
-
-% \begin{table}
-%     \caption{Una simpatica tabella!}\label{tab:labelTabella}
-%     \begin{center}
-%         \begin{tabular}{c|c|c|c}
-%             \textbf{Colonna 1} & \textbf{Colonna 2} & \textbf{Colonna 3} & \textbf{Colonna 4} \\
-%             \hline
-%             $3$                & $24$               & $24$               & $29$               \\
-%             $36$               & $31$               & $49$               & $39$               \\
-%             $32$               & $41$               & $59$               & $57$               \\
-%             $34$               & $60$               & $79$               & $74$               \\
-%             $328$              & $96$               & $194$              & $99$               \\
-%             $356$              & $117$              & $297$              & $149$              \\
-%             $312$              & $315$              & $293$              & $242$              \\
-%             $3024$             & $184$              & $253$              & $019$              \\
-%             $3048$             & $7795$             & $253$              & $077$              \\
-%             $3096$             & $7767$             & $2432$             & $0514$             \\
-%             $3192$             & $3769$             & $2435$             & $0551$             \\
-%             $36384$            & $6625$             & $3432$             & $0497$             \\
-%             $32768$            & $15469$            & $6472$             & $0471$             \\
-%             $35536$            & $15425$            & $14539$            & $10289$            \\
-%             $331072$           & $34623$            & $24941$            & $20444$            \\
-%         \end{tabular}
-%     \end{center}
-% \end{table}
