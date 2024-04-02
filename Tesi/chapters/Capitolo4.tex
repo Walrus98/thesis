@@ -15,31 +15,34 @@ OpenLayer si occuperà di eseguire la richiesta di GetMap al posto nostro e di m
 \\Tale esempio richiede ovviamente che il nome del layer sia noto, nel caso in cui il client non conosca la lista di layer disponibili, sarà comunque necessario eseguire una richiesta di GetCapabilities.
 \\Anche in questo caso, OpenLayer si occupa di eseguire la richiesta e di effettuare il parsing in automatico sul contentuo dell'XML, senza dover creare una struttura dati apposita per manipolare i dati ricevuti da essa.
 \lstinputlisting[language=Java, caption={Esempio di GetCapabilities per WMS}]{listings/Capitolo3/openLayerWMSCapabilities.js}
-All'inizio è stato essenziale l'uso di OpenLayers per testare le mappe fornite da GeoCart e da IdroGEO, poiché sono delle mappe "fisiche", cioè non vengono fornite tramite un servizio OGC esterno, ma sono disponibili direttamente come un file locale in formato Shapefile o GeoJSON. OpenLayer infatti supporta con facilità il formato GeoJSON, così da testare
+Inoltre la libreria ha già un supporto integrato per il formato GeoJSON, il che la rende ottimale al fine di testare le mappe fornite da IdroGEO, in quanto quest'ultime non vengono distribuite mediante un servizio OGC, ma vengono fornite come file locali in formato GeoJSON.
+\\Infine, la libreria è interamente supportata da Angular e con un semplice comando di npm (mpm install ol), la si può installare all'interno del progetto, il che la rende ottimale per questo tipo di applicazione.
 
-%supporto shapefile, opensource, facile da integrare in angular, proiezione con pro4j, 
-
-% https://openlayers.org/doc/tutorials/concepts.html#:~:text=OpenLayers%20has%20four%20basic%20types,Renders%20vector%20data%20client%2Dside.
-
-% prima spiego openlayers con i concetti base
-% poi spiego perché openlayers e quale migliorie comporta
 % poi spiego come ho fatto l'applicazione
 % poi spiego i problemi come li ho affrontati (pro4j, geojson)
 
-\subsection{Approccio al problema}
+\subsection{Implementazione nel Progetto}
+
+Lo sviluppo è cominciato con estendere il componente Angular delle mappe già esistente nell'Ui-kit, che presentava solamente l'integrazione degli elementi base di OpenLayers e un supporto alla sovrapposizione multipla di layer differenti.
+Il candidato, sotto supervisione del tutor aziendale, ha poi creato una nuova pagina all'interno dell'applicazione web, dove ha importato il componente delle mappe, così da poter integrare il supporto ai protocolli OGC richiesti e testare le mappe censite.
+\\Lo sviluppo si è poi concentrato nell'integrazione del supporto al formato GeoJSON, selezionando come prima mappa da integrare
 
 
 
-% studio angular dalla documentazione di angular.dev
-% studio di typescript e di javascript approfondito https://javascript.info/
-
-% come si programma all'interno dell'azienda, utilizzo di git, sviluppo agile, lo stack di sviluppo.
-% continuous integration e continuous delivery del software
+% è stato scelta una mappa di IdroGEO in formato geojson, perché
 
 
-% Il presente capitolo fornisce una panoramica del progetto di tirocinio, offrendo una spiegazione sull'ambito del progetto e indicando le tecnologie impiegate per la sua realizzazione.
+% Abbiamo preso i link dei dati delle mappe che ho censito i primi giorni. Abbiamo scelto un link del sito blu (quello idrico) e abbiamo provato a prendere il file delle frane della toscana in formato GeoJson e darlo in pasto a open layer, nella speranza che in automatico riuscisse a capire quei dati e mostrarli a schermo.
+% Abbiamo quindi creato un nuovo tipo e fornito nella condizione dello switch case iniziato da Alessandro (lui aveva fatto funzionare i tipi: assets, tiles, topojson, ma non geojson!)
+% Abbiamo creato un nuovo layer con new GeoJson() supportato direttamente da open layer.
+% Abbiamo definito lo stile in cui i dati nel file geojson dovevano essere rappresentati (dei cerchi rossi in svg).
+% A quanto pare il formato geojson serve per disegnare roba nella mappa, come coordinate punti o linee, non mappe. Di conseguenza ci serve uno stile da dare a open layer con cui deve leggere.
+% A questo punto abbiamo fatto renderizzare la mappa a schermo ma senza successo. Il codice era scritto correttamente ma il sistema di coordinate passato dal file geojson era sconosciuto a open layer.
+% Quindi abbiamo creato una nuova projection con le chiamate fornite della libreria e abbiamo definito il funzionamento di quella projection con una libreria chiamata `proj4`.
+% Questa libreria permette di fare in automatico il cambio di coordinate da un sistema di riferimento ad un altro. Quindi e’ bastato fare la conversione e dare il risultato ad open layer.
+% Poiche’ il file era di 64 Mega, e la quantita’ di dati era cosi densa, la mappa e’ arrivata a consumare la bellezza di 27 GB di ram prima di andare poi in swap e crashare. Quindi e’ stato necessario ‘clasterizzare’ i dati. Fortunatamente anche qui, open layer ci da una mano con una funzione cluster
 
-% Il presente tirocinio si è svolto per tre messi presso l'azienda Geckosoft, nel periodo dal 15/01/2024 al 15/04/2024. All'inizio del tirocinio che si è protatto per una durata complessiva di circa trecento ore, l'applicazione Inspicio presentava una struttura già in fase di sviluppo.
+% proiezione con pro4j,
 
 
 
