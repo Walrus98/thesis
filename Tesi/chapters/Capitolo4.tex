@@ -23,13 +23,27 @@ Inoltre la libreria ha già un supporto integrato per il formato GeoJSON, il che
 
 \subsection{Implementazione nel Progetto}
 
-Lo sviluppo è cominciato con estendere il componente Angular delle mappe già esistente nell'Ui-Kit, che presentava solamente l'integrazione degli elementi base di OpenLayers e un supporto alla sovrapposizione multipla di layer differenti.
-Il candidato, sotto supervisione del tutor aziendale, ha poi creato una nuova pagina all'interno dell'applicazione web, dove ha importato il componente delle mappe, così da poter integrare il supporto ai protocolli OGC richiesti e testare le mappe censite.
-\\Lo sviluppo si è poi dedicato al supporto del formato GeoJSON, selezionando come prima mappa quella delle frane in Toscana, fornita da IdroGEO. Tale scelta è stata fatta poiché queste mappe possono essere scaricate localmente e caricate all'interno del progetto, lavorando così in un ambiente locale senza dover contattare alcun servizio esterno, riducendo il rischio di errore dovuto da problemi di connessione, tempi di risposta lenti o problemi di disservizio.
+Il candidato, sotto supervisione del tutor aziendale, ha iniziato creando una nuova pagina web all'interno dell'applicazione, nella quale ha importato il componente della mappa già esistente nell'Ui-Kit, così da poter integrare il supporto ai protocolli OGC richiesti e iniziare a testare le mappe censite.
+\\Lo sviluppo è proseguito con estendere il componente Angular delle mappe, che presentava solamente l'integrazione agli elementi base di OpenLayers e un supporto alla sovrapposizione multipla di layer differenti.
+\\La prima funzionalità aggiuntata è stata quella del supporto al formato GeoJSON, selezionando come prima mappa da testare quella delle frane in Toscana, fornita da IdroGEO. Questa mappa è stata preferita rispetto alle altre in quanto può essere scaricata localmente e caricata all'interno del progetto, lavorando così in un ambiente locale, senza dover contattare alcun servizio esterno. Ciò ha facilitato il lavoro di programmazione, riducendo il rischio di errore dovuto a eventuali problemi di disservizio dei server di mappe esterni.
+\\In questa fase, le parti di codice che hanno subito più modifiche sono state le classi BuildLayer.ts e MapModel.ts, le quali si occupano di far istanziare l'oggetto della mappa con proprietà differenti, in base al tipo di formato geospaziale passato come argomento.
+\\Il lavoro si è poi incentrato sulla classe TypeScript che rappresentava la logica della pagina precedentemente creata, andando ad inserire al suo interno alcune mappe fittizie, tra cui una in formato GeoJSON, così da poterne verificare il suo funzionamento. Tali mappe, che venivano rappresentate come "layer", sono state tutte sovrapposte a quello di default, ovvero quello che conteneva la mappa di OpenStreetMap. In questo modo è stato possibile capire se le altre mappe sovrapposte venivano rappresentate correttamente o meno e riuscire a navigare all'interno delle mappe capendo dove ci si trovava.
 
-* spiegare qui cosa ho fatto *
+voglio dire che ho aggiunto il layer di openstreet map
+voglio dire del problema di pro4j
+voglio dire del problema di clustering e la ram mangiata
+voglio dire dello stile applicato e il click dei marker
 
-* oh no! non va na sega! usiamo pro4j *
+
+\lstinputlisting[language=Java, caption={Implementazione BuildLayer}]{listings/Capitolo4/buildLayer.js}
+
+
+
+
+% in questa fase il lavoro si è prevalentemente incentrato sulla classe BuildLayer.ts, la quale si occupa di bababababab. Alla seguente classe sono stato apportate le seguenti modifiche: basdbsamdasbdnas
+
+
+% * oh no! non va na sega! usiamo pro4j *
 
 
 
