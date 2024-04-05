@@ -116,14 +116,14 @@ Le richieste che è possibile fare a un servizio WFS (Web Feature Service) sono 
 \begin{itemize}
       \item \textit{GetCapabilities}: Come per i WMS, la richiesta GetCapabilities restituisce un documento XML che fornisce informazioni dettagliate sul servizio WFS stesso. Queste informazioni includono i tipi di feature disponibili, i formati di trasmissione dei dati supportati (GML, GeoJSON, ecc..), i tipi di richieste supportate, le proiezioni geografiche disponibili e altre capacità del servizio.
       \item \textit{GetFeature}: è la richiesta principale nel protcollo WFS in quanto consente agli utenti di recuperare la feature interessata. I parametri inclusi nella richiesta comprendono il nome della feature, il tipo di formato desiderato, la sua proiezione, ecc..
-      \item \textit{DescribeFeatureType}: è utilizzata per ottenere una descrizione dettagliata della struttura dei dati vettoriali (feature types) disponibili attraverso il servizio. In pratica, questa operazione fornisce informazioni sullo schema dei dati vettoriali, inclusi i tipi di attributi, i nomi dei campi e i tipi di geometria.
+      \item \textit{DescribeFeatureType}: è usata per richiede informazioni su un singolo tipo di feature prima di chiedere effettivamente la feature stessa. In particolare, l'operazione richiede un elenco di feature e attributi per il tipo di feature dato, oppure un elenco dei tipi di feature disponibili.
 \end{itemize}
 I tipi di richiesta che i servizi WFS possono opzionalmente supportare sono:
 \begin{itemize}
-      \item \textit{Transaction}: consente agli utenti di modificare i dati geografici nel servizio WFS, attraverso operazioni come l'insirimento, la modifica o l'eliminazione di una feature. Ciò è utile per gli utenti che hanno bisogno di mantenere aggiornati i dati geografici all'interno del servizio, consentendo loro di interagire direttamente e apportare modifiche in tempo reale.
+      \item \textit{Transaction}: consente agli utenti di modificare i dati geografici nel servizio WFS, attraverso le operazioni come inserimento, modifica o eliminazione di una feature. Ciò è utile per gli utenti che hanno bisogno di mantenere aggiornati i dati geografici all'interno del servizio, consentendo loro di interagire direttamente e apportare modifiche in tempo reale.
       \item \textit{GetPropertyValue}: questa richiesta consente agli utenti di ottenere i valori degli attributi di una o più feature, senza recuperarne tutti i dettagli geometrici associati.
-      \item \textit{LockFeature}: consente agli utenti di acquisire una Lock di accesso in mutua esclusione alla feature, impedendo ad altri utenti di modificarla contemporaneamente.
-      \item \textit{GetFeatureWithLock}: viene usata per ottenere le feature con un blocco di accesso esclusivo in una singola operazione, combinando le funzionalità di GetFeature e LockFeature. Questo permette agli utenti di acquisire un blocco di accesso esclusivo alle feature desiderate prima di eseguire operazioni di interrogazione o aggiornamento su di esse.
+      \item \textit{LockFeature}: consente agli utenti di acquisire una lock di accesso in mutua esclusione alla feature, impedendo ad altri utenti di modificarla contemporaneamente.
+      \item \textit{GetFeatureWithLock}: questa richiesta combina le funzionalità di GetFeature e LockFeature. In questo modo è possibile acquisire una lock di accesso in mutua esclusione alla feature desiderate prima di richiedere la feature stessa.
 \end{itemize}
 Qui di seguito è riportato uno \textit{snippet} contenente alcuni esempi possibili di richieste WFS, eseguite utilizzando il comando CURL per simulare il comportamento di una richiesta HTTP.
 

@@ -7,45 +7,19 @@ All'inizio dell'esperienza di tirocinio, il tutor aziendale si è occupato di fo
 
 \subsection{Microservizi e Docker}
 Dal punto di vista architetturale, è stata scelta un'archittettura a microservizi anziché una monolitica. Essa prevede di suddividere l'applicazione in tanti servizi autonomi, ciascuno dei quali svolge una funzione specifica. Questo approccio è molto comune per le applicazioni di grandi dimensioni, poiché ogni microservizio può essere sviluppato e mantenuto in modo indipendente dagli altri, utilizzando, se necessario, anche linguaggi di programmazione differenti. Tale sistema permette agli sviluppatori di concentrarsi su ogni funzionalità singolarmente, rimanendo isolati da tutto il resto dell'applicazione. Inoltre, grazie alla possibilità di utilizzare linguaggi differenti, è possibile scegliere la soluzione più adatta in base alla funzionalità che deve essere implementata. Quest'architettura favorisce la scalabilità orizzontale, ovvero la possibilità di aggiungere o rimuovere istanze di singoli microservizi in base alle esigenze di carico, senza dover scalare l'intera applicazione. Dunque, rende più efficiente l'utilizzo delle risorse e consente di gestire picchi di traffico in modo più efficace.
-\\Per gestire questo tipo di architettura, si è scelto di utilizzare Docker, ovvero una piattaforma che consente di creare e gestire container, cioè ambienti isolati che contengono tutte le risorse necessarie per eseguire un'applicazione. %, inclusi il codice, le dipendenze e le librerie necessarie.
+\\Per gestire questo tipo di architettura, si è scelto di utilizzare Docker, ovvero una piattaforma che consente di creare e gestire container, cioè ambienti isolati che contengono tutte le risorse necessarie per eseguire un'applicazione.
 Ogni servizio viene dunque "containerizzato", ovvero viene isolato in un ambiente autonomo con tutte le risorse e le dipendenze necessarie per il suo funzionamento. La containerizzazione attraverso Docker rende notevolmente più semplice lo sviluppo dell'applicazione, in quanto gli sviluppatori, lavorando sullo stesso container, possiedono tutti lo stesso ambiente di sviluppo: la stessa versione delle dipendenze, librerie e del linguaggio di programmazione. Inoltre, una volta che l'applicazione è pronta per il deployment (cioè pronta per essere messa in produzione), viene eseguita su server in un ambiente ancora containerizzato. Così facendo, si ha la garanzia che l'applicazione continui a funzionare come quando è stata sviluppata, e, se necessario, è possibile scalarla orizzontalmente attraverso l'uso di servizi Cloud come Amazon AWS.
 
 \subsection{WebServer e Reverse Proxy}
+
 È stato impiegato un WebServer che, tra le altre cose, ha svolto il ruolo di un Reverse Proxy, permettendo di semplificare la gestione del traffico HTTP diretto verso i container Docker. Un WebServer è un software che riceve tutte le richieste HTTP inviate da client (per esempio browser) e che alla fine fornirà loro delle risposte, solitamente sotto forma di dati o pagine web.
-\\Comportandosi da reverse proxy, il WebServer reinstrada le richieste ricevute verso il microservizio appropiato, mascherando ai client la pluralità di servizi esistenti. Una volta ricevuta la risposta dal microservizio, la trasmette al client che ne aveva fatto richiesta.
+\\Comportandosi da reverse proxy, il WebServer reinstrada le richieste ricevute verso il microservizio appropiato, mascherando ai client la pluralità di servizi esistenti. Una volta ricevuta la risposta dal microservizio, la trasmette al client che ne aveva fatto richiesta. Nel dettaglio è stato utilizzato Caddy come WebServer, poiché offre delle semplici modalità di configurazione, tramite la stesura del file "Caddyfile", fornito dal software stesso.
+\\Il suo uso principale è stato quello di permettere ai client di contattare i servizi containerizzati tramite un dominio, anziché un indirizzo ip con una porta associata: ad esempio, invece di contattare il container che ha al suo interno il servizio di rest API all'indirizzo \textit{127.0.0.1:8080}, è possibile contattarlo tramite il dominio \textit{bms.local.gkops.net/api/}. Grazie a questa modalità, è possibile simulare un ambiente di produzione, nel quale tutti i servizi vengono contattati su un dominio apposito tramite protocollo HTTPS. Quest'ultimo dettaglio è possibile grazie a Caddy che permette di installare certificati TLS sui domini da lui creati. È stato utilizzato Let's Encrypt come Certification Authority.
+\\Inoltre, se necessario, tramite Caddy è possibile eseguire load balancing tra i microservizi, il quale consente di distribuire il carico tra più istanze del servizio per garantire una migliore scalabilità e affidabilità del sistema.
+\\Infine, l'utilizzo di Caddy è essenziale per effettuare meccanismi di cahing tra le richieste HTTP inviate dai client ai microservizi. nel caso in cui venga posta la medesima richiesta, il WebServer non richiederà nuovamente al il microservizio la risposta, bensì risponderà direttamente al client.
 
-
-% L'utilizzo di un reverse proxy permette di mascherare tutti i programmi containerizzati dietro un unico servzio, ovvero il WebServer. Il reverse proxy agisce come intermediario tra i client e i servizi containerizzati: tutte le richieste inviate dai client vengono inviate al WebServer, e quest'ultimo, basantosi su regole di routing, instrada le richieste al servizio interessato. Il servizio elabora la richiesta e invia la risposta al reverse proxy, che quindi la trasmette al client.
-%Per gestire tutti i cosi di docker abbiamo l'utilizzato caddy per fare reverse proxy su tutti i cosi di docker, così da non dover avere tutto in localhost e simulare effettivamente come se l'app fosse deployato e abbiamo installato il certificato sopra.
-
-
-L'utilizzo del reverse proxy offre molti vantaggi come la possibilità di eseguire load balancing, distribuendo il carico tra più server così da prevenire sovraccarichi.
-
-caching
-
-Il WebServer permette anche di crittografare con SSL/TLS
-
-Il web server Caddy offre la possibilità di utilizzare domini personalizzati anziché il semplice 'localhost' per accedere ai servizi. Inoltre, Caddy consente di integrare facilmente container Docker e di gestire il traffico HTTPS in modo automatico grazie alla funzionalità di gestione dei certificati TLS. Infine, Caddy supporta il load balancing, consentendo di distribuire il carico tra più istanze del servizio per garantire una migliore scalabilità e affidabilità del sistema
-
-
-il reverse proxy può svolgere un ruolo importante nella sicurezza dell'applicazione, eseguendo azioni come la crittografia SSL/TLS terminante, il filtraggio delle richieste dannose e l'autenticazione degli utenti.
-
-% \\Per gestire il traffico HTTP attraverso i servizi eseguiti all'interno dei container di Docker, è stato necesario utilizzare Caddy come reverse proxy. Caddy è un web server open-source
-
-
-% così da avere tutto sotto dominio e non in localhost
-
-
-"Per gestire il traffico HTTP verso i servizi eseguiti nei container Docker, abbiamo utilizzato Caddy come reverse proxy., abbiamo introdotto un componente aggiuntivo chiamato Caddy. Caddy è un server web open-source progettato per essere semplice da configurare e utilizzare. Una delle sue funzionalità principali è quella di agire come un reverse proxy.
-
-invece, è stato Caddy per la sua semplicità d'uso e per le funzionalità avanzate di gestione dei certificati SSL/TLS tramite Let's Encrypt. Caddy semplifica notevolmente la configurazione del server web e offre prestazioni elevate, rendendolo ideale per progetti che richiedono una rapida messa in produzione e una gestione sicura delle connessioni.
-
-Nel nostro caso, utilizzando Caddy come reverse proxy, siamo in grado di instradare le richieste provenienti dai client ai vari container Docker in esecuzione, senza dover esporre direttamente i container al traffico esterno. Questo ci consente di mantenere un ambiente più sicuro e controllato, oltre a semplificare la gestione delle richieste in arrivo e dei servizi di backend.
-
-Inoltre, l'installazione del certificato sopra Caddy garantisce la crittografia delle comunicazioni, fornendo una maggiore sicurezza durante lo scambio di dati tra il client e il server. Questo è particolarmente importante per garantire la riservatezza e l'integrità delle informazioni trasmesse attraverso l'applicazione.
-% bibop Questi framework consentono lo sviluppo a componenti, il che significa che ogni elemento dell'interfaccia utente può essere sviluppato come un componente separato e riutilizzabile.
-% Pertanto, quando uno sviluppatore crea un componente nell'UI kit, può poi facilmente importarlo e utilizzarlo all'interno delle varie pagine del sito senza doverlo ricreare da zero ogni volta. Ciò non solo accelera il processo di sviluppo, ma anche aumenta la coerenza e la manutenibilità del codice.
 \subsection{Front-end e Back-end}
+
 Per la parte di front-end, nel contesto di applicazioni Enterprise, come nel caso di BMS, è stato deciso di sviluppare l'interfaccia grafica utilizzando un framework JavaScript moderno, nello specifico Angular. Questi framework presentano un'architettura basata su componenti, cioè permettono di costruire l'interfaccia grafica attraverso l'uso di componenti che possono essere riutilizzati. Questo consente di avere una programmazione modulare, in cui ogni componente HTML viene visto come un modulo a se stante, che può essere importato e riutilizzato su pagine web differenti. Questo rende il codice più organizzato, facile da comprendere e da mantenere, specialmente all'aumentare delle dimensioni e della complessità dell'applicazione.
 \\Lato back-end, invece, è stato adottato l'utilizzo di un framework ad alto livello come .NET, il quale offre un insieme di funzionalità e strumenti per lo sviluppo di applicazioni complesse e scalabili.
 
@@ -58,6 +32,9 @@ Per la parte di front-end, nel contesto di applicazioni Enterprise, come nel cas
 
 \section{Stato iniziale dell'applicazione}
 
+
+% bibop Questi framework consentono lo sviluppo a componenti, il che significa che ogni elemento dell'interfaccia utente può essere sviluppato come un componente separato e riutilizzabile.
+% Pertanto, quando uno sviluppatore crea un componente nell'UI kit, può poi facilmente importarlo e utilizzarlo all'interno delle varie pagine del sito senza doverlo ricreare da zero ogni volta. Ciò non solo accelera il processo di sviluppo, ma anche aumenta la coerenza e la manutenibilità del codice.
 All'inizio è stato presentato al candidato lo stato della piattaforma, la quale era ancora nella fase iniziale di sviluppo. Dal punto di vista del front-end, lo sviluppo era ancora concentrato nella realizzazione dell'UiKit, ovvero una pagina web che contiene tutti i componenti grafici che verrano poi utilizzati all'interno dell'applicazione. L'UiKit è una pratica comune, specialmente all'interno di applicazioni Enterprise, in quanto offre diversi vantaggi come l'aiuto agli sviluppatori front-end ad avere una base solida ed uniforme dell'interfaccia utente
 ia dal punto di vista della programmazione, in quanto aiuta gli sviluppatori front-end ad avere una base solida ed uniforme di progettazione dell'interfaccia utente,
 sia perché funge da strumento di presentazione del design ai potenziali clienti, consentendo loro di visualizzare in anteprima l'aspetto e le funzionalità dell'applicazione.
