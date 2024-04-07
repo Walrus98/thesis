@@ -2,9 +2,9 @@
 
 In questo capitolo verrà spiegato nel dettaglio lo svolgimento del tirocinio. L'obiettivo preposto è stato quello di realizzare un'applicazione funzionante per visualizzare e gestire mappe geospaziali. Lo sviluppo si è diviso tra front-end, per consentire la visualizzazione delle mappe, e back-end, per la loro gestione e fornirle al primo. Parte del codice si è inoltre focalizzata sulla comunicazione tra front-end e back-end.
 
-\section{Studio delle tecnologie}
+\section{Preparazione al Tirocinio}
 
-\subsection{Reactive Programming e Angular}
+\subsection{Studio di Reactive Programming e Angular}
 I primi giorni di tirocinio sono stati dedicati allo studio autonomo dei linguaggi di programmazione e delle librerie utilizzate all'interno del progetto. Particolare attenzione è stata dedicata inizialmente alla parte di sviluppo front-end, dedicando le prime settimane allo studio del framework JavaScript Angular, e al suo corrispettivo linguaggio di programmazione TypeScript.
 Lo studio di queste tecnologie è terminato con la realizzazione di un piccolo progetto in Angular 17, che è possibile replicare seguendo la sua documentazione \cite{DocumentazioneAngular}. Si è poi proseguito con lo studio della libreria RxJS, fondamentale per l'uso di Angular, in quanto è parte integrante dello stesso.
 Tale libreria viene utilizzata internamente da Angular per gestire numerose operazioni asincrone attraverso l'uso di Stream, adottando il paradigma di "Reactive Programming" invece che "Event Driven".
@@ -25,7 +25,7 @@ Nell'approccio reattivo, invece, viene scritto del codice per gestire uno Stream
 %     \label{fig:CDA Card Component}
 % \end{figure}
 
-\subsection{Prototipo di OpenLayers}
+\subsection{Realizzazione di un prototipo con OpenLayers}
 
 % vecchio: Al fine di comprendere meglio il suo funzionamento e di semplificarne l'utilizzo, il candidato ha deciso non iniziare direttamente con lo sviluppo del progetto, ma ha proseguito con l'implementazione di una piccola applicazione esterna, priva del framework Angular e librerie di terzi.
 Lo sviluppo delle mappe da parte del tirocinante è iniziato con lo studio e l'utilizzo della libreria OpenLayers. Al fine di capirne meglio il suo funzionamento, il candidato ha deciso di non iniziare direttamente con lo sviluppo del progetto di tirocinio, ma ha proseguito con l'implementazione di una piccola applicazione esterna, priva del framework Angular e librerie di terzi, così da semplificarne il suo utilizzo. Come riportato dalla documentazione \cite{DocumentazioneOpenLayersBase}, OpenLayers si basa su quattro componenti principali:
@@ -41,8 +41,30 @@ Qui sotto viene riportato una parte del codice del prototipo, così da comprende
 % \texttt{Codice JavaScript}.
 \lstinputlisting[caption={Codice JavaScript}, language=Java]{listings/Capitolo3/main.js}
 
+\subsection{Studio di OpenLayers in Angular}
+
+Il candidato, infine, ha confrontato il suo lavoro con quello già presente all'interno del progetto realizzato in Angular, così da comprendere al meglio le differenze fra le due implementazioni e capire quali funzionalità fossero già state realizzate.
+\\La loro versione presentava solamente l'integrazione agli elementi base di OpenLayers, un supporto alla sovrapposizione multipla di layer differenti e un layer di default, che mostrava una mappa di base fornita da OpenStreetMap. La differenza principale, essendo stata realizzata in Angular, è che la loro implementazione era stata fatta tramite l'uso di componenti, in questo modo poteva il componente della mappa poteva essere facilmente importato più volte all'interno delle varie pagine web dell'applicazione.
+\\Inizialmente, infatti, tale componente era situato all'interno della pagina web dell'Ui-Kit, ma allo sviluppatore di importare più volte il componente della mappa nell'applicazione. ovvero una pagina contente, a scopo dimostrativo, tutti i componenti grafici che sarebbero stati poi utilizzati all'interno dell'applicazione. L'uso dell'Ui-Kit è una pratica comune, specialmente nel contesto di applicazioni Enterprise, in quanto permette agli sviluppatori.
+\\Ovviamente l'uso dell'Ui-Kit è reso possibile grazie ai framework JavaScript come Angular, la cui architettura modulare rende possibile l'esportazione dei componenti creati in altre pagine web dell'applicazione. Ad esempio, quando uno sviluppatore crea un componente nell'Ui-Kit, può facilmente importarlo e utilizzarlo all'interno delle varie pagine del sito, senza doverlo ricreare da zero ogni volta. Senza Angular, questa operazione sarebbe molto più laboriosa, dovendo riscrivere più volte lo stesso codice e quindi non risulterebbe più conveniente.
+
+% L'UI Kit è utile perché fornisce una libreria di componenti grafici predefiniti che consentono agli sviluppatori di mantenere la coerenza visiva e funzionale nell'interfaccia utente dell'applicazione. Utilizzandolo, si risparmia tempo evitando di dover progettare e implementare ogni elemento da zero. Inoltre, offre la possibilità di personalizzare i componenti per adattarli alle esigenze specifiche del progetto, garantendo una migliore integrazione e flessibilità nel processo di sviluppo.
+
+% L'UiKit è una pratica comune, specialmente all'interno di applicazioni Enterprise, in quanto offre diversi vantaggi come l'aiuto agli sviluppatori front-end ad avere una base solida ed uniforme dell'interfaccia utente
+
+% ia dal punto di vista della programmazione, in quanto aiuta gli sviluppatori front-end ad avere una base solida ed uniforme di progettazione dell'interfaccia utente,
+
+% sia perché funge da strumento di presentazione del design ai potenziali clienti, consentendo loro di visualizzare in anteprima l'aspetto e le funzionalità dell'applicazione
+
+% Inoltre, l'utilizzo dell'UiKit favorisce l'efficienza nello sviluppo. Gli sviluppatori possono ridurre il tempo necessario per progettare e implementare nuove funzionalità dell'interfaccia utente, poicheé angular. Questo permette di accelerare il processo di sviluppo e di ridurre i costi associati.
+% Infine, l'UiKit favorisce la manutenibilità del codice. Poiché i componenti dell'interfaccia utente sono riutilizzabili e modulari, è più semplice apportare modifiche e aggiornamenti all'interfaccia utente senza dover modificare il codice sorgente in più punti. Questo rende più agevole la gestione e l'evoluzione dell'applicazione nel tempo, garantendo una maggiore flessibilità e scalabilità.
+
+% fornire una base consistente per la progettazione dell'interfaccia utente,
+% bibop
+% L'obiettivo principale di un UI kit è quello di fornire una base consistente per la progettazione e lo sviluppo dell'interfaccia utente, facilitando così il lavoro degli sviluppatori e garantendo una migliore coerenza visiva e funzionale nell'applicazione finale. Utilizzando un UI kit, gli sviluppatori possono risparmiare tempo nella progettazione e implementazione dell'interfaccia utente, concentrandosi invece sulle funzionalità e sull'esperienza utente dell'applicazione.
 
 \subsection{Censimento delle Mappe}
+
 Il tirocinio è poi continuato con lo studio e alla comprensione dei protocolli OGC e dei concetti fondamentali relativi ai dati geospaziali. In particolare, l'attenzione è stata concentrata sui protocolli WMS (Web Map Service) e WFS (Web Feature Service), poiché sono tra i più utilizzati e facili da distinguere. Questo ha permesso di comprendere al meglio il loro funzionamento e le principali differenze tra essi. Per quanto concerne i dati geospaziali, invece, lo studio si è dedicato principalmente ai formati GeoJSON e Shapefile, in quanto sono anch'essi formati geospaziali comuni e ampiamente utilizzati.
 \\Dopo questa fase di apprendimento iniziale, il candidato ha collaborato con l'azienda per identificare le fonti da cui raccogliere le mappe necessarie, censendole in un documento dettagliato. Questo processo ha permesso di avere una panoramica completa delle risorse geospaziali disponibili e di comprendere meglio come organizzarle e utilizzarle nel contesto del mio tirocinio. Le mappe utilizzate all'interno del progetto provengono principalmente da tre fonti:
 \begin{itemize}
@@ -50,10 +72,6 @@ Il tirocinio è poi continuato con lo studio e alla comprensione dei protocolli 
     \item \textit{IdroGEO}, una piattaforma gestita ISPRA (Istituto Superiore per la Protezione de la Ricerca Ambientale), che permette agli utenti di accedere e di scaricare dati di mappe, in formato Shapefile o GeoJSON, relativi al rischio idrogeologico in Italia. Precisamente fornisce informazioni sull'Inventario dei Fenomeni Franosi in Italia (IFFI), e sulle mappe nazionali di pericolosità da frane e alluvioni e sugli indicatori di rischio associati.
     \item \textit{GeoCart}, un'azienda italiana specializzata nella produzione e distribuzione di mappe e prodotti cartografici \cite{GeoCart}. Anche in questo caso le mappe sono in formato Shapefile, ma a differenza di quelle precedenti, non sono di dominio pubblico e non sono accessibili in modo gratuito. Sono risorse sviluppate ai fini commerciali.
 \end{itemize}
-
-
-
-In questo capitolo verrà spiegato nel dettaglio lo svolgimento del tirocinio. L'obiettivo preposto è stato quello di realizzare un'applicazione funzionante per visualizzare e gestire mappe geospaziali. Lo sviluppo si è diviso tra front-end, per consentire la visualizzazione delle mappe, e back-end, per la loro gestione e fornitura. Infine, si è concluso il mio percorso lavorativo con una fase di integrazione tra i due componenti.
 
 \section{Sviluppo Front-end con OpenLayers}
 
