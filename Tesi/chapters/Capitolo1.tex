@@ -2,6 +2,7 @@
 
 Il presente capitolo fornisce una panoramica del progetto di tirocinio, durato trecento ore, offrendo una spiegazione sull'ambito del progetto e indicando le tecnologie impiegate per la sua realizzazione.
 
+% nota per samu, andrea ha detto che questa introduzione non va bene perché io non ho creato openlayer o un sistema gis "crescenza di fornire strumenti interattivi e intuitivi bla bla bla". il problema era un altro, ovvero che bms già esisteva ma non c'erano le mappe. ti davano le coordinate dei punti del ponte e uno non capiva minimamente di dove il ponte si trovava, quindi c'è stato bisogno di implementare le mappe!
 \section{Introduzione al progetto}
 
 Il progetto di tirocinio mira allo sviluppo e l'integrazione di un prototipo di applicazione per la visualizzazione di mappe geospaziali,
@@ -17,8 +18,41 @@ Attraverso una mappa interattiva dell'Italia, è possibile esplorare dettagliata
 Talvolta però ci sono delle informazioni, relative a un ponte, che non dipendono tanto dal ponte stesso quanto dalla zona ove è eretto. Tra queste troviamo: possibile attività sismiche, pericolo alluvioni, esondazione di fiumi, frane, etc.. Per tale motivo, vengono implementate delle mappe che descrivono questi fenomeni, e che possono essere sovrapposte per ottenere un quadro più generale del ponte considerato.
 % Per la valutazione dei rischi strutturali, è stato impiegato un modello di intelligenza aritficiale che, sulla base di immagini raccolte in loco, fa una valutazione dell'integrità del viadotto.
 
-\section{Base di partenza}
-All'inizio del tirocinio, l'architettura del software e lo stack di sviluppo per la piattaforma Inspicio erano già stati selezionati. Tuttavia, la componente che risultava totalmente assente era quella relativa alle mappe, senza né front-end né back-end definiti. Per questo motivo, il candidato, assieme al tutore aziendale, si sono occupati di valutare e scegliere le tecnologie che meglio avrebbero consentito la gestione di mappe geospaziali. Dopodiché il candidato è stato incaricato dello sviluppo di questo aspetto. La precedente mancanza delle mappe si riconduce ad altre priorità degli sviluppatori già presenti in azienda.
+% \section{Base di partenza}
+% All'inizio del tirocinio, l'architettura del software e lo stack di sviluppo per la piattaforma Inspicio erano già stati selezionati. Tuttavia, la componente che risultava totalmente assente era quella relativa alle mappe, senza né front-end né back-end definiti. Per questo motivo, il candidato, assieme al tutore aziendale, si sono occupati di valutare e scegliere le tecnologie che meglio avrebbero consentito la gestione di mappe geospaziali. Dopodiché il candidato è stato incaricato dello sviluppo di questo aspetto. La precedente mancanza delle mappe si riconduce ad altre priorità degli sviluppatori già presenti in azienda.
+
+
+\subsection{Introduzione al Problema}
+
+La parte delle mappe all'interno dell'applicazione era completamente assente, in quanto gli sviluppatori erano dedicati alla realizzazione di altre funzionalità, anch'esse prioritarie. Per questo motivo, il candidato, assieme al tutore aziendale, si sono occupati di valutare e scegliere le tecnologie che meglio avrebbero consentito la gestione di mappe geospaziali. Dopodiché il candidato è stato incaricato dello sviluppo di questo aspetto.
+\\Dal punto di vista del Back-end, l'applicazione non presentava ancora nessun meccanismo di gestione e fornitura dei dati geospaziali, mentre nel Front-end, lo sviluppo delle mappe era appena cominciato, con la realizzazione di un piccolo componente in Angular. Tale componente possedeva solamente l'integrazione agli elementi base di OpenLayers, un supporto alla sovrapposizione multipla di Layer differenti e un layer di default, che mostrava la mappa fornita da OpenStreetMap.
+
+% e poi abbiamo fatto una scaletta con degli obiettivi iniziali, per la prima parte di tirocinio, da cui partire. Molto utile per avere idea di quello che sarei andato a fare.
+% i primi obiettivi erano quelli di:
+% vorremmo:
+% - coprire i casi d'uso elencati sopra (e altri)
+% - mostrare mappe wms/wfs/wcs in browser
+% - strumenti di "navigazione" di base (gestione pan/zoom/layers); sentiamo Davide/Fabio per mockup
+% - avere il tutto inscatolato in una (o più?) componente angular
+% - meccanismi di esposizione del dato "mappa" (standard wms/wfs/wcs? altro?)
+% - ingestion di dati (geojson, shapefile, altri backend standard)
+
+
+% primi problemi accennati durante la presentazione del progetto:
+
+% rendering di più layer delle mappe tutte assieme e trovare un modo per non farle laggare e tenerle sincronizzate
+
+% servizi di fornitura mappa lenti, alcuni ci metto una vita a caricare, forse dovremmo utilizzare una politica di caching?
+
+% ingestion dei dati: non tutti i dati vengono supportati da OpenLayer, fare quindi un piccolo backend che sanitizza i dati e li passa poi a openlayer.
+
+% perche’ usare open layer invece che un altro servizio di mappe? Per esempio quello usato da google o apple.
+
+% perche’ quelli sono piu’ specializzati sulla parte stradale, a noi non ci interessano. Ci interessano i ponti!
+
+% utilizziamo come framework OpenLayer (frontend) per unire tutto e avere uno standard per i dati in mappa, con tanto di mappa già funzionante. Perché OpenLayer e non un altro framework? **Motivare**!
+
+\subsection{Cosa è stato Realizzato}
 
 \section{Contesto di Sviluppo}
 La piattaforma, che prende l'acronimo di \textit{BMS} (\textit{Bridge Management System}) è stata sviluppata come un'applicazione Web moderna, seguendo un'architettura a microservizi che favorisce la modularità e la scalabilità del sistema. Questa scelta architetturale è stata preferita rispetto alle tradizionali applicazioni monolitiche, in quanto ha permesso di separare i vari servizi, semplificandone la gestione e consentendo una maggiore flessibilità nell'implementazione di nuove funzionalità.

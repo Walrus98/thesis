@@ -1,33 +1,55 @@
-\chapter{Introduzione al Tirocinio}
+\chapter{Tecnologie Aziendali Utilizzate}
+% \chapter{Infrastruttura dell'Applicazione}
 
-\subsection{Introduzione al Problema}
+All'inizio dell'esperienza di tirocinio, il tutor aziendale si è occupato di fornire una panoramica generale sulle tecnologie e sui framework utilizzati all'interno dell'azienda.
 
-Come già anticipato nell'introduzione, la parte delle mappe all'interno dell'applicazione era completamente assente, in quanto gli sviluppatori erano dedicati alla realizzazione di altre funzionalità, anch'esse prioritarie. Infatti, il candidato, insieme alla supervisione del tutore aziendale, si sono occupati di valutare e scegliere le migliori tecnologie da utilizzare per implementare tale aspetto.
-\\Dal punto di vista del Back-end, l'applicazione non presentava ancora nessun meccanismo di gestione e fornitura dei dati geospaziali, mentre nel Front-end, lo sviluppo delle mappe era appena cominciato, con la realizzazione di un piccolo componente in Angular. Tale componente possedeva solamente l'integrazione agli elementi base di OpenLayers, un supporto alla sovrapposizione multipla di Layer differenti e un layer di default, che mostrava la mappa fornita da OpenStreetMap.
+\subsection{Microservizi e Docker}
+Dal punto di vista architetturale, è stata scelta un'architettura a microservizi anziché una monolitica. Essa prevede di suddividere l'applicazione in tanti servizi autonomi, ciascuno dei quali svolge una funzione specifica. Questo approccio è molto comune per le applicazioni di grandi dimensioni, poiché ogni microservizio può essere sviluppato e mantenuto in modo indipendente dagli altri, utilizzando, se necessario, anche linguaggi di programmazione differenti. Tale sistema permette agli sviluppatori di concentrarsi su ogni funzionalità singolarmente, rimanendo isolati da tutto il resto dell'applicazione. Inoltre, grazie alla possibilità di utilizzare linguaggi differenti, è possibile scegliere la soluzione più adatta in base alla funzionalità che deve essere implementata. Quest'architettura favorisce la scalabilità orizzontale, ovvero la possibilità di aggiungere o rimuovere istanze di singoli microservizi in base alle esigenze di carico, senza dover scalare l'intera applicazione. Dunque, rende più efficiente l'utilizzo delle risorse e consente di gestire picchi di traffico in modo più efficace.
+\\Per gestire questo tipo di architettura, si è scelto di utilizzare Docker, ovvero una piattaforma che consente di creare e gestire container, cioè ambienti isolati che contengono tutte le risorse necessarie per eseguire un'applicazione.
+Ogni servizio viene dunque "containerizzato", ovvero viene isolato in un ambiente autonomo con tutte le risorse e le dipendenze necessarie per il suo funzionamento. La containerizzazione attraverso Docker rende notevolmente più semplice lo sviluppo dell'applicazione, in quanto gli sviluppatori, lavorando sullo stesso container, possiedono tutti lo stesso ambiente di sviluppo: la stessa versione delle dipendenze, librerie e del linguaggio di programmazione. Inoltre, una volta che l'applicazione è pronta per il deployment (cioè pronta per essere messa in produzione), viene eseguita su server in un ambiente ancora containerizzato. Così facendo, si ha la garanzia che l'applicazione continui a funzionare come quando è stata sviluppata, e, se necessario, è possibile scalarla orizzontalmente attraverso l'uso di servizi Cloud come Amazon AWS.
 
-% e poi abbiamo fatto una scaletta con degli obiettivi iniziali, per la prima parte di tirocinio, da cui partire. Molto utile per avere idea di quello che sarei andato a fare.
-% i primi obiettivi erano quelli di:
-% vorremmo:
-% - coprire i casi d'uso elencati sopra (e altri)
-% - mostrare mappe wms/wfs/wcs in browser
-% - strumenti di "navigazione" di base (gestione pan/zoom/layers); sentiamo Davide/Fabio per mockup
-% - avere il tutto inscatolato in una (o più?) componente angular
-% - meccanismi di esposizione del dato "mappa" (standard wms/wfs/wcs? altro?)
-% - ingestion di dati (geojson, shapefile, altri backend standard)
+\subsection{WebServer e Reverse Proxy}
+
+È stato impiegato un WebServer che, tra le altre cose, ha svolto il ruolo di un Reverse Proxy, permettendo di semplificare la gestione del traffico HTTP diretto verso i container Docker. Un WebServer è un software che riceve tutte le richieste HTTP inviate da client (per esempio browser) e che alla fine fornirà loro delle risposte, solitamente sotto forma di dati o pagine web.
+\\Comportandosi da reverse proxy, il WebServer reinstrada le richieste ricevute verso il microservizio appropriato, mascherando ai client la pluralità di servizi esistenti. Una volta ricevuta la risposta dal microservizio, la trasmette al client che ne aveva fatto richiesta. Nel dettaglio è stato utilizzato Caddy come WebServer, poiché offre delle semplici modalità di configurazione, tramite la stesura del file "Caddyfile", fornito dal software stesso.
+\\Il suo uso principale è stato quello di permettere ai client di contattare i servizi containerizzati tramite un dominio, anziché un indirizzo ip con una porta associata: ad esempio, invece di contattare il container che ha al suo interno il servizio di rest API all'indirizzo \textit{127.0.0.1:8080}, è possibile contattarlo tramite il dominio \textit{bms.local.gkops.net/api/}. Grazie a questa modalità, è possibile simulare un ambiente di produzione, nel quale tutti i servizi vengono contattati su un dominio apposito tramite protocollo HTTPS. Quest'ultimo dettaglio è possibile grazie a Caddy che permette di installare certificati TLS sui domini da lui creati. È stato utilizzato Let's Encrypt come Certification Authority.
+\\Inoltre, se necessario, tramite Caddy è possibile eseguire load balancing tra i microservizi, il quale consente di distribuire il carico tra più istanze del servizio per garantire una migliore scalabilità e affidabilità del sistema.
+\\Infine, l'utilizzo di Caddy è essenziale per effettuare meccanismi di caching tra le richieste HTTP inviate dai client ai microservizi: nel caso in cui venga posta la medesima richiesta, il WebServer non richiederà nuovamente al il microservizio la risposta, bensì risponderà direttamente al client.
+
+\subsection{Front-end e Back-end}
+
+Per la parte di front-end, nel contesto di applicazioni Enterprise, come nel caso di BMS, è stato deciso di sviluppare l'interfaccia grafica utilizzando un framework JavaScript moderno, nello specifico Angular. Questi framework presentano un'architettura basata su componenti, cioè permettono di costruire l'interfaccia grafica attraverso l'uso di componenti che possono essere riutilizzati. Questo consente di avere una programmazione modulare, in cui ogni componente HTML viene visto come un modulo a se stante, che può essere importato e riutilizzato su pagine web differenti. Questo rende il codice più organizzato, facile da comprendere e da mantenere, specialmente all'aumentare delle dimensioni e della complessità dell'applicazione.
+\\Lato back-end, invece, è stato adottato l'utilizzo di un framework ad alto livello come .NET, il quale offre un insieme di funzionalità e strumenti per lo sviluppo di applicazioni complesse e scalabili.
+
+\subsection{Continuous Integration e Delivery}
+
+\begin{itemize}
+    \item Github: per la manutenzione e revisione del codice;
+    \item Teamcity per i test test cases, continuous integration e continuous delivery;
+\end{itemize}
+
+% \section{Stato Iniziale}
+
+% bibop Questi framework consentono lo sviluppo a componenti, il che significa che ogni elemento dell'interfaccia utente può essere sviluppato come un componente separato e riutilizzabile.
+% Pertanto, quando uno sviluppatore crea un componente nell'UI kit, può poi facilmente importarlo e utilizzarlo all'interno delle varie pagine del sito senza doverlo ricreare da zero ogni volta. Ciò non solo accelera il processo di sviluppo, ma anche aumenta la coerenza e la manutenibilità del codice.
 
 
-% primi problemi accennati durante la presentazione del progetto:
+% La parte delle mappe era completamente assente, c'era solo un pezzettino nell'uikit.
 
-% rendering di più layer delle mappe tutte assieme e trovare un modo per non farle laggare e tenerle sincronizzate
+% Come già anticipato nell'introduzione, la parte delle mappe all'interno dell'applicazione era completamente assente, in quanto gli sviluppatori erano dedicati alla realizzazione di altre funzionalità, anch'esse prioritarie. Infatti, il candidato, insieme alla supervisione del tutore aziendale, si sono occupati di valutare e scegliere le migliori tecnologie da utilizzare per implementare tale aspetto.
+% \\Dal punto di vista del Back-end, l'applicazione non presentava ancora nessun meccanismo di gestione e fornitura dei dati geospaziali, mentre nel Front-end, lo sviluppo delle mappe era appena cominciato, con la realizzazione di un piccolo componente in Angular. Tale componente possedeva solamente l'integrazione agli elementi base di OpenLayers, un supporto alla sovrapposizione multipla di Layer differenti e un layer di default, che mostrava la mappa fornita da OpenStreetMap. Il tirocinante ha poi continuato con l'implementazione di questo componente, situato nella pagina web dell'Ui-Kit. Questa pagina contiene tutti i componenti grafici che verranno poi utilizzati all'interno dell'applicazione. L'uso dell'Ui-Kit è una pratica comune, specialmente nel contesto di applicazioni Enterprise, in quanto permette agli sviluppatori. %fixme
+% \\Ovviamente l'uso dell'Ui-Kit è reso possibile grazie ai framework JavaScript come Angular, la cui architettura modulare rende possibile l'esportazione dei componenti creati in altre pagine web dell'applicazione. Ad esempio, quando uno sviluppatore crea un componente nell'UiKit, può facilmente importarlo e utilizzarlo all'interno delle varie pagine del sito, senza doverlo ricreare da zero ogni volta. Senza Angular, questa operazione sarebbe molto più laboriosa, dovendo riscrivere più volte lo stesso codice e quindi non risulterebbe più conveniente.
+% L'UI Kit è utile perché fornisce una libreria di componenti grafici predefiniti che consentono agli sviluppatori di mantenere la coerenza visiva e funzionale nell'interfaccia utente dell'applicazione. Utilizzandolo, si risparmia tempo evitando di dover progettare e implementare ogni elemento da zero. Inoltre, offre la possibilità di personalizzare i componenti per adattarli alle esigenze specifiche del progetto, garantendo una migliore integrazione e flessibilità nel processo di sviluppo.
 
-% servizi di fornitura mappa lenti, alcuni ci metto una vita a caricare, forse dovremmo utilizzare una politica di caching?
+% L'UiKit è una pratica comune, specialmente all'interno di applicazioni Enterprise, in quanto offre diversi vantaggi come l'aiuto agli sviluppatori front-end ad avere una base solida ed uniforme dell'interfaccia utente
 
-% ingestion dei dati: non tutti i dati vengono supportati da OpenLayer, fare quindi un piccolo backend che sanitizza i dati e li passa poi a openlayer.
+% ia dal punto di vista della programmazione, in quanto aiuta gli sviluppatori front-end ad avere una base solida ed uniforme di progettazione dell'interfaccia utente,
 
-% perche’ usare open layer invece che un altro servizio di mappe? Per esempio quello usato da google o apple.
+% sia perché funge da strumento di presentazione del design ai potenziali clienti, consentendo loro di visualizzare in anteprima l'aspetto e le funzionalità dell'applicazione
 
-% perche’ quelli sono piu’ specializzati sulla parte stradale, a noi non ci interessano. Ci interessano i ponti!
+% Inoltre, l'utilizzo dell'UiKit favorisce l'efficienza nello sviluppo. Gli sviluppatori possono ridurre il tempo necessario per progettare e implementare nuove funzionalità dell'interfaccia utente, poicheé angular. Questo permette di accelerare il processo di sviluppo e di ridurre i costi associati.
+% Infine, l'UiKit favorisce la manutenibilità del codice. Poiché i componenti dell'interfaccia utente sono riutilizzabili e modulari, è più semplice apportare modifiche e aggiornamenti all'interfaccia utente senza dover modificare il codice sorgente in più punti. Questo rende più agevole la gestione e l'evoluzione dell'applicazione nel tempo, garantendo una maggiore flessibilità e scalabilità.
 
-% utilizziamo come framework OpenLayer (frontend) per unire tutto e avere uno standard per i dati in mappa, con tanto di mappa già funzionante. Perché OpenLayer e non un altro framework? **Motivare**!
-
-\subsection{Cosa è stato Realizzato}
+% fornire una base consistente per la progettazione dell'interfaccia utente,
+% bibop
+% L'obiettivo principale di un UI kit è quello di fornire una base consistente per la progettazione e lo sviluppo dell'interfaccia utente, facilitando così il lavoro degli sviluppatori e garantendo una migliore coerenza visiva e funzionale nell'applicazione finale. Utilizzando un UI kit, gli sviluppatori possono risparmiare tempo nella progettazione e implementazione dell'interfaccia utente, concentrandosi invece sulle funzionalità e sull'esperienza utente dell'applicazione.
