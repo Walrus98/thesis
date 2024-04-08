@@ -40,28 +40,16 @@ Qui sotto viene riportato una parte del codice del prototipo, così da comprende
 \lstinputlisting[language=html, caption={Codice HTML}]{listings/Capitolo3/index.html}
 % \texttt{Codice JavaScript}.
 \lstinputlisting[caption={Codice JavaScript}, language=Java]{listings/Capitolo3/main.js}
-
-\subsection{Studio di OpenLayers in Angular}
-
-Il candidato, infine, ha confrontato il suo lavoro con quello già presente all'interno del progetto realizzato in Angular, così da comprendere al meglio le differenze fra le due implementazioni e capire quali funzionalità fossero già state realizzate.
-\\La loro versione presentava solamente l'integrazione agli elementi base di OpenLayers, un supporto alla sovrapposizione multipla di layer differenti e un layer di default, che mostrava una mappa di base fornita da OpenStreetMap. La differenza principale, essendo stata realizzata in Angular, è che la loro implementazione era stata fatta tramite l'uso di componenti, in questo modo poteva il componente della mappa poteva essere facilmente importato più volte all'interno delle varie pagine web dell'applicazione.
-\\Inizialmente, infatti, tale componente era situato all'interno della pagina web dell'Ui-Kit, ma allo sviluppatore di importare più volte il componente della mappa nell'applicazione. ovvero una pagina contente, a scopo dimostrativo, tutti i componenti grafici che sarebbero stati poi utilizzati all'interno dell'applicazione. L'uso dell'Ui-Kit è una pratica comune, specialmente nel contesto di applicazioni Enterprise, in quanto permette agli sviluppatori.
-\\Ovviamente l'uso dell'Ui-Kit è reso possibile grazie ai framework JavaScript come Angular, la cui architettura modulare rende possibile l'esportazione dei componenti creati in altre pagine web dell'applicazione. Ad esempio, quando uno sviluppatore crea un componente nell'Ui-Kit, può facilmente importarlo e utilizzarlo all'interno delle varie pagine del sito, senza doverlo ricreare da zero ogni volta. Senza Angular, questa operazione sarebbe molto più laboriosa, dovendo riscrivere più volte lo stesso codice e quindi non risulterebbe più conveniente.
-
-% L'UI Kit è utile perché fornisce una libreria di componenti grafici predefiniti che consentono agli sviluppatori di mantenere la coerenza visiva e funzionale nell'interfaccia utente dell'applicazione. Utilizzandolo, si risparmia tempo evitando di dover progettare e implementare ogni elemento da zero. Inoltre, offre la possibilità di personalizzare i componenti per adattarli alle esigenze specifiche del progetto, garantendo una migliore integrazione e flessibilità nel processo di sviluppo.
-
-% L'UiKit è una pratica comune, specialmente all'interno di applicazioni Enterprise, in quanto offre diversi vantaggi come l'aiuto agli sviluppatori front-end ad avere una base solida ed uniforme dell'interfaccia utente
-
-% ia dal punto di vista della programmazione, in quanto aiuta gli sviluppatori front-end ad avere una base solida ed uniforme di progettazione dell'interfaccia utente,
-
-% sia perché funge da strumento di presentazione del design ai potenziali clienti, consentendo loro di visualizzare in anteprima l'aspetto e le funzionalità dell'applicazione
-
-% Inoltre, l'utilizzo dell'UiKit favorisce l'efficienza nello sviluppo. Gli sviluppatori possono ridurre il tempo necessario per progettare e implementare nuove funzionalità dell'interfaccia utente, poicheé angular. Questo permette di accelerare il processo di sviluppo e di ridurre i costi associati.
-% Infine, l'UiKit favorisce la manutenibilità del codice. Poiché i componenti dell'interfaccia utente sono riutilizzabili e modulari, è più semplice apportare modifiche e aggiornamenti all'interfaccia utente senza dover modificare il codice sorgente in più punti. Questo rende più agevole la gestione e l'evoluzione dell'applicazione nel tempo, garantendo una maggiore flessibilità e scalabilità.
-
-% fornire una base consistente per la progettazione dell'interfaccia utente,
-% bibop
-% L'obiettivo principale di un UI kit è quello di fornire una base consistente per la progettazione e lo sviluppo dell'interfaccia utente, facilitando così il lavoro degli sviluppatori e garantendo una migliore coerenza visiva e funzionale nell'applicazione finale. Utilizzando un UI kit, gli sviluppatori possono risparmiare tempo nella progettazione e implementazione dell'interfaccia utente, concentrandosi invece sulle funzionalità e sull'esperienza utente dell'applicazione.
+Il candidato, infine, ha confrontato il suo lavoro con quello già presente all'interno del progetto, così da comprendere al meglio le differenze principali fra le due implementazioni e capire quali funzionalità fossero già state realizzate dall'azienda.
+\\La loro versione presentava solamente l'integrazione agli elementi base di OpenLayers, un supporto alla sovrapposizione multipla di layer differenti e un layer di default, che mostrava una mappa di base fornita da OpenStreetMap. La differenza principale, è che, essendo stata realizzata in Angular, la loro implementazione faceva uso dei componenti, così da poter esportare facilmente il componente della mappa e importarlo più volte in pagine web differenti dell'applicazione.
+\\Inizialmente, infatti, il loro componente era situato all'interno della pagina web dell'Ui-Kit, ovvero una pagina che, a scopo dimostrativo, contiene tutti i componenti grafici che sarebbero stati poi utilizzati all'interno dell'applicazione. L'uso dell'Ui-Kit è una pratica comune, specialmente nel contesto di applicazioni Enterprise, in quanto permette agli sviluppatori di poter realizzare tutti i componenti indipendentemente dalla pagina web in cui verranno poi collocati. In questo modo è possibile, sia mantenere una coerenza visiva fra tutti i componenti dell'applicazione, aiutando così gli sviluppatori front-end a realizzare un interfaccia uniforme e coincisa, sia come strumento di presentazione del design ai potenziali clienti, così da fornire loro una anteprima dell'aspetto e delle funzionalità dell'applicazione.
+\\Ovviamente l'uso dell'Ui-Kit è reso possibile grazie ai framework JavaScript come Angular, la cui architettura modulare rende possibile l'esportazione dei componenti creati in altre pagine web dell'applicazione. Ad esempio, quando uno sviluppatore crea un componente nell'Ui-Kit, può facilmente importarlo e utilizzarlo all'interno delle varie pagine del sito, senza doverlo ricreare da zero ogni volta. Senza Angular, questa operazione sarebbe molto più laboriosa, dovendo riscrivere più volte lo stesso codice e quindi non risulterebbe più conveniente. La prima parte di tirocinio si sarebbe quindi dedicata al continuo e all'estensione del componente delle mappe da loro iniziato.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\textwidth]{images/Capitolo3/MapComponent.png}
+    \caption{Il componente Angular di OpenLayers nell'Ui-Kit}
+    \label{fig:MapComponent}
+\end{figure}
 
 \subsection{Censimento delle Mappe}
 
@@ -95,17 +83,15 @@ Inoltre la libreria ha già un supporto integrato per il formato GeoJSON, il che
 \subsection{Implementazione nel Progetto}
 
 Il candidato, sotto supervisione del tutor aziendale, ha iniziato lo sviluppo del progetto BMS creando all'interno dell'applicazione una nuova pagina web, nella quale ha importato il componente della mappa già esistente nell'Ui-Kit, così da poter integrare il supporto ai protocolli OGC richiesti e iniziare a testare le mappe censite.
-\\Lo sviluppo è proseguito estendendo il componente Angular delle mappe, che fino a quel momento ha presentato solamente l'integrazione agli elementi base di OpenLayers e un supporto alla sovrapposizione multipla di layer differenti.
-\\Come prima funzionalità si è implementato il supporto al formato GeoJSON, selezionando come prima mappa da testare quella delle frane in Toscana, fornita da IdroGEO, in quanto tutte quelle fornite da questo ente, possono essere scaricate localmente e caricate all'interno del progetto, senza dover contattare alcun servizio esterno. Ciò facilità il lavoro di programmazione, riducendo il rischio di errore dovuto a eventuali problemi di disservizio dei server di mappe esterni.
+\\Lo sviluppo è proseguito estendendo il componente Angular delle mappe, implementando come prima funzionalità il supporto al formato GeoJSON.
+\\Per fare ciò, è stata selezionata come prima mappa da testare quella delle frane in Toscana, fornita da IdroGEO, in quanto tutte quelle fornite da questo ente, possono essere scaricate localmente e caricate all'interno del progetto, senza dover contattare alcun servizio esterno. Ciò facilità il lavoro di programmazione, riducendo il rischio di errore dovuto a eventuali problemi di disservizio dei server di mappe esterni.
 \\In questa fase, le parti di codice che hanno subito più modifiche sono le classi BuildLayer.ts e MapModel.ts, le quali si occupano di far istanziare l'oggetto della mappa con proprietà differenti, in base al tipo di formato geospaziale passato come argomento.
 \\Il lavoro è continuato con l'implementazione della pagina web descritta precedentemente, andando a inserire al suo interno alcune mappe fittizie, tra cui una in formato GeoJSON, così da poterne verificare il funzionamento. Tali mappe, rappresentate come "layer", sono state tutte sovrapposte a quella di default, ovvero quella di OpenStreetMap. In questo modo si è compreso se i layer sono stati rappresentati correttamente, riuscendo così a orientarsi all'interno delle mappe stesse in termini geografici.
+\\La prima problematica riscontrata è stata quella dell'errata proiezione scelta per la rappresentazione della mappa di IdroGEO. La mappa in questione utilizzava una proiezione differente rispetto a quella di default di OpenLayers, andando così a rappresentare la mappa della toscana a delle coordinante completamente differenti rispetto a quelle aspettate. La mappa quindi possedeva delle coordinate corrette, ma venivano interpretate da OpenLayer con la proiezione sbagliata, andando a collocare la mappa in un area totalmente errata.
 
-
-spiegare openstreet map
-voglio dire che ho aggiunto il layer di openstreet map
-voglio dire del problema di pro4j
-voglio dire del problema di clustering e la ram mangiata
-voglio dire dello stile applicato e il click dei marker
+% voglio dire del problema di pro4j
+% voglio dire del problema di clustering e la ram mangiata
+% voglio dire dello stile applicato e il click dei marker
 
 
 \lstinputlisting[language=Java, caption={Implementazione BuildLayer}]{listings/Capitolo4/buildLayer.js}
