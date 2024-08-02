@@ -1,0 +1,36 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "frane_piff_opendata.fid--4f65597d_18ecade11e2_-1005",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          656145.0995,
+          4756359.6625
+        ]
+      },
+      "geometry_name": "geom",
+      "properties": {
+        "id_frana": "0537447700",
+        "tipo_movimento": 2,
+        "nome_tipo": "Scivolamento rotazionale/traslativo",
+        "regione": 9,
+        "nome_reg": "Toscana",
+        "provincia": 53,
+        "nome_prov": "Grosseto",
+        "comune": 53010,
+        "nome_com": "Gavorrano",
+        "autorita_distretto": 3,
+        "nome_distr": "Appennino Settentrionale"
+      },
+      "bbox": [
+        656145.0995,
+        4756359.6625,
+        656145.0995,
+        4756359.6625
+      ]
+    },
+    ...
+}

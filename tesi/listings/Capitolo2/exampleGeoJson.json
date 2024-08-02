@@ -1,0 +1,36 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "frane_piff_opendata.fid--4f65597d_18e8ca7ffb022",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          426062.9254,
+          4940128.705
+        ]
+      },
+      "geometry_name": "geom",
+      "properties": {
+        "id_frana": "0042527700",
+        "tipo_movimento": 11,
+        "nome_tipo": "Aree con frane superficiali diffuse",
+        "regione": 1,
+        "nome_reg": "Piemonte",
+        "provincia": 4,
+        "nome_prov": "Cuneo",
+        "comune": 4196,
+        "nome_com": "Rodello",
+        "autorita_distretto": 2,
+        "nome_distr": "Po"
+      },
+      "bbox": [
+        426062.9254,
+        4940128.705,
+        426062.9254,
+        4940128.705
+      ]
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+<TileMapService version="1.0.0" services="https://example.com">
+<Title>Tile Map Service</Title>
+<Abstract>A Tile Map Service Abstract</Abstract>
+    <TileMaps>
+    <TileMap title="my_map" srs="EPSG:4326" profile="local" href="https://example.com/tms/1.0.0/my_map@EPSG:4326@png"/>
+    <TileMap title="my_map" srs="EPSG:4326" profile="local" href="https://example.com/tms/1.0.0/my_map@EPSG:4326@jpeg"/>
+    <TileMap title="my_map" srs="EPSG:900913" profile="local" href="https://example.com/tms/1.0.0/my_map@EPSG:900913@png"/>
+    <TileMap title="my_map" srs="EPSG:900913" profile="local" href="https://example.com/tms/1.0.0/my_map@EPSG:900913@jpeg"/>
+    </TileMaps>
+</TileMapService>
+
